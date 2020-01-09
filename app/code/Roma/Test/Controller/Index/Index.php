@@ -36,7 +36,6 @@ class Index extends Action
      */
     public function execute()
     {
-        $this->resultFactory->create($this->resultFactory::TYPE_PAGE);
-        return $this->resultPageFactory->create();
+        return $this->resultFactory->create($this->resultFactory::TYPE_PAGE);
     }
 }
