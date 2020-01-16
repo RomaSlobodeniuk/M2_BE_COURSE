@@ -47,56 +47,64 @@ class PutDataIntoMyNewTable implements DataPatchInterface
                 'user_id' => 1,
                 'car_id' => 7272811,
                 'description' => 'Test Description 1',
-                'created_at' => ''
+                'created_at' => '',
+                'price' => null
             ],
             [
                 'entity_id' => null,
                 'user_id' => 1,
                 'car_id' => 7272812,
                 'description' => 'Test Description 2',
-                'created_at' => ''
+                'created_at' => '',
+                'price' => null
             ],
             [
                 'entity_id' => null,
                 'user_id' => 2,
                 'car_id' => 2272811,
                 'description' => 'Test Description 3',
-                'created_at' => ''
+                'created_at' => '',
+                'price' => null
             ],
             [
                 'entity_id' => null,
                 'user_id' => 3,
                 'car_id' => 3272812,
                 'description' => 'Test Description 4',
-                'created_at' => ''
+                'created_at' => '',
+                'price' => null
             ],
             [
                 'entity_id' => null,
                 'user_id' => 3,
                 'car_id' => 3232812,
                 'description' => 'Test Description 5',
-                'created_at' => ''
+                'created_at' => '',
+                'price' => null
             ],
             [
                 'entity_id' => null,
                 'user_id' => 3,
                 'car_id' => 3272814,
                 'description' => 'Test Description 6',
-                'created_at' => ''
+                'created_at' => '',
+                'price' => null
             ],
             [
                 'entity_id' => null,
                 'user_id' => 4,
                 'car_id' => 4272813,
                 'description' => 'Test Description 7',
-                'created_at' => ''
+                'created_at' => '',
+                'price' => null
             ],
             [
                 'entity_id' => null,
                 'user_id' => 5,
                 'car_id' => 5272812,
                 'description' => 'Test Description 8',
-                'created_at' => ''
+                'created_at' => '',
+                'price' => null
             ],
         ];
 
@@ -105,7 +113,6 @@ class PutDataIntoMyNewTable implements DataPatchInterface
 
         try {
             $connection = $this->moduleDataSetup->getConnection();
-            $connection->truncateTable(self::MY_NEW_WAY_TABLE);
             foreach ($data as $row) {
                 $row['created_at'] = time();
                 $connection->insert(self::MY_NEW_WAY_TABLE, $row);

@@ -71,6 +71,7 @@ class UpdateMyNewTable implements SchemaPatchInterface
                 'precision' => 20,
                 'unsigned' => false,
                 'nullable' => true,
+                'default' => 00.0000,
                 'comment' => "Base Car Price"
             ]
         );
