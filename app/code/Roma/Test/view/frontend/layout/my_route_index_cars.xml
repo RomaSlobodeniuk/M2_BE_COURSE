@@ -2,7 +2,7 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="main">
-            <block class="Roma\Test\Block\CarCustomers" name="custom.block" template="Roma_Test::my-template.phtml"/>
+            <block class="Roma\Test\Block\Cars" name="custom.cars.block" template="Roma_Test::my-cars.phtml"/>
         </referenceContainer>
     </body>
 </page>
