@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Roma\Test\Api\CarCustomerRepositoryInterface"
+                type="Roma\Test\Model\CarCustomerRepository"/>
+    <preference for="Roma\Test\Api\Data\CarCustomerInterface"
+                type="Roma\Test\Model\CarCustomerModel"/>
+    <preference for="Roma\Test\Api\CarRepositoryInterface"
+                type="Roma\Test\Model\CarRepository"/>
+    <preference for="Roma\Test\Api\Data\CarInterface"
+                type="Roma\Test\Model\CarModel"/>
+</config>

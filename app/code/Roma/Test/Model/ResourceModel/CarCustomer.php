@@ -22,4 +22,10 @@ class CarCustomer extends AbstractDb
             CarCustomerModel::ENTITY_ID
         );
     }
+
+    public function _beforeDelete(\Magento\Framework\Model\AbstractModel $object)
+    {
+        //my custom logic
+        return parent::_beforeDelete($object);
+    }
 }

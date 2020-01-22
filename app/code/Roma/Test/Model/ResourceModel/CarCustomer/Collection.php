@@ -26,4 +26,12 @@ class Collection extends AbstractCollection
             CarCustomerResourceModel::class
         );
     }
+
+    /**
+     * @return void
+     */
+    public function addMySortOrder()
+    {
+        $this->setOrder(CarCustomerModel::CREATED_AT, 'ASC');
+    }
 }

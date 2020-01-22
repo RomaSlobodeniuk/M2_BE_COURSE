@@ -3,23 +3,14 @@
 namespace Roma\Test\Model;
 
 use Magento\Framework\Model\AbstractModel;
+use Roma\Test\Api\Data\CarCustomerInterface;
 use Roma\Test\Model\ResourceModel\CarCustomer as CarResourceModel;
 
 /**
  * Class CarCustomerModel
  */
-class CarCustomerModel extends AbstractModel
+class CarCustomerModel extends AbstractModel implements CarCustomerInterface
 {
-    const ENTITY_ID = 'entity_id';
-
-    const EMAIL = 'email';
-
-    const SOME_ID = 'some_id';
-
-    const NAME = 'name';
-
-    const CREATED_AT = 'created_at';
-
     /**
      * {@inheritdoc}
      */
@@ -79,7 +70,7 @@ class CarCustomerModel extends AbstractModel
     /**
      * {@inheritdoc}
      */
-    public function setEmail($email)
+    public function setEmail(string $email): CarCustomerInterface
     {
         return $this->setData(self::EMAIL, $email);
     }
@@ -87,7 +78,7 @@ class CarCustomerModel extends AbstractModel
     /**
      * {@inheritdoc}
      */
-    public function setSomeId($someId)
+    public function setSomeId(int $someId): CarCustomerInterface
     {
         return $this->setData(self::SOME_ID, $someId);
     }
@@ -95,7 +86,7 @@ class CarCustomerModel extends AbstractModel
     /**
      * {@inheritdoc}
      */
-    public function setName($name)
+    public function setName(string $name): CarCustomerInterface
     {
         return $this->setData(self::NAME, $name);
     }
@@ -103,29 +94,8 @@ class CarCustomerModel extends AbstractModel
     /**
      * {@inheritdoc}
      */
-    public function setCreatedAt(\DateTime $createdAt)
+    public function setCreatedAt(\DateTime $createdAt): CarCustomerInterface
     {
         return $this->setData(self::CREATED_AT, $createdAt->format('Y-m-d H:i:s'));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDateArray()
-    {
-        $dateArray = [
-            'month' => '',
-            'day' => '',
-            'date' => '',
-            'year' => '',
-        ];
-        if ($date = $this->getCalendarDate()) {
-            $dateArray['month'] = date('F', strtotime($date));
-            $dateArray['day'] = date('l', strtotime($date));
-            $dateArray['date'] = date('d', strtotime($date));
-            $dateArray['year'] = date('Y', strtotime($date));
-        }
-
-        return $dateArray;
     }
 }

@@ -3,25 +3,15 @@
 namespace Roma\Test\Model;
 
 use Magento\Framework\Model\AbstractModel;
+use Magento\Tests\NamingConvention\true\string;
+use Roma\Test\Api\Data\CarInterface;
 use Roma\Test\Model\ResourceModel\CarResource as CarResourceModel;
 
 /**
  * Class CarModel
  */
-class CarModel extends AbstractModel
+class CarModel extends AbstractModel implements CarInterface
 {
-    const ENTITY_ID = 'entity_id';
-
-    const USER_ID = 'user_id';
-
-    const CAR_ID = 'car_id';
-
-    const DESCRIPTION = 'description';
-
-    const CREATED_AT = 'created_at';
-
-    const PRICE = 'entity_id';
-
     /**
      * {@inheritdoc}
      */
@@ -89,7 +79,7 @@ class CarModel extends AbstractModel
     /**
      * {@inheritdoc}
      */
-    public function setUserId($userId)
+    public function setUserId(int $userId): CarInterface
     {
         return $this->setData(self::USER_ID, $userId);
     }
@@ -97,7 +87,7 @@ class CarModel extends AbstractModel
     /**
      * {@inheritdoc}
      */
-    public function setCarId($carId)
+    public function setCarId(int $carId): CarInterface
     {
         return $this->setData(self::CAR_ID, $carId);
     }
@@ -105,7 +95,7 @@ class CarModel extends AbstractModel
     /**
      * {@inheritdoc}
      */
-    public function setDescription($description)
+    public function setDescription(string $description): CarInterface
     {
         return $this->setData(self::DESCRIPTION, $description);
     }
@@ -113,7 +103,7 @@ class CarModel extends AbstractModel
     /**
      * {@inheritdoc}
      */
-    public function setCreatedAt(\DateTime $createdAt)
+    public function setCreatedAt(\DateTime $createdAt): CarInterface
     {
         return $this->setData(self::CREATED_AT, $createdAt->format('Y-m-d H:i:s'));
     }
@@ -121,7 +111,7 @@ class CarModel extends AbstractModel
     /**
      * {@inheritdoc}
      */
-    public function setPrice($price)
+    public function setPrice(float $price): CarInterface
     {
         return $this->setData(self::PRICE, $price);
     }

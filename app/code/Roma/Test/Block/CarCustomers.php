@@ -2,8 +2,16 @@
 
 namespace Roma\Test\Block;
 
+use Magento\Framework\Api\SearchCriteria;
+use Magento\Framework\Api\SearchCriteriaInterface;
+use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\Api\SearchResults;
+use Magento\Framework\Api\SortOrder;
+use Magento\Framework\Api\SortOrderBuilder;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
+use Roma\Test\Api\Data\CarCustomerInterface;
+use Roma\Test\Api\CarCustomerRepositoryInterface;
 use Roma\Test\Model\CarCustomerModel;
 use Roma\Test\Model\ResourceModel\CarCustomer\Collection as CarCustomerCollection;
 use Roma\Test\Model\ResourceModel\CarCustomer\CollectionFactory as CarCustomerCollectionFactory;
@@ -24,17 +32,41 @@ class CarCustomers extends Template
     private $carCustomersCollection;
 
     /**
+     * @var SearchCriteriaBuilder
+     */
+    private $searchCriteriaBuilder;
+
+    /**
+     * @var CarCustomerRepositoryInterface
+     */
+    private $carCustomerRepository;
+
+    /**
+     * @var SortOrderBuilder
+     */
+    private $sortOrderBuilder;
+
+    /**
      * @param Context $context
      * @param CarCustomerCollectionFactory $carCustomersCollectionFactory
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param CarCustomerRepositoryInterface $carCustomerRepository
+     * @param SortOrderBuilder $sortOrderBuilder
      * @param array $data
      */
     public function __construct(
         Context $context,
         CarCustomerCollectionFactory $carCustomersCollectionFactory,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        CarCustomerRepositoryInterface $carCustomerRepository,
+        SortOrderBuilder $sortOrderBuilder,
         array $data = []
     ) {
         parent::__construct($context, $data);
         $this->carCustomersCollectionFactory = $carCustomersCollectionFactory;
+        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
+        $this->carCustomerRepository = $carCustomerRepository;
+        $this->sortOrderBuilder = $sortOrderBuilder;
     }
 
     /**
@@ -42,9 +74,30 @@ class CarCustomers extends Template
      */
     protected function _prepareLayout()
     {
+//        if ($this->carCustomersCollection === null) {
+//            $this->carCustomersCollection = $this->carCustomersCollectionFactory->create();
+//            $this->carCustomersCollection->addMySortOrder();
+//        }
+
         if ($this->carCustomersCollection === null) {
-            $this->carCustomersCollection = $this->carCustomersCollectionFactory->create();
-            $this->carCustomersCollection->setOrder(CarCustomerModel::CREATED_AT, 'ASC');
+            /** @var SortOrder $sortOrder */
+            $sortOrder = $this->sortOrderBuilder
+                ->setField(CarCustomerInterface::CREATED_AT)
+                ->setDirection(SortOrder::SORT_ASC)
+                ->create();
+
+            /** @var SearchCriteria|SearchCriteriaInterface $searchCriteria */
+            $searchCriteria = $this->searchCriteriaBuilder
+                ->addSortOrder($sortOrder)
+                ->create();
+
+            /** @var SearchResults $searchResults */
+            $searchResults = $this->carCustomerRepository->getList($searchCriteria);
+
+            $this->carCustomerRepository->deleteById(2);
+            if ($searchResults->getTotalCount() > 0) {
+                $this->carCustomersCollection = $searchResults->getItems();
+            }
         }
 
         return parent::_prepareLayout();
