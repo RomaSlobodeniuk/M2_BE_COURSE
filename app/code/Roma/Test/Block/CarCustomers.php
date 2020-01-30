@@ -94,7 +94,7 @@ class CarCustomers extends Template
             /** @var SearchResults $searchResults */
             $searchResults = $this->carCustomerRepository->getList($searchCriteria);
 
-            $this->carCustomerRepository->deleteById(2);
+//            $this->carCustomerRepository->deleteById(2);
             if ($searchResults->getTotalCount() > 0) {
                 $this->carCustomersCollection = $searchResults->getItems();
             }

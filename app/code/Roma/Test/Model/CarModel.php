@@ -3,7 +3,6 @@
 namespace Roma\Test\Model;
 
 use Magento\Framework\Model\AbstractModel;
-use Magento\Tests\NamingConvention\true\string;
 use Roma\Test\Api\Data\CarInterface;
 use Roma\Test\Model\ResourceModel\CarResource as CarResourceModel;
 
