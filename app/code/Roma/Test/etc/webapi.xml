@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <route url="/V1/test/cars/service" method="POST">
+        <service class="Roma\Test\Api\CarsServiceInterface" method="getCarsList"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+    <route url="/V1/test/cars/service/:userId" method="POST">
+        <service class="Roma\Test\Api\CarsServiceInterface" method="getCarsListByUserId"/>
+        <resources>
+            <resource ref="Roma_Test::roma" />
+        </resources>
+    </route>
+</routes>
