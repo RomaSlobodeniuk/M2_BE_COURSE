@@ -4,7 +4,11 @@ use Roma\Test\Model\CarCustomerModel;
 
 /** @var \Roma\Test\Block\CarCustomers $block */
 $blockName = $block->getNameInLayout();
-
+$array = $block->getData('custom_array');
+$array = [
+    'array_key_one' => 'First Item',
+    'array_key_two' => 'Second Item'
+];
 /** @var \Roma\Test\Model\ResourceModel\CarCustomer\Collection $carCustomersCollection */
 $carCustomersCollection = $block->getCarCustomersCollection();
 ?>
