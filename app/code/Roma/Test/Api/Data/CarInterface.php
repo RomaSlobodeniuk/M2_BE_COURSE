@@ -17,7 +17,7 @@ interface CarInterface
 
     const CREATED_AT = 'created_at';
 
-    const PRICE = 'entity_id';
+    const PRICE = 'price';
 
     /**
      * Get entity id
@@ -96,10 +96,10 @@ interface CarInterface
     /**
      * Set created at date
      *
-     * @param \DateTime $createdAt
+     * @param string $createdAt
      * @return CarInterface
      */
-    public function setCreatedAt(\DateTime $createdAt): CarInterface;
+    public function setCreatedAt(string $createdAt): CarInterface;
 
     /**
      * Set car price
