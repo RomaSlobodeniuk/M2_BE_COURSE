@@ -6,6 +6,8 @@
         <referenceContainer name="main">
             <block class="Roma\Test\Block\CarCustomers" name="custom.block" template="Roma_Test::my-template.phtml">
                 <arguments>
+                    <argument name="our_view_model" xsi:type="object">Roma\Test\ViewModel\ExtraInfo</argument>
+                    <argument name="custom_string" xsi:type="string">My Custom String</argument>
                     <argument name="custom_array" xsi:type="array">
                         <item name="array_key_one" xsi:type="string">First Item</item>
                         <item name="array_key_two" xsi:type="string">Second Item</item>

@@ -1,17 +1,23 @@
 <?php
 
 use Roma\Test\Model\CarModel;
+use Roma\Test\ViewModel\ExtraInfo;
 
 /** @var \Roma\Test\Model\ResourceModel\CarResource\Collection $carsCollection */
 $carsCollection = $block->getCarsCollection();
 $sqlString = $carsCollection->getSelect()->__toString();
-
+/** @var ExtraInfo $viewModel */
+$viewModel = $block->getData('our_view_model');
 ?>
 
 <h1 class="my-block">My Custom Cars Collection:</h1>
 <h1 class="sql-query">Query was:
     <p style="color:red"><?= $sqlString ?></p>
 </h1>
+
+<?php if ($viewModel && $viewModel->getCurrentDate()): ?>
+    <h3 class="my-block">Current Date: <?= $viewModel->getCurrentDate() ?></h3>
+<?php endif; ?>
 
 <div class="container">
     <?php if ($carsCollection): ?>

@@ -35,12 +35,6 @@ class Cars extends Template
     ) {
         parent::__construct($context, $data);
         $this->carsCollectionFactory = $carsCollectionFactory;
-        if ($carsCollectionFactory instanceof CarsCollectionFactory) {
-            echo get_class($carsCollectionFactory);
-            die();
-        } else {
-            die('no virtual_type!');
-        }
     }
 
     /**

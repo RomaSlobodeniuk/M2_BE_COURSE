@@ -1,19 +1,27 @@
 <?php
 
 use Roma\Test\Model\CarCustomerModel;
+use Roma\Test\ViewModel\ExtraInfo;
 
 /** @var \Roma\Test\Block\CarCustomers $block */
 $blockName = $block->getNameInLayout();
+$string = $block->getData('custom_string');
 $array = $block->getData('custom_array');
-$array = [
-    'array_key_one' => 'First Item',
-    'array_key_two' => 'Second Item'
-];
+
+/** @var ExtraInfo $viewModel */
+$viewModel = $block->getData('our_view_model');
+
 /** @var \Roma\Test\Model\ResourceModel\CarCustomer\Collection $carCustomersCollection */
 $carCustomersCollection = $block->getCarCustomersCollection();
 ?>
 
 <h1 class="my-block">My Custom Information from theme: my-template.phtml!</h1>
+<h2 class="my-block">My Custom String is: "<?= $string ?>"</h2>
+<h3 class="my-block">My Custom Array first_key is: "<?= $array['array_key_one'] ?>"</h3>
+<h3 class="my-block">My Custom Array second_key is: "<?= $array['array_key_two'] ?>"</h3>
+<?php if ($viewModel && $viewModel->getCurrentDate()): ?>
+    <h3 class="my-block"><?= $viewModel->getCurrentDate() ?></h3>
+<?php endif; ?>
 <div class="container">
     <?php foreach ($carCustomersCollection as $carCustomer): ?>
         <?php /** @var CarCustomerModel $carCustomer */ ?>
