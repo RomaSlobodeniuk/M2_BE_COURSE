@@ -62,16 +62,50 @@ class GenerateRomaCustomersData implements DataPatchInterface
         echo 'Roma_Test:GenerateRomaCustomersData:Data:startSetup' . "\r\n";
 
         try {
-            $connection = $this->moduleDataSetup->getConnection();
-            $sql = "SELECT * FROM `my_old_fashioned_table`";
-            $data = $connection->fetchAssoc($sql);
+            $data = [
+                [
+                    'entity_id' => null,
+                    'email' => 'example@gmail.com',
+                    'some_id' => 278,
+                    'name' => 'Example',
+                    'created_at' => ''
+                ],
+                [
+                    'entity_id' => null,
+                    'email' => 'my_new_email@i.ua',
+                    'some_id' => 111,
+                    'name' => 'New Customer',
+                    'created_at' => ''
+                ],
+                [
+                    'entity_id' => null,
+                    'email' => 'roma@gmail.com',
+                    'some_id' => 222,
+                    'name' => 'Roma',
+                    'created_at' => ''
+                ],
+                [
+                    'entity_id' => null,
+                    'email' => 'sania11@gmail.com',
+                    'some_id' => 321,
+                    'name' => 'Sanya',
+                    'created_at' => ''
+                ],
+                [
+                    'entity_id' => null,
+                    'email' => 'myemail@i.ua',
+                    'some_id' => 872,
+                    'name' => 'Petro',
+                    'created_at' => ''
+                ]
+            ];
             foreach ($data as $row) {
                 /** @var CarCustomerInterface $newCustomerCar */
                 $newCustomerCar = $this->carCustomerFactory->create();
                 $newCustomerCar->setName($row['name']);
                 $newCustomerCar->setEmail($row['email']);
                 $newCustomerCar->setSomeId($row['some_id']);
-                $newCustomerCar->setCreatedAt($row['created_at']);
+                $newCustomerCar->setCreatedAt('now');
                 $this->carCustomerRepository->save($newCustomerCar);
             }
         } catch (\Exception $exception) {

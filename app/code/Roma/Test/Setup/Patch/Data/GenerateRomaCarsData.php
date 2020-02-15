@@ -62,16 +62,79 @@ class GenerateRomaCarsData implements DataPatchInterface
         echo 'Roma_Test:GenerateRomaCarsData:Data:startSetup' . "\r\n";
 
         try {
-            $connection = $this->moduleDataSetup->getConnection();
-            $sql = "SELECT * FROM `my_new_way_table`";
-            $data = $connection->fetchAssoc($sql);
+            $data = [
+                [
+                    'entity_id' => null,
+                    'user_id' => 1,
+                    'car_id' => 7272811,
+                    'description' => 'Ford Mustang GT',
+                    'created_at' => '',
+                    'price' => 90000.9200
+                ],
+                [
+                    'entity_id' => null,
+                    'user_id' => 1,
+                    'car_id' => 7272812,
+                    'description' => 'Renault Logan',
+                    'created_at' => '',
+                    'price' => 23000.0191
+                ],
+                [
+                    'entity_id' => null,
+                    'user_id' => 2,
+                    'car_id' => 2272811,
+                    'description' => 'Honda CR V',
+                    'created_at' => '',
+                    'price' => 150999.9988
+                ],
+                [
+                    'entity_id' => null,
+                    'user_id' => 3,
+                    'car_id' => 3272812,
+                    'description' => 'Volkswagen Passat b8',
+                    'created_at' => '',
+                    'price' => 20300.8731
+                ],
+                [
+                    'entity_id' => null,
+                    'user_id' => 3,
+                    'car_id' => 3232812,
+                    'description' => 'Nissan Skyline',
+                    'created_at' => '',
+                    'price' => 839090.0000
+                ],
+                [
+                    'entity_id' => null,
+                    'user_id' => 3,
+                    'car_id' => 3272814,
+                    'description' => 'Volkswagen xc90',
+                    'created_at' => '',
+                    'price' => 298000.9911
+                ],
+                [
+                    'entity_id' => null,
+                    'user_id' => 4,
+                    'car_id' => 4272813,
+                    'description' => 'Lamborghini Aventador',
+                    'created_at' => '',
+                    'price' => 9100300.2000
+                ],
+                [
+                    'entity_id' => null,
+                    'user_id' => 5,
+                    'car_id' => 5272812,
+                    'description' => 'Porsche Carrera GT',
+                    'created_at' => '',
+                    'price' => 2003300.0000
+                ],
+            ];
             foreach ($data as $row) {
                 /** @var CarInterface $newCar */
                 $newCar = $this->carFactory->create();
                 $newCar->setCarId($row['car_id']);
                 $newCar->setUserId($row['user_id']);
                 $newCar->setDescription($row['description']);
-                $newCar->setCreatedAt($row['created_at']);
+                $newCar->setCreatedAt('now');
                 $newCar->setPrice($row['price']);
                 $this->carRepository->save($newCar);
             }

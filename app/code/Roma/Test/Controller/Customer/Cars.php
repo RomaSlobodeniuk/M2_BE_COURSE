@@ -1,6 +1,6 @@
 <?php
 
-namespace Roma\Test\Controller\Index;
+namespace Roma\Test\Controller\Customer;
 
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
