@@ -94,8 +94,9 @@ class CarCustomerModel extends AbstractModel implements CarCustomerInterface
     /**
      * {@inheritdoc}
      */
-    public function setCreatedAt(\DateTime $createdAt): CarCustomerInterface
+    public function setCreatedAt(string $createdAt): CarCustomerInterface
     {
-        return $this->setData(self::CREATED_AT, $createdAt->format('Y-m-d H:i:s'));
+        $createdAtObject = new \DateTime($createdAt);
+        return $this->setData(self::CREATED_AT, $createdAtObject->format('Y-m-d H:i:s'));
     }
 }

@@ -10,7 +10,7 @@ use Roma\Test\Model\CarCustomerModel;
  */
 class CarCustomer extends AbstractDb
 {
-    const CAR_CUSTOMER_TABLE = 'my_old_fashioned_table';
+    const CAR_CUSTOMER_TABLE = 'roma_customers';
 
     /**
      * {@inheritdoc}

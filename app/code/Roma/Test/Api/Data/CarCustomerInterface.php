@@ -87,8 +87,8 @@ interface CarCustomerInterface
     /**
      * Set created at date
      *
-     * @param \DateTime $createdAt
+     * @param string $createdAt
      * @return CarCustomerInterface
      */
-    public function setCreatedAt(\DateTime $createdAt): CarCustomerInterface;
+    public function setCreatedAt(string $createdAt): CarCustomerInterface;
 }

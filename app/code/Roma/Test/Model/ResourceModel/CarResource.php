@@ -10,7 +10,7 @@ use Roma\Test\Model\CarModel;
  */
 class CarResource extends AbstractDb
 {
-    const CAR_TABLE = 'my_new_way_table';
+    const CAR_TABLE = 'roma_cars';
 
     /**
      * {@inheritdoc}
