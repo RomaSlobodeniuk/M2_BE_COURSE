@@ -27,7 +27,7 @@ define([
             userName: 'User\'s',
             carsTemplate: customerCarsTemplate,
             noCarsTemplate: noCarsTemplate,
-            container: '#cars-container',
+            container: '#cars-container'
         },
 
         _create: function () {

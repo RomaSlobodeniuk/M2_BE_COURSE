@@ -37,27 +37,51 @@ class CarsService implements CarsServiceInterface
     }
 
     /**
-     * @inheritdoc
+     * @param int|null $userId
+     * @return SearchCriteria
      */
-    public function getCarsList()
+    private function getSearchCriteria($userId = null)
     {
-        /** @var SearchCriteria $searchCriteria */
-        $searchCriteria = $this->searchCriteriaBuilder->create();
-        /** @var SearchResultsInterface $searchResults */
-        $searchResults = $this->carRepository->getList($searchCriteria);
+        if ($userId > 0) {
+            /** @var SearchCriteria $searchCriteria */
+            $searchCriteria = $this->searchCriteriaBuilder
+                ->addFilter(CarInterface::USER_ID, $userId)
+                ->create();
+        } else {
+            /** @var SearchCriteria $searchCriteria */
+            $searchCriteria = $this->searchCriteriaBuilder->create();
+        }
+
+        return $searchCriteria;
+    }
+
+    /**
+     * @param int|null $userId
+     * @return array
+     */
+    private function composeList($userId = null)
+    {
         $resultArray = [];
-        if ($searchResults->getTotalCount() > 0) {
-            foreach ($searchResults->getItems() as $item) {
-                /** @var CarInterface $item */
-                $resultArray[] = [
-                      'id' => $item->getId(),
-                      'car_id' => $item->getCarId(),
-                      'description' => $item->getDescription(),
-                      'user_id' => $item->getUserId(),
-                      'created_at' => $item->getCreatedAt(),
-                      'price' => $item->getPrice()
-                ];
+        try {
+            /** @var SearchCriteria $searchCriteria */
+            $searchCriteria = $this->getSearchCriteria($userId);
+            /** @var SearchResultsInterface $searchResults */
+            $searchResults = $this->carRepository->getList($searchCriteria);
+            if ($searchResults->getTotalCount() > 0) {
+                foreach ($searchResults->getItems() as $item) {
+                    /** @var CarInterface $item */
+                    $resultArray[] = [
+                        'id' => $item->getId(),
+                        'car_id' => $item->getCarId(),
+                        'description' => $item->getDescription(),
+                        'user_id' => $item->getUserId(),
+                        'created_at' => $item->getCreatedAt(),
+                        'price' => $item->getPrice()
+                    ];
+                }
             }
+        } catch (\Exception $exception) {
+            // logging
         }
 
         return $resultArray;
@@ -66,34 +90,21 @@ class CarsService implements CarsServiceInterface
     /**
      * @inheritdoc
      */
+    public function getCarsList()
+    {
+        return $this->composeList();
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getCarsListByUserId($userId)
     {
         if (empty($userId)) {
-            return false;
+            return [];
         }
 
-        /** @var SearchCriteria $searchCriteria */
-        $searchCriteria = $this->searchCriteriaBuilder
-            ->addFilter(CarInterface::USER_ID, $userId)
-            ->create();
-        /** @var SearchResultsInterface $searchResults */
-        $searchResults = $this->carRepository->getList($searchCriteria);
-        $resultArray = [];
-        if ($searchResults->getTotalCount() > 0) {
-            foreach ($searchResults->getItems() as $item) {
-                /** @var CarInterface $item */
-                $resultArray[] = [
-                    'id' => $item->getId(),
-                    'car_id' => $item->getCarId(),
-                    'description' => $item->getDescription(),
-                    'user_id' => $item->getUserId(),
-                    'created_at' => $item->getCreatedAt(),
-                    'price' => $item->getPrice()
-                ];
-            }
-        }
-
-        return $resultArray;
+        return $this->composeList($userId);
     }
 
     /**
