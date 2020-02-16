@@ -24,7 +24,7 @@ $carCustomers = $block->getCarCustomers();
 <?php if ($viewModel && $viewModel->getCurrentDate()): ?>
     <h3 class="my-block"><?= $viewModel->getCurrentDate() ?></h3>
 <?php endif; ?>
-<div class="container">
+<div class="customers container">
     <?php if (!empty($carCustomers)): ?>
         <?php foreach ($carCustomers as $carCustomer): ?>
             <?php /** @var CarCustomerModel $carCustomer */ ?>
@@ -36,10 +36,18 @@ $carCustomers = $block->getCarCustomers();
                 <h6 class="created-at"><?= __('CreatedAt') ?>: <?= $carCustomer->getCreatedAt() ?></h6>
                 <p class="link">
                     <?php $href = $block->getCarsUrl($carCustomer->getId()); ?>
-                    <a class="read-more" href="<?= $href ?>"><?= __('See Customer Cars of %1', $carCustomer->getName()) ?></a>
+                    <a class="read-more" data-mage-init='{
+                                            "getCustomerCars": {
+                                                "userId":"<?= $carCustomer->getId() ?>",
+                                                "userName":"<?= $carCustomer->getName() ?>"
+                                            }
+                                         }'
+                       href="<?= $href ?>"><?= __('See Customer Cars of %1', $carCustomer->getName()) ?>
+                    </a>
                 </p>
             </div>
         <?php endforeach; ?>
+        <div id="cars-container" style="display: none"></div>
     <?php else: ?>
         <div class="message">
             <h1 class="message-error error message"><?= __("There are no customer found.") ?></h1>
