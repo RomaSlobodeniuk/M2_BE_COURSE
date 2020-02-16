@@ -8,7 +8,7 @@
         <div class="cars-list wrapper">
             <ul class="cars">
                 <% _.each(cars, function(car, index) { %>
-                    <% if (index > 1) { %>
+                    <% if (index > 2) { %>
                         <% return false; %>
                     <% } %>
                     <li class="car entity-id" data-code="<%- car.id %>">
@@ -35,7 +35,7 @@
                     </li>
                 <% }); %>
             </ul>
-            <% if (Object.keys(cars).length > 2) { %>
+            <% if (Object.keys(cars).length > 3) { %>
                 <a href="<%- hrefMore %>" class="show-more">Show More...</a>
             <% } %>
         </div>

@@ -10,6 +10,8 @@
                 type="Roma\Test\Model\CarModel"/>
     <preference for="Roma\Test\Api\CarsServiceInterface"
                 type="Roma\Test\Model\CarsService"/>
+    <preference for="Roma\Test\Api\CustomersServiceInterface"
+                type="Roma\Test\Model\CustomersService"/>
 
     <preference for="Roma\Test\Model\CarCustomerModel" type="Roma\Test\Preference\Model\PreferenceModel"/>
 </config>

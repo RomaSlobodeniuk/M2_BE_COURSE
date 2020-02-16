@@ -99,7 +99,7 @@ class CarsService implements CarsServiceInterface
     /**
      * {@inheritDoc}
      */
-    public function save(CarInterface $car)
+    public function saveOrUpdate(CarInterface $car)
     {
         try {
             $newCar = $this->carRepository->save($car);
@@ -114,7 +114,7 @@ class CarsService implements CarsServiceInterface
     /**
      * {@inheritDoc}
      */
-    public function delete(int $carId)
+    public function deleteById(int $carId)
     {
         try {
             $this->carRepository->deleteById($carId);

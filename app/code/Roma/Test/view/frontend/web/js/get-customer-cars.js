@@ -7,26 +7,34 @@ define([
     'mage/url',
     'mage/template',
     'text!Roma_Test/template/customer-cars.html',
+    'text!Roma_Test/template/no-cars.html',
     'domReady!'
 ], function (
     $,
     storage,
     url,
     mageTemplate,
-    customerCarsTemplate
+    customerCarsTemplate,
+    noCarsTemplate
 ) {
     'use strict';
 
     $.widget('roma.getCustomerCars', {
         options: {
-            serviceUrl: 'rest/all/V1/test/cars/service/:userId',
+            useAjax: false,
+            serviceUrl: 'rest/all/V1/test/cars/find/:userId',
             userId: 0,
             userName: 'User\'s',
             carsTemplate: customerCarsTemplate,
+            noCarsTemplate: noCarsTemplate,
             container: '#cars-container',
         },
 
         _create: function () {
+            if (!this.options.useAjax) {
+                return;
+            }
+
             var self = this;
             console.log('UserId: "' + this.options.userId + '"');
             console.log('AjaxUrl: "' + this.getAjaxUrl(this.options.serviceUrl, this.options.userId) + '"');
@@ -35,7 +43,7 @@ define([
                 if (self.options.userId > 0) {
                     self.renderCustomerCars($(this));
                 } else {
-                    self.renderNoCarsAnswer();
+                    alert('You have not provided with the customer id!');
                 }
             });
         },
@@ -50,6 +58,11 @@ define([
                 fullUrl, false
             ).done(function (response) {
                 console.log(response);
+                if (!response.length) {
+                    self.renderNoCarsAnswer(element);
+                    return;
+                }
+
                 var template = self.options.carsTemplate;
                 var options = {
                     cars: response,
@@ -88,7 +101,22 @@ define([
         },
 
         renderNoCarsAnswer: function() {
-
+            var container = $(document).find(this.options.container);
+            var template = this.options.noCarsTemplate;
+            var options = {
+                userName: this.options.userName
+            };
+            var htmlToInsert = mageTemplate(template, options);
+            container.hide();
+            container.empty();
+            container.html(htmlToInsert);
+            container.animate({
+                opacity: 1,
+                width: "show"
+            }, 250, function() {
+                container.show();
+            });
+            this.initClickOnCloseButton(container);
         },
 
         getAjaxUrl: function (serviceUrl, userId) {

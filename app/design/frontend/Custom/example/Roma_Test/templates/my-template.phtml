@@ -39,7 +39,8 @@ $carCustomers = $block->getCarCustomers();
                     <a class="read-more" data-mage-init='{
                                             "getCustomerCars": {
                                                 "userId":"<?= $carCustomer->getId() ?>",
-                                                "userName":"<?= $carCustomer->getName() ?>"
+                                                "userName":"<?= $carCustomer->getName() ?>",
+                                                "useAjax":"<?= $viewModel ? $viewModel->useAjax() : false ?>"
                                             }
                                          }'
                        href="<?= $href ?>"><?= __('See Customer Cars of %1', $carCustomer->getName()) ?>
