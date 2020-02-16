@@ -8,7 +8,13 @@ define([
     'mage/template',
     'text!Roma_Test/template/customer-cars.html',
     'domReady!'
-], function ($, storage, url, mageTemplate, customerCarsTemplate) {
+], function (
+    $,
+    storage,
+    url,
+    mageTemplate,
+    customerCarsTemplate
+) {
     'use strict';
 
     $.widget('roma.getCustomerCars', {
@@ -38,11 +44,12 @@ define([
             var self = this;
             var userId = this.options.userId;
             var fullUrl = this.getAjaxUrl(this.options.serviceUrl, userId);
+            var container = $(document).find(self.options.container);
+            container.trigger('processStart');
             storage.get(
                 fullUrl, false
             ).done(function (response) {
                 console.log(response);
-                var container = $(document).find(self.options.container);
                 var template = self.options.carsTemplate;
                 var options = {
                     cars: response,
@@ -62,6 +69,8 @@ define([
                 self.initClickOnCloseButton(container);
             }).fail(function (response) {
                 console.log(response);
+            }).always(function () {
+                container.trigger('processStop');
             });
         },
 
