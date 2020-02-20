@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Roma_Test::roma" title="Cars and Customers" translate="title" module="Roma_Test" sortOrder="10" resource="Roma_Test::roma_main"/>
+        <add id="Roma_Test::roma_manage_customers" title="Manage Customers" translate="title" module="Roma_Test" sortOrder="10" parent="Roma_Test::roma" action="my_admin/customers/index" resource="Roma_Test::roma_manage_customers"/>
+        <add id="Roma_Test::roma_manage_cars" title="Manage Cars" translate="title" module="Roma_Test" sortOrder="20" parent="Roma_Test::roma" action="my_admin/cars/index" resource="Roma_Test::roma_manage_cars"/>
+    </menu>
+</config>
