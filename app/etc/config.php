@@ -228,5 +228,23 @@ return [
         'Temando_Shipping' => 1,
         'Vertex_Tax' => 1,
         'Yotpo_Yotpo' => 1
+    ],
+    'system' => [
+        'stores' => [
+            'default' => [
+                'roma_test' => [
+                    'settings' => [
+                        'use_ajax' => '0'
+                    ]
+                ]
+            ],
+            'ukrainian_store_view' => [
+                'roma_test' => [
+                    'settings' => [
+                        'use_ajax' => '1'
+                    ]
+                ]
+            ]
+        ]
     ]
 ];

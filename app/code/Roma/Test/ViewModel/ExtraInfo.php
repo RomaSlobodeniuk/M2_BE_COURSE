@@ -4,6 +4,7 @@ namespace Roma\Test\ViewModel;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
+use Magento\Store\Model\ScopeInterface;
 
 /**
  * Class ExtraInfo
@@ -49,7 +50,10 @@ class ExtraInfo implements ArgumentInterface
     {
         $result = false;
         try {
-            $result = $this->scopeConfig->isSetFlag(self::USE_AJAX_LOADING);
+            $result = $this->scopeConfig->isSetFlag(
+                self::USE_AJAX_LOADING,
+                ScopeInterface::SCOPE_STORES
+            );
         } catch (\Exception $exception) {
             // logger->debug();
         }
