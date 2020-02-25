@@ -14,10 +14,12 @@
                     </resource>
                     <resource id="Roma_Test::roma_manage_cars" title="My All Cars" translate="title" sortOrder="10">
                         <resource id="Roma_Test::roma_manage_cars_actions" title="Actions" translate="title" sortOrder="10">
-                            <resource id="Roma_Test::car_add" title="Add Car" translate="title" sortOrder="10" />
+                            <resource id="Roma_Test::car_add" title="Add New Car" translate="title" sortOrder="10" />
                             <resource id="Roma_Test::car_edit" title="Edit Car" translate="title" sortOrder="20" />
-                            <resource id="Roma_Test::car_mass_delete" title="Mass Delete Cars" translate="title" sortOrder="30" />
-                            <resource id="Roma_Test::car_delete" title="Delete Car" translate="title" sortOrder="40" />
+                            <resource id="Roma_Test::car_inline_edit" title="Inline Edit Car" translate="title" sortOrder="30" />
+                            <resource id="Roma_Test::car_mass_delete" title="Mass Delete Cars" translate="title" sortOrder="40" />
+                            <resource id="Roma_Test::car_delete" title="Delete Car" translate="title" sortOrder="50" />
+                            <resource id="Roma_Test::car_save" title="Save Car" translate="title" sortOrder="60" />
                         </resource>
                     </resource>
                 </resource>
