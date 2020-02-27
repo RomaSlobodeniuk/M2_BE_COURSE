@@ -13,7 +13,9 @@ use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Controller\ResultInterface;
+use Roma\Test\Api\CarCustomerRepositoryInterface;
 use Roma\Test\Api\CarRepositoryInterface;
+use Roma\Test\Api\Data\CarCustomerInterface;
 use Roma\Test\Api\Data\CarInterface;
 use Roma\Test\Api\Data\CarInterfaceFactory;
 use Roma\Test\Model\CarModel;
@@ -39,6 +41,11 @@ class Save extends BackendAction implements HttpPostActionInterface
     private $carRepository;
 
     /**
+     * @var CarCustomerRepositoryInterface
+     */
+    private $carCustomerRepository;
+
+    /**
      * @var CarInterfaceFactory
      */
     private $carFactory;
@@ -51,6 +58,7 @@ class Save extends BackendAction implements HttpPostActionInterface
     /**
      * @param Context $context
      * @param CarRepositoryInterface $carRepository
+     * @param CarCustomerRepositoryInterface $carCustomerRepository
      * @param CarInterfaceFactory $carFactory
      * @param DataPersistorInterface $dataPersistor
 //     * @param ImageUploader $imageUploader
@@ -58,12 +66,14 @@ class Save extends BackendAction implements HttpPostActionInterface
     public function __construct(
         Context $context,
         CarRepositoryInterface $carRepository,
+        CarCustomerRepositoryInterface $carCustomerRepository,
         CarInterfaceFactory $carFactory,
         DataPersistorInterface $dataPersistor
 //        ImageUploader $imageUploader
     ) {
         $this->dataPersistor = $dataPersistor;
         $this->carRepository = $carRepository;
+        $this->carCustomerRepository = $carCustomerRepository;
         $this->carFactory = $carFactory;
 //        $this->imageUploader = $imageUploader;
         parent::__construct($context);
@@ -104,6 +114,13 @@ class Save extends BackendAction implements HttpPostActionInterface
             $model->setData($data);
 
             try {
+                /**
+                 * This chunk of code was added in order to check if car customer exists
+                 * in the database by provided user_id from the form on admin edit page
+                 */
+                $carCustomerId = (int)$data[CarInterface::USER_ID];
+                $this->carCustomerRepository->getById($carCustomerId);
+
                 $this->carRepository->save($model);
                 $this->messageManager->addSuccessMessage(__('You saved the car.'));
                 $this->dataPersistor->clear('car');
