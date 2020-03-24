@@ -4,6 +4,8 @@
         <roma_test>
             <settings>
                 <use_ajax>1</use_ajax>
+                <show_cms_on_pdp>1</show_cms_on_pdp>
+                <show_cms_on_plp>1</show_cms_on_plp>
             </settings>
         </roma_test>
     </default>
