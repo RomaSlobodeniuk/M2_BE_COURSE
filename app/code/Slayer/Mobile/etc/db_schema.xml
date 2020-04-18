@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="mobile_manufacturer_table" resource="default" engine="innodb" comment="Manufacturer Declarative Schema">
+        <column xsi:type="int" name="entity_id" padding="11" unsigned="true" nullable="false" identity="true"
+                comment="Entity ID"/>
+        <column xsi:type="varchar" name="name" length="128"  nullable="false" comment="Brand Name"/>
+        <column xsi:type="varchar" name="director" nullable="false" comment="Director Name and Surname"/>
+        <column xsi:type="varchar" name="phone" length="30" nullable="true" comment="Phone number of company"/>
+        <column xsi:type="varchar" name="email" length="64"  nullable="true" comment="Company Email"/>
+        <column xsi:type="varchar" name="address"  nullable="true" comment="Company Official Address"/>
+        <column xsi:type="varchar" name="foundation_date"  nullable="true" comment="Company Creation Date"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <index referenceId="MOBILE_MANUFACTURER_TABLE_ENTITY_ID" indexType="btree">
+            <column name="entity_id"/>
+        </index>
+    </table>
+    <table name="mobile_phone_table" resource="default" engine="innodb" comment="Phone Declarative Schema">
+        <column xsi:type="int" name="entity_id" padding="11" unsigned="true" nullable="false" identity="true"
+                comment="Entity ID"/>
+        <column xsi:type="int" name="manufacturer_id" padding="11" unsigned="true" nullable="false" identity="false"
+                comment="Manufacturer ID"/>
+        <column xsi:type="varchar" name="model" length="255"  nullable="false" comment="Phone Model"/>
+        <column xsi:type="varchar" name="os" length="64"  nullable="true" comment="Phone Operating System"/>
+        <column xsi:type="varchar" name="resolution" length="64"  nullable="true" comment="Screen resolution"/>
+        <column xsi:type="varchar" name="ram" length="255"  nullable="true" comment="Phone RAM"/>
+        <column xsi:type="text" name="cpu"  nullable="true" comment="Phone CPU"/>
+        <column xsi:type="varchar" name="battery" length="255"  nullable="true" comment="Phone Battery"/>
+        <column xsi:type="text" name="description" nullable="true" comment="Description"/>
+        <column xsi:type="varchar" name="released"  nullable="true" comment="Phone Released Date"/>
+        <column xsi:type="varchar" name="photo" length="255"  nullable="true" comment="Photo"/>
+        <column xsi:type="float" name="price" default="0" scale="2" precision="12"/>
+        <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="true" comment="Created At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="MOBILE_PHONE_TABLE_MANUFACTURER_ID"
+                    table="mobile_phone_table" column="manufacturer_id" referenceTable="mobile_manufacturer_table"
+                    referenceColumn="entity_id" onDelete="CASCADE"/>
+    </table>
+</schema>

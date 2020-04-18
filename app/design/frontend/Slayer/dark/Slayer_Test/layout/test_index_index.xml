@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+<!--    <head>-->
+<!--        <link src="my-js.js"/>-->
+<!--        <remove src="my-css.css"/>-->
+<!--    </head>-->
+    <body>
+        <referenceContainer name="main">
+            <referenceContainer name="breadcrumbs.main">
+                <referenceBlock name="breadcrumbs">
+                    <action method="addCrumb">
+                        <argument name="crumbName" xsi:type="string">Home</argument>
+                        <argument name="crumbInfo" xsi:type="array">
+                            <item name="title" xsi:type="string">Home</item>
+                            <item name="label" xsi:type="string">Home</item>
+                            <item name="link" xsi:type="string">{{baseUrl}}</item>
+                        </argument>
+                    </action>
+                </referenceBlock>
+            </referenceContainer>
+            <referenceContainer name="sidebar.main" htmlTag="div" htmlClass="slayer-sidebar" >
+            <block class="Magento\Framework\View\Element\Template" name="test.left.sidebar.from.theme" before="-" template="Slayer_Test::leftSidebarThemeTemplate.phtml"/>
+            </referenceContainer>
+            <container name="category.view.container" htmlTag="div" htmlClass="category-view" after="-">
+                <block class="Slayer\Test\Block\Customer" name="custom.block" template="Slayer_Test::theme-template.phtml">
+                    <arguments>
+                        <argument name="view_model" xsi:type="object">Slayer\Test\ViewModel\ExtraInfo</argument>
+                        <argument name="custom_string" xsi:type="string">Magento 2!</argument>
+                        <argument name="custom_array" xsi:type="array">
+                            <item name="key_one" xsi:type="string">First item</item>
+                            <item name="key_two" xsi:type="string">Second item</item>
+                        </argument>
+                    </arguments>
+                </block>
+            </container>
+        </referenceContainer>
+    </body>
+</page>

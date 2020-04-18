@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Slayer_Mobile::mobile" title="Manufacturers and Phones" translate="title" module="Slayer_Mobile" sortOrder="25" resource="Slayer_Mobile::slayer_mobile"/>
+        <add id="Slayer_Mobile::manage_manufacturers" title="Manage Manufacturers" translate="title" module="Slayer_Mobile" sortOrder="10" parent="Slayer_Mobile::mobile" action="mobile_admin/manufacturers" resource="Slayer_Mobile::manage_manufacturers"/>
+        <add id="Slayer_Mobile::manage_phones" title="Manage Phones" translate="title" module="Slayer_Mobile" sortOrder="20" parent="Slayer_Mobile::mobile" action="mobile_admin/phones" resource="Slayer_Mobile::manage_phones"/>
+    </menu>
+</config>

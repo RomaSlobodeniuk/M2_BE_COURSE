@@ -1,0 +1,19 @@
+<?php
+$links = [
+'Introduction' => 'https://devdocs.magento.com/guides/v2.3/extension-dev-guide/bk-extension-dev-guide.html',
+'Prepare' => 'https://devdocs.magento.com/guides/v2.3/extension-dev-guide/prepare/prepare.html',
+'Build' => 'https://devdocs.magento.com/guides/v2.3/extension-dev-guide/build/build.html',
+'Package' => 'https://devdocs.magento.com/guides/v2.3/extension-dev-guide/package/package.html',
+'Validate' => 'https://devdocs.magento.com/guides/v2.3/extension-dev-guide/validate/validate.html',
+'Tests' => 'https://devdocs.magento.com/guides/v2.3/extension-dev-guide/validate/test-module.html',
+'Partial caching' => 'https://devdocs.magento.com/guides/v2.3/extension-dev-guide/bk-extension-dev-guide.html',
+'Full page caching' => 'https://devdocs.magento.com/guides/v2.3/extension-dev-guide/cache/page-caching.html',
+'CLI commands' => 'https://devdocs.magento.com/guides/v2.3/extension-dev-guide/cli-cmds/cli-add.html'
+];
+?>
+<h2 class="test-sidebar-header color-fw">Magento 2.3 documentation links</h2>
+<ul class="test-sidebar-nav">
+<?php foreach($links as $linkTitle => $link): ?>
+    <li><a href="<?= $link ?>" alt="<?= $linkTitle ?>" target="_blank"><?= $linkTitle ?></a></li>
+<?php endforeach; ?>
+</ul>

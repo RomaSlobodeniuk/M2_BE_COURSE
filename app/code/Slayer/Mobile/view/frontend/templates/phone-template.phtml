@@ -1,0 +1,49 @@
+<?php
+
+use Slayer\Mobile\Api\Data\PhoneInterface;
+use Slayer\Mobile\Block\Phone;
+use Slayer\Mobile\Model\PhoneModel;
+use Slayer\Mobile\ViewModel\MobileViewModel;
+
+/**@var Phone $block */
+$blockName = $block->getNameInLayout();
+/** @var PhoneInterface[] $phones */
+$phones = $block->getPhones();
+/** @var MobileViewModel $viewModel */
+$viewModel = $block->getData('view_model');
+?>
+
+<h1 class="manufacturer-block-name"><?= $blockName ?>!</h1>
+<div class="manufacturer-container">
+    <?php if ($viewModel && $viewModel->getCurrentDate()): ?>
+        <h3 class="view-model"><?= __('Now is ')?><span><?= $viewModel->getCurrentDate() ?></span></h3>
+    <?php endif; ?>
+    <?php if (!empty($phones)): ?>
+        <?php foreach ($phones as $phone): ?>
+            <?php /** @var PhoneModel $phone */ ?>
+            <div class="manufacturer">
+                <h3 class="model"><?= $phone->getModel() ?></h3>
+                <h3 class="os"><?= __('Phone OS: ') ?><span><?= $phone->getOs() ?></span></h3>
+                <h3 class="resolution"><?= __('Resolution: ') ?><span><?= $phone->getResolution() ?></span></h3>
+                <h3 class="ram"><?= __('Ram: ') ?><span><?= $phone->getRam() ?></span></h3>
+                <h3 class="cpu"><?= __('Cpu: ') ?><span><?= $phone->getCpu() ?></span></h3>
+                <h3 class="battery"><?= __('Battery: ') ?><span><?= $phone->getBattery() ?></span></h3>
+                <h3 class="description"><?= __('Description: ') ?><span><?= $phone->getDescription() ?></span></h3>
+                <h3 class="released"><?= __('Released: ') ?><span><?= $phone->getBattery() ?></span></h3>
+                <p><img src='<?= $this->getViewFileUrl('img/' . $phone->getPhoto()); ?>' alt="<?= $phone->getModel() ?>-photo"></p>
+                <div class="manufacturer-left">
+                    <h3 class="price"><?= __('Price: ') ?><span><?= $phone->getPrice() ?></span></h3>
+                    <h3 class="created-at"><?= __('Created At: ') ?><span><?= $phone->getCreatedAt() ?></span></h3>
+                    <p>
+                        <a class="manufacturer-btn go-back-mobile" href="<?= $block->getUrl('mobile')?>"><?= __('Go back') ?></a>
+                    </p>
+                </div>
+                <hr>
+            </div><br>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <div class="error-block">
+            <h3 class="error-message"><?= __("No phones found for this manufacturer.") ?></h3>
+        </div>
+    <?php endif; ?>
+</div>

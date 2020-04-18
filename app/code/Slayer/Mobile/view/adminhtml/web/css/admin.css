@@ -1,0 +1,6 @@
+.admin__menu .level-0.item-mobile > a:before {
+    content: url('../images/icon.svg');
+    height: 28px;
+    margin: 0 auto 10px;
+    width: 30px;
+}

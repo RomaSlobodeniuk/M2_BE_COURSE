@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <slayer_mobile>
+            <mobile_settings>
+                <manufacturers_count>10</manufacturers_count>
+            </mobile_settings>
+        </slayer_mobile>
+        <currency>
+            <currencyLayer>
+                <apikey></apikey>
+                <timeout>100</timeout>
+            </currencyLayer>
+        </currency>
+    </default>
+</config>

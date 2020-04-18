@@ -1,0 +1,115 @@
+<?php
+
+use Slayer\Test\Api\Data\CustomerInterface;
+use Slayer\Test\Block\Customer;
+use Slayer\Test\Model\CustomerModel;
+use Slayer\Test\ViewModel\ExtraInfo;
+
+/** @var Customer $block */
+$blockName = $block->getNameInLayout();
+//$str = $block->getCacheKey();
+//$pattern = '/[^A-Z_].*/';
+//preg_match($pattern, $str, $matches);
+//$cacheKey = implode($matches);
+
+$string = $block->getData('custom_string');
+$array = $block->getData('custom_array');
+
+/** @var ExtraInfo $viewModel */
+$viewModel = $block->getData('view_model');
+
+///** @var Slayer\Test\Model\ResourceModel\Customer\Collection $customers */
+//$customers = $block->getCustomerCollection();
+//$items = $customers->load();
+//$items = $customers->getItems();
+/**@var CustomerInterface[] $customers */
+$customers = $block->getCustomers();
+?>
+
+<h1 class="custom-block block-name">My custom information in my <?= $blockName ?>!</h1>
+<?php if ($viewModel && $viewModel->showTitle()): ?>
+    <h3 class="get-title">Customer title: <span><?= $viewModel->getCustomTitle() ?></span></h3>
+<?php endif; ?>
+<h2>My custom string is:  "<?= $string ?>"</h2>
+<h4 class="keys">First key in my custom array is:  "<?= $array['key_one'] ?>"</h4>
+<h4 class="keys">Second key in my custom array is: "<?= $array['key_two'] ?>"</h4>
+<?php if ($viewModel && $viewModel->getCurrentDate()): ?>
+    <h3 class="current-date">Current date is: "<?= $viewModel->getCurrentDate(); ?>"</h3>
+<?php endif; ?>
+<!--<p><b><span class="cache">We get block with cache key = </span><span class="cache-number">--><?//= $cacheKey; ?><!--</span></b></p>-->
+<!-- My ko component -->
+<div class="my-app" data-bind="scope:'slayer-app'">
+<!--    <input type="text" id="slayer-input" name="customer-list" data-bind="value: myObservableCount">-->
+    <h1 class="customers-list">Set the number of customers per page</h1>
+    <select id="customers-list" name="customers_list" data-bind="value: myObservableCount">
+        <option value="1">show 1 customer per page</option>
+        <option value="2">show 2 customers per page</option>
+        <option value="3">show 3 customers per page</option>
+        <option value="4">show 4 customers per page</option>
+        <option value="5">show 5 customers per page</option>
+        <option value="6">show 6 customers per page</option>
+        <option value="7">show 7 customers per page</option>
+        <option value="8">show 8 customers per page</option>
+        <option value="9">show 9 customers per page</option>
+        <option value="10">show 10 customers per page</option>
+        <option value="0" id="customers-last-elem">no customers</option>
+    </select>
+    <script type="text/x-magento-init">
+        {
+            "*": {
+                "Magento_Ui/js/core/app": {
+                    "components": {
+                        "slayer-app": {
+                            "component": "Slayer_Test/js/filter",
+                            "listItemsSelector": ".list-item"
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</div>
+<div class="customers container">
+    <?php if (!empty($customers)): ?>
+        <?php foreach ($customers as $customer): ?>
+            <?php /** @var CustomerModel $customer */ ?>
+            <div class="list-item order-customer-id-<?= $customer->getId() ?>">
+                <h3 class="entity-id"><?= __('EntityID') ?>: <?= $customer->getId() ?></h3>
+                <h3 class="name"><?= __('Name') ?>: <?= $customer->getName() ?></h3>
+                <h3 class="surname"><?= __('Surname') ?>: <?= $customer->getSurname() ?></h3>
+                <h3 class="email"><?= __('Email') ?>: <?= $customer->getEmail() ?></h3>
+                <h3 class="phone-number"><?= __('Phone number') ?>: +<?= $customer->getPhoneNumber() ?></h3>
+                <p class="link">
+<!--   <a class="read-more" href="--><?//= $block->getUrl('test/index/customers', ['user_id' => $customer->getId()])?><!--">See Customer Orders</a>-->
+                    <?php $href = $block->getOrdersUrl($customer->getId()); ?>
+                    <!--<a class="read-more" data-mage-init='{
+                                        "getCustomerOrders": {
+                                        "userId":"<?/*= $customer->getId() */?>",
+                                        "userName":"<?/*= $customer->getName() */?>",
+                                        "useAjax":"<?/*= $viewModel ? $viewModel->useAjax() : false */?>"
+                                    }
+                                }'
+                        href="<?/*= $href */?>"><?/*= __('See Orders of %1', $customer->getName()) */?>
+                    </a>-->
+                    <a class="read-more link-user-id-<?= $customer->getId() ?>" href="<?= $href ?>"><?= __('See Orders of %1', $customer->getName()) ?></a>
+                </p>
+            </div>
+            <script type="text/x-magento-init">
+                {
+                    ".link-user-id-<?= $customer->getId() ?>": {
+                        "getCustomerOrders": {
+                            "userId":"<?= $customer->getId() ?>",
+                            "userName":"<?= $customer->getName() ?>",
+                            "useAjax":"<?= $viewModel ? $viewModel->useAjax() : false ?>"
+                        }
+                    }
+                }
+            </script>
+        <?php endforeach; ?>
+        <div id="orders-container" style="display: none"></div>
+    <?php else: ?>
+        <div class="message">
+            <h1 class="message-error error message"><?= __("There are no customer found.") ?></h1>
+        </div>
+    <?php endif; ?>
+</div>
