@@ -97,7 +97,6 @@ class CheckoutObserver implements ObserverInterface
              */
             $this->actionFlag->set('', Action::FLAG_NO_DISPATCH, true);
             $observer->getControllerAction()->getResponse()->setRedirect($url);
-            return $this;
         }
 
         return $this;
