@@ -1,0 +1,58 @@
+<?php
+
+use Roma\Game\Model\ResourceModel\GameCustomer;
+use Roma\Game\ViewModel\GetConfig;
+
+/**
+ * Ніде тут не використовується
+ *
+ * Знову ж таки - форматування!!!
+ */
+use Roma\Game\ViewModel\CreateEvents;
+
+/**
+ * @var Roma\Game\Block\GameCustomer $block
+ */
+$customerCollection = $block->getGameCustomersCollection();
+
+/** @var GetConfig $viewModel */
+$viewModel = $block->getData('customer_value_print');
+
+$customerValuePrint = $viewModel->getCustomersPrintValue();
+
+$i = 1;
+?>
+<table class="customers table" id="customers-data-table">
+    <caption class="table-title">Game Customers</caption>
+    <thead>
+    <tr>
+        <th scope="col" class="col_id">Entity ID</th>
+        <th scope="col" class="col_email">Email</th>
+        <th scope="col" class="col_name">Name</th>
+        <th scope="col" class="col_surname">Surname</th>
+        <th scope="col" class="col created_at">Created At</th>
+        <th scope="col" class="col actions">Games</th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php if (!empty($customerCollection)): ?>
+        <?php foreach ($customerCollection as $customer): ?>
+            <?php if ($i <= $customerValuePrint): ?>
+                <?php /** @var GameCustomer $customer */ ?>
+                <tr>
+                    <td data-th="Id" class="col_id"><?php echo $customer->getId(); ?></td>
+                    <td data-th="Email" class="col_email"><?php echo $customer->getEmail(); ?></td>
+                    <td data-th="Name" class="col_name"><?php echo $customer->getName(); ?></td>
+                    <td data-th="Surname" class="col_surname"><?php echo $customer->getSurname(); ?></td>
+                    <td data-th="Date" class="col_created_at"><?php echo $customer->getCreatedAt(); ?></td>
+                    <td data-th="Actions" class="col_actions">
+                        <a class="read-more" href="<?= $block->getGameCustomerUrl($customer->getId()) ?>">See Customer
+                            Games</a>
+                    </td>
+                </tr>
+                <?php $i = $i + 1; ?>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    <?php endif; ?>
+    </tbody>
+</table>

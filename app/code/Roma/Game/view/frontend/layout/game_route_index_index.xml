@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="main">
+            <container name="main.additional" as="main" label="Main Additional">
+            <block class="Roma\Game\Block\GameCustomer" name="game.customers..block" template="Roma_Game::customers.phtml">
+                <arguments>
+                    <argument name="customer_value_print" xsi:type="object">Roma\Game\ViewModel\GetConfig</argument>
+                </arguments>
+            </block>
+            </container>
+        </referenceContainer>
+        <referenceContainer name="div.sidebar.main">
+            <container name="my.div.sidebar.additional" htmlTag="div" htmlClass="sidebar sidebar-additional" after="div.sidebar.main">
+                <container name="this.my.div.sidebar.additional" as="sidebar_additional" label="My Sidebar Additional"/>
+                <block class="Magento\Cms\Block\Block" name="roma_game_license_check_cms_block">
+                <arguments>
+                    <argument name="block_id" xsi:type="string">roma_game_check_block</argument>
+                </arguments>
+            </block>
+            </container>
+        </referenceContainer>
+    </body>
+</page>

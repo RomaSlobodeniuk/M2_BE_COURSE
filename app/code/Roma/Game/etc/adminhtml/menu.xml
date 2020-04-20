@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Roma_Game::game_shop" title="Game Shop" translate="title" module="Roma_Game" sortOrder="10" resource="Roma_Game::game_main"/>
+    </menu>
+</config>

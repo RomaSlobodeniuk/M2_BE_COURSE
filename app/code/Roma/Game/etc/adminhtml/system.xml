@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="game_shop" translate="label" sortOrder="200">
+            <label>Game Shop</label>
+        </tab>
+        <section id="game_shop_customer_config" translate="label" type="text" sortOrder="910" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Game Customer Configuration</label>
+            <tab>game_shop</tab>
+            <resource>Roma_Game::game_shop</resource>
+            <group id="settings_output" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Settings Output</label>
+                <field id="how_customer_print" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>How many customers display on frontend?</label>
+                    <validate>validate-number required-entry validate-length minimum-length-1</validate>
+                    <comment>This value indicates the number of buyers that will be displayed</comment>
+                </field>
+            </group>
+            <group id="sort_group" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Sort List</label>
+                <field id="sort_filed" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Sort Field</label>
+                    <source_model>Roma\Game\Model\Lists\ListField</source_model>
+                </field>
+                <field id="sort_order" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Sort Order</label>
+                    <source_model>Roma\Game\Model\Lists\ListsOrder</source_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
