@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+
+    <table name="tablets" resource="default" engine="innodb" comment="tablets">
+        <column xsi:type="smallint" name="entity_id" padding="6" unsigned="false" nullable="false"
+                identity="true" comment="Entity ID"/>
+        <column xsi:type="varchar" name="brand" nullable="false" length="64" comment="brand"/>
+        <column xsi:type="int" name="tabSKU" padding="11" nullable="false" default="0" comment="tabSKU"/>
+        <column xsi:type="varchar" name="model" nullable="true" comment="model"/>
+        <column xsi:type="text" name="descriptions" nullable="true" comment="descriptions"/>
+        <column xsi:type="int" name="price" padding="11" nullable="false" default="0" comment="price"/>
+        <column xsi:type="datetime" name="created_at" on_update="false" nullable="false"
+                default="CURRENT_TIMESTAMP" comment="created at"/>
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="TABLETS_TABSKU">
+            <column name="tabSKU"/>
+        </constraint>
+    </table>
+
+    <table name="tablets_cases" resource="default" engine="innodb" comment="tablet cases">
+        <column xsi:type="smallint" name="entity_id" padding="11" unsigned="false" nullable="false" identity="true" comment="Entity ID"/>
+        <column xsi:type="int" name="forTabSKU" padding="11" nullable="false" default="0" comment="forTabSKU"/>
+        <column xsi:type="int" name="caseSKU" padding="8" unsigned="true" nullable="false" identity="false" default="0" comment="caseSKU"/>
+        <column xsi:type="int" name="price" padding="11" nullable="false" default="0" comment="case price"/>
+        <column xsi:type="varchar" name="brand" nullable="false" length="64" comment="brand"/>
+        <column xsi:type="varchar" name="color" nullable="false" length="64" comment="brand"/>
+        <column xsi:type="text" name="description" nullable="true" comment="Description"/>
+        <column xsi:type="datetime" name="created_at" on_update="false" nullable="false"
+                default="CURRENT_TIMESTAMP" comment="created at"/>
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="TABLETS_CASES_FORTABSKU" table="tablets_cases" column="forTabSKU"
+                    referenceTable="tablets" referenceColumn="tabSKU" onDelete="CASCADE"/>
+        <constraint xsi:type="unique" referenceId="TABLETS_CASES_TABSKU_CASESKU">
+            <column name="caseSKU"/>
+        </constraint>
+    </table>
+</schema>
