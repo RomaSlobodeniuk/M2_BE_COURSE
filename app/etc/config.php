@@ -249,6 +249,7 @@ return [
         'Slayer_Mobile' => 1,
         'Temando_Shipping' => 1,
         'Vertex_Tax' => 1,
+        'Vitalii_Exam' => 1,
         'Yotpo_Yotpo' => 1
     ],
     'system' => [
