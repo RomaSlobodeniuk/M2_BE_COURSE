@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="main">
+            <container name="category.view.container" htmlTag="div" htmlClass="category-view" after="-">
+                <block class="Slayer\Mobile\Block\Phone" name="phones.block"
+                       template="Slayer_Mobile::phone-template.phtml">
+                    <arguments>
+                        <argument name="view_model" xsi:type="object">Slayer\Mobile\ViewModel\MobileViewModel</argument>
+                    </arguments>
+                </block>
+            </container>
+        </referenceContainer>
+    </body>
+</page>

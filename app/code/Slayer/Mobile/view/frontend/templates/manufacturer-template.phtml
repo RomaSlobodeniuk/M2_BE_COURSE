@@ -1,0 +1,28 @@
+<?php
+
+use Slayer\Mobile\Model\ManufacturerModel;
+
+/** @var Slayer\Mobile\Block\Manufacturer $block */
+$blockName = $block->getNameInLayout();
+/** @var \Slayer\Mobile\Model\ResourceModel\Manufacturer\Collection $manufacturerCollection */
+$manufacturerCollection = $block->getManufacturerCollection();
+?>
+
+<h1 class="manufacturer-block-name">My <?= $blockName ?> block!</h1>
+<div class="manufacturer-container">
+    <?php foreach ($manufacturerCollection as $manufacturer): ?>
+        <?php /** @var ManufacturerModel $manufacturer */ ?>
+        <div class="manufacturer">
+            <h3 class="entity-id">Entity ID: <?= $manufacturer->getId() ?></h3>
+            <h3 class="name">Name: <?= $manufacturer->getName() ?></h3>
+            <h3 class="surname">Surname: <?= $manufacturer->getDirector() ?></h3>
+            <h3 class="phone">Phone: +<?= $manufacturer->getPhoneNumber() ?></h3>
+            <h3 class="email">Email: <?= $manufacturer->getEmail() ?></h3>
+            <h3 class="address">Address: <?= $manufacturer->getAddress() ?></h3>
+            <h3 class="foundation-date">Foundation Date: <?= $manufacturer->getFoundationDate() ?></h3>
+            <p>
+            <a class="read-more" href="<?= $block->getUrl('mobile/index/manufacturers', ['manufacturer_id' => $manufacturer->getId()])?>">Read more about the <?= $manufacturer->getName() ?> Phones</a>
+            </p><hr>
+        </div><br>
+    <?php endforeach; ?>
+</div>

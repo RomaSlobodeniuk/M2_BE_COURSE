@@ -1,0 +1,85 @@
+<?php
+use Slayer\Mobile\Block\Manufacturer;
+use Slayer\Mobile\Api\Data\ManufacturerInterface;
+use Slayer\Mobile\Model\ManufacturerModel;
+use Slayer\Mobile\ViewModel\MobileViewModel;
+
+/** @var Manufacturer $block */
+$blockName = $block->getNameInLayout();
+
+/** @var MobileViewModel $viewModel */
+$viewModel = $block->getData('view_model');
+$viewModel = $block->getData('manufacturers_count');
+$manufacturersCount = $viewModel->showManufacturersCountPerPage();
+
+/**@var ManufacturerInterface[] $manufacturers */
+$manufacturers = $block->getManufacturers();
+$sort = $block->changeSortOrder();
+?>
+
+<h1 class="manufacturer-block-name"><?= $blockName ?>!</h1>
+<div class="manufacturer-container">
+    <?php if ($viewModel && $viewModel->getCurrentDate()): ?>
+        <h3 class="view-model"><?= __('Now is ') ?><span><?= $viewModel->getCurrentDate() ?></span></h3>
+    <?php endif; ?>
+
+    <div class="manufacturers-sort" data-bind="scope:'slayer-sort'">
+        <select class="manufacturers-list" name="manufacturers_list" data-bind="value: myObservableCount">
+            <option class="first-option" value="10"><?= __('show ') ?><?= __(' 10 manufacturers ') ?><?= __('per page') ?></option>
+            <option value="1"><?= __('show ') ?><?= __(' 1 manufacturer ') ?><?= __('per page') ?></option>
+            <?php for ($i = 2; $i <= 9; $i++): ?>
+                <option value="<?= $i ?>"><?= __('show ') ?><?= $i ?><?= __(' manufacturers ') ?><?= __('per page') ?></option>
+            <?php endfor; ?>
+            <option class="last-option" value="0"><?= __('no') ?><?= __(' manufacturers ') ?></option>
+        </select>
+        <h3 class="manufacturers-list-placeholder"><?= __('Before setting up, pls check this setting in admin panel') ?></h3>
+        <script type="text/x-magento-init">
+        {
+            "*": {
+                "Magento_Ui/js/core/app": {
+                    "components": {
+                        "slayer-sort": {
+                            "component": "Slayer_Mobile/js/filter",
+                            "listItemsSelector": ".sorting-item"
+                        }
+                    }
+                }
+            }
+        }
+        </script>
+
+        <?php if (!empty($manufacturers)): ?>
+
+            <?php if ($sort == 1) {
+                $manufacturers = array_slice($manufacturers, 0, $manufacturersCount);
+            } else {
+                $manufacturers = array_slice($manufacturers, -$manufacturersCount, $manufacturersCount);
+            }
+            ?>
+
+            <a class="manufacturer-name-sorter" href="<?= $block->getUrl('mobile',
+            ['sort' => $block->changeSortOrder()]) ?>"><?= __("ASC/DESC sort by NAME") ?></a>
+    </div>
+
+        <?php foreach ($manufacturers as $manufacturer): ?>
+            <?php /** @var ManufacturerModel $manufacturer */ ?>
+            <div class="manufacturer sorting-item">
+                <h3 class="name"><?= $manufacturer->getName() ?></h3>
+                <h3 class="director"><?= __('Director') ?>: <span><?= $manufacturer->getDirector() ?></span></h3>
+                <h3 class="phone"><?= __('Phone') ?>: <span>+<?= $manufacturer->getPhoneNumber() ?></span></h3>
+                <h3 class="email"><?= __('Email') ?>: <span><?= $manufacturer->getEmail() ?></span></h3>
+                <h3 class="address"><?= __('Address') ?>: <span><?= $manufacturer->getAddress() ?></span></h3>
+                <h3 class="foundation-date"><?= __('Foundation Date') ?>: <span><?= $manufacturer->getFoundationDate() ?></span></h3>
+                <p class="link">
+                    <?php $href = $block->getPhonesUrl($manufacturer->getId()); ?>
+                    <a class="manufacturer-btn read-more link-manufacturer-id-<?= $manufacturer->getId() ?>" href="<?= $href ?>"><?= __('See More Phones of %1', $manufacturer->getName()) ?></a>
+                </p>
+                <hr>
+            </div><br>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <div class="error-block">
+            <h3 class="error-message"><?= __("There are no manufacturers found.") ?></h3>
+        </div>
+    <?php endif; ?>
+</div>
