@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <owner_task>
+            <settings>
+                <use_sort>ASC</use_sort>
+                <number_records>4</number_records>
+            </settings>
+        </owner_task>
+    </default>
+</config>

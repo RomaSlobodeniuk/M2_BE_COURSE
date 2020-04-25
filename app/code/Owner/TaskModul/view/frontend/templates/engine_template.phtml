@@ -1,0 +1,93 @@
+<?php
+
+use Owner\TaskModul\Model\EngineModel;
+use Owner\TaskModul\ViewModel\AdditionInfo;
+
+/**
+ * @var Owner\TaskModul\Model\ResourceModel\Engine\Collection $engines
+ * @var Owner\TaskModul\Block\Engines $block
+ */
+$engines = $block->getEngines();
+
+/** @var AdditionInfo $viewModel */
+$viewModel = $block->getData('addition_viewModel');
+
+/**
+ * Рекомендації:
+ *
+ * використовувати camel case -> $numberElement
+ */
+
+/**
+ * Size of display items
+ */
+$number_element = 0;
+
+/**
+ * Рекомендації:
+ *
+ * Відформатувати код нижче:
+ *
+ * 1. Видалити непотрібні пусті рядки
+ * 2. Текст (там де це можливо) огорнути в Phrase об'єкт: __('');
+ */
+?>
+
+
+<div class="container">
+    <h1>
+        <?= __('Sorting type: %1', $viewModel->useSort()) ?>
+    </h1>
+    <h1>
+        <?= __('List size: %1', $viewModel->getNumberRecord()) ?>
+    </h1>
+    <?php if ($engines): ?>
+        <?php foreach ($engines as $item): ?>
+            <?php
+                if ($number_element == $viewModel->getNumberRecord()) {
+                    continue;
+                }
+
+                $number_element++;
+            ?>
+
+            <?php /** @var EngineModel  $item */ ?>
+
+            <div class="car-id-<?= $item->getId() ?>">
+
+                <h4 class="name">
+                    <?= __('Manufacturer: %1', $item->getManufacturer()) ?>
+                </h4>
+
+                <h4 class="user_id">
+                    <?= __('Win: %1', $item->getWin()) ?>
+                </h4>
+
+                <h4 class="description">
+                    <?= __('Power: %1', $item->getPower()) ?>
+                </h4>
+
+                <h4 class="price">
+                    <?= __('Volume: %1', $item->getVolume())  ?>
+                </h4>
+
+                <h4 class="price">
+                    <?= __('Years: %1', $item->getYears())  ?>
+                </h4>
+
+                <h5 class="created_at">
+                    <?= __('Created at: %1', $item->getCreatedAt()) ?>
+                </h5>
+                    <a class="btn btn-success"
+                       href="<?= $block->getUrl('route_last/index/car', ['engine_id' => $item->getId()] ) ?>">
+                        Look at cars
+                    </a>
+            </div>
+            <hr><br>
+        <?php endforeach; ?>
+
+    <?php else: ?>
+        <div><p>List of engines is empty</p></div>
+    <?php endif; ?>
+</div>
+

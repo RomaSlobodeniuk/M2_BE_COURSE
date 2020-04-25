@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="model_car" resource="default" engine="innodb" comment="Model of car with detail info">
+        <column xsi:type="smallint" name="entity_id" padding="6" unsigned="false" nullable="false" identity="true" comment="Entity ID"/>
+        <column xsi:type="varchar" name="brand" nullable="false" length="20" comment="Brand of car model"/>
+        <column xsi:type="varchar" name="model" nullable="false" length="20" comment="Model of car brand"/>
+        <column xsi:type="smallint" name="engine_id" padding="6" unsigned="false" nullable="false" comment="Engine ID"/>
+        <column xsi:type="float" name="price" nullable="false" unsigned="false" comment="Price of car model"/>
+        <column xsi:type="varchar" name="years" nullable="false" length="10" comment="Years of car production"/>
+        <column xsi:type="datetime" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created at of car model"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="foreign"
+                    referenceId="MODEL_CAR_ENGINE_ID"
+                    table="MODEL_CAR"
+                    column="engine_id"
+                    referenceTable="model_engine"
+                    referenceColumn="entity_id"/>
+    </table>
+    <table name="model_engine" resource="default" engine="innodb" comment="Model of engine with detail info">
+        <column xsi:type="smallint" name="entity_id" padding="6" unsigned="false" nullable="false" identity="true" comment="Entity ID"/>
+        <column xsi:type="varchar" name="manufacturer" nullable="false" length="20" comment="Manufacturer of engine model"/>
+        <column xsi:type="varchar" name="win" nullable="false" length="12" comment="Win of engine model"/>
+        <column xsi:type="float" name="power" nullable="false" unsigned="false" comment="Horsepower of engine model"/>
+        <column xsi:type="float" name="volume" nullable="false" unsigned="false" comment="Volume of engine model (l)"/>
+        <column xsi:type="varchar" name="years" nullable="false" length="10" comment="Years of engine production"/>
+        <column xsi:type="datetime" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Customer created at"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="MODEL_ENGINE_WIN">
+            <column name="win"/>
+        </constraint>
+    </table>
+</schema>
