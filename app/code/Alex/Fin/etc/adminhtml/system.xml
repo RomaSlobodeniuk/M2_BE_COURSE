@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="alex" translate="label" sortOrder="200">
+            <label>Settings for Final Task</label>
+        </tab>
+        <section id="alex_fin" translate="label" type="text" sortOrder="910"
+                 showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Final Task</label>
+            <tab>alex</tab>
+            <resource>Alex_Fin::alex</resource>
+            <group id="settings" translate="label" type="text" sortOrder="2"
+                   showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Settings by Alex</label>
+                <field id="quanity" translate="label comment" type="select" sortOrder="10"
+                       showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Max Quantity of tablets per page</label>
+                    <source_model>Alex\Fin\Model\Config\Source\Custom</source_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
