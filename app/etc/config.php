@@ -244,6 +244,7 @@ return [
         'Klarna_Kp' => 1,
         'Magento_PaypalReCaptcha' => 1,
         'MSP_TwoFactorAuth' => 1,
+        'Owner_TaskModul' => 1,
         'Roma_Game' => 1,
         'Roma_Test' => 1,
         'Slayer_Mobile' => 1,
