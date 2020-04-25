@@ -1,0 +1,65 @@
+<?php
+
+use Vitalii\Exam\Api\Data\FruitInterface;
+use Vitalii\Exam\Block\Fruits;
+use Vitalii\Exam\Model\FruitModel;
+
+/**
+ * @var Fruits $block
+ * @var FruitInterface[]|FruitModel[] $fruits
+ */
+$fruits = $block->getFruits();
+
+/**
+ * Форматування коду!
+ *
+ * Рекомендації:
+ *
+ * 1. Замість `<?php echo '';?>` використовувати скорочену конструкцію `<?= '';?>`;
+ * 2. Текст (там де це можливо) огорнути в Phrase об'єкт: __('');
+ * 3. Відформатувати відступи
+ */
+?>
+
+<table>
+    <tr>
+        <th class="entity-id">Entity Id</th>
+        <th class="fruit-name">Fruit Name</th>
+        <th class="color-id">Color Id</th>
+        <th class="description">Description</th>
+        <th class="weight">Weight</th>
+        <th class="taste">Taste</th>
+        <th class="price">Price</th>
+        <th class="created-at">Created At</th>
+        <th class="link">Link</th>
+    </tr>
+    <?php if (!empty($fruits)): ?>
+        <?php foreach ($fruits as $fruit): ?>
+                    <tr>
+                        <td><?php echo $fruit->getId() ?></td>
+                        <td><?php echo $fruit->getFruitName() ?></td>
+                        <td><?php echo $fruit->getColorId() ?></td>
+                        <td><?php echo $fruit->getDescription() ?></td>
+                        <td><?php echo $fruit->getWeight() ?></td>
+                        <td><?php echo $fruit->getTaste() ?></td>
+                        <td><?php echo $fruit->getPrice() ?></td>
+                        <td><?php echo $fruit->getCreatedAt() ?></td>
+                        <td>
+                            <?php
+                            /**
+                             * Тут можна і без виносу в окрему змінну
+                             */
+                            $href = $block->getUrl('exam_route');
+                            ?>
+                            <a  href="<?= $href ?>">
+                                <?= __('Go Back'); ?>
+                            </a>
+                        </td>
+                      </tr>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <div class="message">
+            <h1 class="message-error error message"><?= __("There are no fruits found.") ?></h1>
+        </div>
+    <?php endif; ?>
+</table>
