@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="game_customer_table" resource="default" engine="innodb" comment="Game Customer Table! Declarative">
+        <column xsi:type="smallint" name="entity_id" padding="6" unsigned="false" nullable="false" identity="true" comment="Customer Entity ID"/>
+        <column xsi:type="varchar" name="email" nullable="false" length="64" comment="Customer email"/>
+        <column xsi:type="text" name="name" nullable="true" comment="Customer Name"/>
+        <column xsi:type="text" name="surname" nullable="true" comment="Customer Surname"/>
+        <column xsi:type="datetime" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Customer entity created at"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="GAME_CUSTOMER_TABLE_EMAIL">
+            <column name="email"/>
+        </constraint>
+    </table>
+    <table name="game_table" resource="default" engine="innodb" comment="Games Declarative Table">
+        <column xsi:type="int" name="entity_id" padding="11" unsigned="false" nullable="false" identity="true" comment="Entity ID"/>
+        <column xsi:type="smallint" name="game_customer_id" padding="6" unsigned="false" nullable="false" identity="false" comment="Game Customer ID"/>
+        <column xsi:type="int" name="game_id" padding="8" unsigned="true" nullable="false" identity="false" default="0" comment="Game ID"/>
+        <column xsi:type="varchar" name="title" nullable="false" length="64" comment="Game title"/>
+        <column xsi:type="text" name="description" nullable="true" comment="Description"/>
+        <column xsi:type="int" name="price" padding="8" unsigned="true" nullable="false" identity="false" default="0" comment="Game prices"/>
+        <column xsi:type="datetime" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Game entity created at"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="GAME_TABLE_GAME_CUSTOMER_ID" table="game_table" column="game_customer_id" referenceTable="game_customer_table" referenceColumn="entity_id" onDelete="CASCADE"/>
+        <constraint xsi:type="unique" referenceId="GAME_TABLE_GAME_ID">
+            <column name="game_id"/>
+        </constraint>
+    </table>
+</schema>

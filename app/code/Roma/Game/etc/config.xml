@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <game_shop_customer_config>
+            <settings_output>
+                <how_customer_print>1</how_customer_print>
+            </settings_output>
+            <sort_group>
+                <sort_field>entity_id</sort_field>
+                <sort_order>ASC</sort_order>
+            </sort_group>
+        </game_shop_customer_config>
+    </default>
+</config>
