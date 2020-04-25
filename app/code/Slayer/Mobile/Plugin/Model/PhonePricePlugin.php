@@ -79,7 +79,7 @@ class PhonePricePlugin extends Template
              * до кінця чому ти вибрав порівняння з `null`. Можна було просто залишити
              * `if ($currentCurrency && $baseCurrency)`
              */
-            if (($currentCurrency && $baseCurrency) != null) {
+            if ($currentCurrency && $baseCurrency) {
                 if ($currentCurrency != $baseCurrency) {
                     $rate = $this->_storeManager->getStore()->getCurrentCurrencyRate();
                     $amountValue = $amountValue * $rate;
@@ -90,7 +90,10 @@ class PhonePricePlugin extends Template
                      * вклинитися і щось тут перевірити в $amountValue. Як я цю змінну дістану
                      * з Обсервера? Ніяк.
                      */
-                    $this->eventManager->dispatch('add_currency_logic_after');
+                    $this->eventManager->dispatch('add_currency_logic_after', [
+                        'amount_value' => $amountValue,
+                        'rate' => $rate
+                    ]);
                 }
             }
         } catch (\Exception $e) {
@@ -106,23 +109,23 @@ class PhonePricePlugin extends Template
 
     /**
      * @param PhoneInterface $subject
-     * @param $result
-     * @throws LocalizedException
+     * @param float $result
+     * @return float
      */
     public function afterGetPrice(PhoneInterface $subject, $result)
     {
+        $newResult = $result;
+
         try {
             if (is_numeric($result)) {
                 $result = round($this->convertPrice($result), 2);
                 $currencySymbol = $this->_currency->getCurrencySymbol();
+                $newResult = "$result <b class=\"currency\"> $currencySymbol</b>";
             }
         } catch (\Exception $e) {
-            throw new LocalizedException(__($e->getMessage()));
+            $this->_logger->debug(__($e->getMessage()));
         }
 
-        /**
-         * Тут це для чого? Це ж метод, він щось має повертати, наприклад: return '...';
-         */
-        echo "$result <b class=\"currency\"> &nbsp;$currencySymbol</b>";
+        return $newResult;
     }
 }

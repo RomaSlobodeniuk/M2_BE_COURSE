@@ -1,4 +1,5 @@
 <?php
+
 use Slayer\Mobile\Block\Manufacturer;
 use Slayer\Mobile\Api\Data\ManufacturerInterface;
 use Slayer\Mobile\Model\ManufacturerModel;
@@ -9,7 +10,6 @@ $blockName = $block->getNameInLayout();
 
 /** @var MobileViewModel $viewModel */
 $viewModel = $block->getData('view_model');
-$viewModel = $block->getData('manufacturers_count');
 $manufacturersCount = $viewModel->showManufacturersCountPerPage();
 
 /**@var ManufacturerInterface[] $manufacturers */
