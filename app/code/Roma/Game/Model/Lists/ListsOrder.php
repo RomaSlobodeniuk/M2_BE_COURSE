@@ -6,20 +6,24 @@ use Magento\Framework\Api\SortOrder;
 use Magento\Framework\Data\OptionSourceInterface;
 
 /**
- * Class ListField - форматування знову ріже мені сам знаєш що )
+ * Class ListsOrder
  *
- * Де Doc блоки?
+ * Generating a list with a fields for the direction of sorting of customers
  */
 class ListsOrder implements OptionSourceInterface{
-
+    /**
+     * @return array
+     */
     public function toOptionArray()
     {
         $resultArray[] = [
             'label' => 'ASC',
-            'value' => SortOrder::SORT_ASC];
+            'value' => SortOrder::SORT_ASC
+        ];
         $resultArray[] = [
             'label' => 'DESC',
-            'value' => SortOrder::SORT_DESC];
+            'value' => SortOrder::SORT_DESC
+        ];
         return $resultArray;
     }
 }

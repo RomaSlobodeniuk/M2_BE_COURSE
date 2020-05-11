@@ -2,9 +2,9 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="main">
-            <block class="Roma\Game\Block\CheckGame" name="custom.check.games.block" template="Roma_Game::checkGame.phtml">
+            <block class="Roma\Game\Block\GameLicense" name="custom.check.games.block" template="Roma_Game::game-license.phtml">
                 <arguments>
-                    <argument name="check_license_game" xsi:type="object">Roma\Game\ViewModel\CheckGame</argument>
+                    <argument name="check_license_game" xsi:type="object">Roma\Game\ViewModel\GameLicense</argument>
                 </arguments>
             </block>
         </referenceContainer>

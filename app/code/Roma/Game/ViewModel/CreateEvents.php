@@ -2,66 +2,69 @@
 
 namespace Roma\Game\ViewModel;
 
-use Magento\Framework\Event\Manager as EventManager;
-use Roma\Game\Model\ResourceModel\Game\Collection as GameCollection;
+use Magento\Framework\Event\Manager;
 
 /**
- * Class CreateEvents - форматування ріже мені очі. Де Doc Блоки?
+ * Creating events and put data into them
  *
- * Це ViewModel, а я не бачу, що ти імплементуєш ArgumentInterface!!!
+ * Class CreateEvents
  */
 class CreateEvents
 {
     /**
-     * @var EventManager
+     * @var Manager
      */
     private $eventManager;
 
     /**
-     * @param EventManager $eventManager
+     * @param Manager $eventManager
      */
     public function __construct(
-        EventManager $eventManager
+        Manager $eventManager
     ) {
         $this->eventManager = $eventManager;
     }
 
-    public function see_customer_games_event()
+    /**
+     * @param $id
+     */
+    public function getGameCustomerId($id)
     {
-        /**
-         * Де дані, які ти передаєш в обсервер? Навіщо цей івент без даних, які ти
-         * передаєш для інших розробників? Це без сенсу
-         */
-        $this->eventManager->dispatch('see_customer_games');
-    }
+        $eventData = [
+            'game_customer_id' => $id
+        ];
 
-    public function check_game_license()
-    {
-        /**
-         * Теж саме
-         */
-        $this->eventManager->dispatch('check_game_license');
+        $this->eventManager->dispatch('get_game_customer_id', $eventData);
     }
 
     /**
-     * @param GameCollection|null $collection
+     * @param $id
      */
-    public function get_game_collection(GameCollection $collection = null)
+    public function getGameID($id)
     {
         $eventData = [
-            'game_collection' => $collection
+            'game_id' => $id
         ];
 
-        /**
-         * А ось тут бачу, є дані
-         */
+        $this->eventManager->dispatch('get_game_id', $eventData);
+    }
+
+    /**
+     * @param $array
+     */
+    public function getGetGameCollection($array)
+    {
+        $eventData = [
+            'customer_collection' => $array
+        ];
+
         $this->eventManager->dispatch('get_game_collection', $eventData);
     }
 
     /**
-     * Doc блок ? Методи повинні іменуватися ось так - getGameCustomerCollection
+     * @param $array
      */
-    public function get_game_customer_collection($array)
+    public function getGameCustomerCollection($array)
     {
         $eventData = [
             'customer_collection' => $array

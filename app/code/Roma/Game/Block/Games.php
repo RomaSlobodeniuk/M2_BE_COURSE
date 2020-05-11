@@ -2,6 +2,7 @@
 
 namespace Roma\Game\Block;
 
+use Magento\Framework\App\Request\Http;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
 use Roma\Game\Model\GameModel;
@@ -10,6 +11,8 @@ use Roma\Game\Model\ResourceModel\Game\CollectionFactory as GameCollectionFactor
 use Roma\Game\ViewModel\CreateEvents;
 
 /**
+ * For getting game collection from database
+ *
  * Class Games
  */
 class Games extends Template
@@ -30,7 +33,6 @@ class Games extends Template
     private $eventMaker;
 
     /**
-     * Cars constructor.
      * @param Context $context
      * @param CreateEvents $createEvents
      * @param GameCollectionFactory $gameCollectionFactory
@@ -52,10 +54,7 @@ class Games extends Template
      */
     protected function _prepareLayout()
     {
-        /**
-         * Magento\Framework\App\Request\Http - винести в use
-         */
-        /** @var \Magento\Framework\App\Request\Http $request */
+        /** @var Http $request */
         $request = $this->getRequest();
         $gameCustomerId = (int)$request->getParam(GameModel::GAME_CUSTOMER_ID);
         if ($gameCustomerId > 0 && $this->gameCollection === null) {
@@ -74,7 +73,7 @@ class Games extends Template
      */
     public function getGameCollection()
     {
-        $this->eventMaker->get_game_collection($this->gameCollection);
+        $this->eventMaker->getGetGameCollection($this->gameCollection);
         return $this->gameCollection;
     }
 }

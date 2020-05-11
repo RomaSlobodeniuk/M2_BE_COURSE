@@ -5,9 +5,12 @@ namespace Roma\Game\ViewModel;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Store\Model\ScopeInterface;
+use Psr\Log\LoggerInterface;
 
 /**
- * Class GetConfig Знову - фоматування ?
+ * Getting data from scope config
+ *
+ * Class GetConfig
  */
 class GetConfig implements ArgumentInterface
 {
@@ -21,16 +24,17 @@ class GetConfig implements ArgumentInterface
     private $scopeConfig;
 
     /**
-     * Що це ?
+     * @var LoggerInterface
      */
     private $logger;
 
     /**
      * @param ScopeConfigInterface $scopeConfig
+     * @param LoggerInterface $logger
      */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
-        \Psr\Log\LoggerInterface $logger // винести!
+        LoggerInterface $logger
     ) {
         $this->scopeConfig = $scopeConfig;
         $this->logger=$logger;

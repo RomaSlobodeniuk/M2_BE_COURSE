@@ -7,8 +7,10 @@ use Magento\Framework\Api\SearchCriteria;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SearchResults;
 use Magento\Framework\Api\SortOrderBuilder;
+use Magento\Framework\App\Request\Http;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
+use Psr\Log\LoggerInterface;
 use Roma\Game\Api\Data\GameInterface;
 use Roma\Game\Api\GameCustomerRepositoryInterface;
 use Roma\Game\Model\ResourceModel\GameCustomer\Collection as GameCustomerCollection;
@@ -17,6 +19,8 @@ use Roma\Game\ViewModel\CreateEvents;
 use Roma\Game\ViewModel\GetConfig;
 
 /**
+ * For getting customers collection from database
+ *
  * Class GameCustomer
  */
 class GameCustomer extends Template
@@ -39,7 +43,7 @@ class GameCustomer extends Template
     /**
      * @var GetConfig
      */
-     private $config;
+    private $config;
 
     /**
      * @var GameCustomerRepositoryInterface
@@ -52,7 +56,7 @@ class GameCustomer extends Template
     private $sortOrderBuilder;
 
     /**
-     * А тут що ?
+     * @var LoggerInterface
      */
     private $logger;
 
@@ -64,26 +68,27 @@ class GameCustomer extends Template
     const GAME_ACTION_ROUTE = 'game_route/index/games';
 
     /**
-     * Game Customer constructor. - не критично, але лишнє
      * @param Context $context
      * @param GameCustomerCollectionFactory $gameCustomerCollectionFactory
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param GameCustomerRepositoryInterface $gameCustomerRepository
      * @param SortOrderBuilder $sortOrderBuilder
-     * @param \Psr\Log\LoggerInterface $logger - це треба було винести в use
+     * @param LoggerInterface $logger
      * @param GetConfig $config
      * @param CreateEvents $event
      * @param array $data
      */
     public function __construct(Context $context,
-        GameCustomerCollectionFactory $gameCustomerCollectionFactory,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
-        GameCustomerRepositoryInterface $gameCustomerRepository,
-        SortOrderBuilder $sortOrderBuilder, \Psr\Log\LoggerInterface $logger, // форматування
-        GetConfig $config,
-        CreateEvents $event,
-        array $data = []
-    ) {
+                                GameCustomerCollectionFactory $gameCustomerCollectionFactory,
+                                SearchCriteriaBuilder $searchCriteriaBuilder,
+                                GameCustomerRepositoryInterface $gameCustomerRepository,
+                                SortOrderBuilder $sortOrderBuilder,
+                                LoggerInterface $logger,
+                                GetConfig $config,
+                                CreateEvents $event,
+                                array $data = []
+    )
+    {
         parent::__construct($context, $data);
         $this->gameCustomerCollectionFactory = $gameCustomerCollectionFactory;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -99,22 +104,25 @@ class GameCustomer extends Template
      */
     protected function _prepareLayout()
     {
-        /**
-         * Форматування ріже мені очі
-         */
-        $gameCustomerSortDirection=Null; // використовуй просто null, а то тут то Null, то NULL
-        $gameCustomerSortFiled=Null;
+        $gameCustomerSortDirection = null;
+        $gameCustomerSortFiled = null;
         try {
-            /** @var \Magento\Framework\App\Request\Http $request */
+            /** @var Http $request */
             // http like it: http://magento2.test/game-route/index/index/sortDirection/ASC/sortField/name
             $request = $this->getRequest();
             $gameCustomerSortDirection = $request->getParam('sortDirection');
             $gameCustomerSortFiled = $request->getParam('sortField');
-            if($gameCustomerSortDirection==NULL) $gameCustomerSortDirection=$this->config->getSortOrder();;
-            if($gameCustomerSortFiled==NULL)$gameCustomerSortFiled=$this->config->getSortFiled();
-        } catch (\Exception $e) {
-        $this->logger->critical($e->getMessage());
-    }
+            if ($gameCustomerSortDirection === null) {
+                $gameCustomerSortDirection = $this->config->getSortOrder();
+            }
+
+            if ($gameCustomerSortFiled === null) {
+                $gameCustomerSortFiled = $this->config->getSortFiled();
+            }
+        } catch (\Exception $exception) {
+            $this->logger->debug('Cannot get sort direction and sort filed, message: "' . $exception->getMessage() . '"');
+        }
+        
         if ($this->gameCustomerCollection === null) {
             $sortOrder = $this->sortOrderBuilder
                 ->setField($gameCustomerSortFiled)
@@ -141,7 +149,7 @@ class GameCustomer extends Template
      */
     public function getGameCustomersCollection()
     {
-        $this->event->get_game_customer_collection($this->gameCustomerCollection);
+        $this->event->getGameCustomerCollection($this->gameCustomerCollection);
         return $this->gameCustomerCollection;
     }
 
@@ -151,7 +159,7 @@ class GameCustomer extends Template
      */
     public function getGameCustomerUrl($customerId)
     {
-        $this->event->see_customer_games_event();
+        $this->event->getGameCustomerId($customerId);
         return $this->getUrl(
             self::GAME_ACTION_ROUTE,
             [

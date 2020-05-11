@@ -4,9 +4,6 @@ namespace Roma\Game\Controller\Index;
 
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
-use Magento\Framework\App\ResponseInterfacey;
-use Magento\Framework\Controller\ResultInterface;
-use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
 
 /**
@@ -28,12 +25,6 @@ class Index extends Action
         $this->resultPageFactory=$resultPageFactory;
         parent::__construct($context);
     }
-
-    /**
-     * Це що тут робить? :)
-     *
-     * @return ResponseInterface|ResultInterface|Page
-     */
 
     /**
      * @inheritDoc

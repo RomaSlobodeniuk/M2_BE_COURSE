@@ -2,21 +2,17 @@
 
 namespace Roma\Game\ViewModel;
 
-/**
- * Ніде по коду не використовується!
- */
-use Magento\Framework\Api\SearchCriteria;
-use Magento\Framework\Api\SearchResults;
-
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Roma\Game\Api\Data\GameInterface;
 use Roma\Game\Api\GameRepositoryInterface;
 
 /**
- * Class CheckGame - Форматування !!!!!!!!!!
+ * Verification of game with its game id
+ *
+ * Class GameLicense
  */
-class CheckGame implements ArgumentInterface
+class GameLicense implements ArgumentInterface
 {
     /**
      * @var GameRepositoryInterface
@@ -29,7 +25,6 @@ class CheckGame implements ArgumentInterface
     private $searchCriteriaBuilder;
 
     /**
-     * CheckGame constructor.
      * @param GameRepositoryInterface $gameList
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      */
@@ -42,20 +37,23 @@ class CheckGame implements ArgumentInterface
     }
 
     /**
-     * де @param ?
-     *
+     * @param $id
      * @return string
      */
     public function checkLicenseGame($id)
     {
-        $searchCriteria = $this->searchCriteriaBuilder
-            ->addFilter(GameInterface::GAME_ID, $id)
-            ->create();
+        if ($id === null) {
+            $answer = 'Something wrong. Try latter';
+        } else {
+            $searchCriteria = $this->searchCriteriaBuilder
+                ->addFilter(GameInterface::GAME_ID, $id)
+                ->create();
 
-        $data = $this->gameList->getList($searchCriteria);
-        $answer = 'Your game is a pirate copy. You can buy a licensed game in this store';
-        if ($data->getTotalCount() > 0) {
-            $answer = 'Your game is licensed and purchased from this store';
+            $data = $this->gameList->getList($searchCriteria);
+            $answer = 'Your game is a pirate copy. You can buy a licensed game in this store';
+            if ($data->getTotalCount() > 0) {
+                $answer = 'Your game is licensed and purchased from this store';
+            }
         }
 
         return $answer;

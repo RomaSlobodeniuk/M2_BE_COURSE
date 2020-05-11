@@ -30,11 +30,6 @@ class MessageObserver implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        /**
-         * Навіщо ця строка? змінна $event ніде не використовується
-         */
-        $event = $observer->getEvent();
-
         $message = "You are going to see customer`s games now";
         $this->messageManager->addSuccessMessage($message);
     }

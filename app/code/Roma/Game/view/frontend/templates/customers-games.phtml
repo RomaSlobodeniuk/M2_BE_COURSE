@@ -5,7 +5,7 @@ use Roma\Game\Model\GameModel;
 /**
  * @var Roma\Game\Block\Games $block
  */
-$blockName=$block->getInLayout();
+$blockName = $block->getInLayout();
 $gameCollection = $block->getGameCollection();
 ?>
 
@@ -14,10 +14,10 @@ $gameCollection = $block->getGameCollection();
         <?php foreach ($gameCollection as $game): ?>
             <?php /** @var GameModel $game */ ?>
             <div class="game-entity-id-<?= $game->getId() ?>">
-                <h4 class="game-id">EntityId: <?= $game->getGameId() ?></h4>
-                <h5 class="title">StalkerId: <?= $game->getTitle() ?></h5>
-                <h6 class="description">SomeId: <?= $game->getDescription() ?></h6>
-                <h6 class="price">CarId: <?= $game->getPrice() ?></h6>
+                <h2 class="game-id">Game Id: <?= $game->getGameId() ?></h2>
+                <h2 class="title">Game Title: <?= $game->getTitle() ?></h2>
+                <h3 class="description">Description: <?= $game->getDescription() ?></h3>
+                <h2 class="price">Price: <?= $game->getPrice() ?></h2>
                 <p class="link">
                     <a class="go-back" href="<?= $block->getUrl('game_route') ?>">Go Back</a>
                 </p>

@@ -4,22 +4,13 @@ use Roma\Game\Model\ResourceModel\GameCustomer;
 use Roma\Game\ViewModel\GetConfig;
 
 /**
- * Ніде тут не використовується
- *
- * Знову ж таки - форматування!!!
- */
-use Roma\Game\ViewModel\CreateEvents;
-
-/**
  * @var Roma\Game\Block\GameCustomer $block
  */
 $customerCollection = $block->getGameCustomersCollection();
 
 /** @var GetConfig $viewModel */
 $viewModel = $block->getData('customer_value_print');
-
 $customerValuePrint = $viewModel->getCustomersPrintValue();
-
 $i = 1;
 ?>
 <table class="customers table" id="customers-data-table">

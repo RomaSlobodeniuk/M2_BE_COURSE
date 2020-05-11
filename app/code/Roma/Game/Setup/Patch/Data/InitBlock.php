@@ -8,10 +8,16 @@ use Magento\Framework\Setup\Patch\DataPatchInterface;
 use Psr\Log\LoggerInterface;
 
 /**
+ * Creating an SMS block, containing links
+ * to GameLicense controller
+ *
  * Class InitBlock
  */
 class InitBlock implements DataPatchInterface
 {
+    /**
+     * @var BlockFactory
+     */
     private $blockFactory;
 
     /**
@@ -27,8 +33,7 @@ class InitBlock implements DataPatchInterface
     /**
      * @param ModuleDataSetupInterface $moduleDataSetup
      * @param LoggerInterface $logger
-     *
-     * Де BlockFactory @param?
+     * @param BlockFactory $blockFactory
      */
     public function __construct(
         ModuleDataSetupInterface $moduleDataSetup,
@@ -49,26 +54,22 @@ class InitBlock implements DataPatchInterface
         $this->moduleDataSetup->startSetup();
         echo 'Roma_Game:startSetup' . "\r\n";
 
-
         $staticBlockInfo = [
             'title' => 'Game license check',
             'identifier' => 'roma_game_check_block',
             'stores' => ['0'],
             'is_active' => 1,
-            'content' => "<a class=\"read-more\" href=\"game_route/index/checkgame\">Check now</a>"
+            'content' => "<a class=\"read-more\" href=\"index/gamelicense\">Check License</a>"
         ];
 
         try {
-            /**
-             * Збереженням моделі за допомогою репозиторія?
-             */
             $this->blockFactory->create()->setData($staticBlockInfo)->save();
         } catch (\Exception $exception) {
-            $this->logger->debug('Cannot insert block, message: "'. $exception->getMessage() . '"');
+            $this->logger->debug('Cannot insert block, message: "' . $exception->getMessage() . '"');
         }
 
         $this->moduleDataSetup->endSetup();
-        echo 'Roma_Test:endSetup' . "\r\n";
+        echo 'Roma_Game:endSetup' . "\r\n";
     }
 
     /**
