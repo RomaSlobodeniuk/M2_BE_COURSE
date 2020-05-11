@@ -2,30 +2,15 @@
 
 namespace Owner\TaskModul\Block;
 
-/**
- * Форматування коду!
- */
-
-/**
- * Рекомендації:
- *
- * Всі класи/інтерфейси в use повинні бути відсортованими по алфавіту.
- * Ніяких пустих рядків між use
- * Всі повні назви класів винести в use
- */
-
+use Psr\Log\LoggerInterface;
 use Magento\Framework\Api\SortOrder;
 use Magento\Framework\Api\SortOrderBuilder;
 use Magento\Framework\Api\Search\SearchResult;
 use Magento\Framework\Api\SearchCriteria;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SearchCriteriaInterface;
-
-
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
-
-use Owner\TaskModul\Api\Data\CarInterface;
 use Owner\TaskModul\Model\ResourceModel\Engine\Collection;
 use Owner\TaskModul\Model\ResourceModel\Engine\CollectionFactory;
 use Owner\TaskModul\Api\RepositoryInterface\EngineRepositoryInterface;
@@ -37,6 +22,9 @@ use Owner\TaskModul\ViewModel\AdditionInfo;
  */
 class Engines extends Template
 {
+    const SORT_TYPE_DEFAULT = 'ASC';
+    const SORT_FIELD_DEFAULT = 'created_at';
+
     /**
      * @var CollectionFactory
      */
@@ -68,8 +56,13 @@ class Engines extends Template
     private $additionInfo;
 
     /**
-     * Engines constructor. - не критично, але лишнє
+     * @var LoggerInterface
+     */
+    protected $_logger;
+
+    /**
      * @param Context $context
+     * @param LoggerInterface $logger
      * @param CollectionFactory $engineCollectionFactory
      * @param EngineRepositoryInterface $engineRepository
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
@@ -79,6 +72,7 @@ class Engines extends Template
      */
     public function __construct(
         Context $context,
+        LoggerInterface $logger,
         CollectionFactory $engineCollectionFactory,
         EngineRepositoryInterface $engineRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
@@ -87,6 +81,7 @@ class Engines extends Template
         array $data = []
     ) {
         parent::__construct($context, $data);
+        $this->_logger = $logger;
         $this->engineCollectionFactory = $engineCollectionFactory;
         $this->engineRepository = $engineRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -95,30 +90,38 @@ class Engines extends Template
     }
 
     /**
-     * Рекомендація: використовувати {@inheritdoc} замість повторюваного опису
-     * в Doc блоці де це тільки можливо, якщо метод перезаписує батьківський або
-     * імплементує інтерфейс
-     *
+     * @return bool|int|null
+     */
+    public function getCacheLifetime()
+    {
+        return null;
+    }
+
+    /**
      * @return Template
      * @throws \Magento\Framework\Exception\LocalizedException
      */
     protected function _prepareLayout()
     {
-        /**
-         * Форматування коду!
-         */
         if ($this->engines === null) {
-            /**
-             * Рекомендація - не використовувати назви змінних як ось ця $sort_type,
-             * краще використати camel case: $sortType
-             */
-            $sort_type = $this->additionInfo->useSort();
 
-            /** @var SortOrder $sortOrder */
-            $sortOrder = $this->sortOrderBuilder
-                ->setField(CarInterface::CREATED_AT)
-                ->setDirection($sort_type)
-                ->create();
+            try {
+                $request = $this->getRequest();
+                $sortType = (string)$request->getParam('sortType');
+                $sortField = (string)$request->getParam('sortField');
+
+                /** @var SortOrder $sortOrder */
+                $sortOrder = $this->sortOrderBuilder
+                    ->setField($sortField)
+                    ->setDirection($sortType)
+                    ->create();
+            } catch (\Exception $exception) {
+                /** @var SortOrder $sortOrder */
+                $sortOrder = $this->sortOrderBuilder
+                    ->setField(self::SORT_FIELD_DEFAULT)
+                    ->setDirection(self::SORT_TYPE_DEFAULT)
+                    ->create();
+            }
 
             /** @var SearchCriteria|SearchCriteriaInterface $searchCriteria */
             $searchCriteria = $this->searchCriteriaBuilder
@@ -133,6 +136,24 @@ class Engines extends Template
         }
 
         return parent::_prepareLayout();
+    }
+
+    public function useFilter()
+    {
+        $request = $this->getRequest();
+        $sortType = (string)$request->getParam('sortType');
+        $sortField = (string)$request->getParam('sortField');
+        return $this->getUrl(
+            'route_last',
+            [
+                '_current' => true,
+                '_query' =>
+                    [
+                        'sortType' => $sortType,
+                        'sortField' => $sortField
+                    ]
+            ]
+        );
     }
 
     /**

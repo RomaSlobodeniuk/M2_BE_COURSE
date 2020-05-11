@@ -124,6 +124,7 @@ interface EngineInterface
      *
      * @param string $createdAt
      * @return EngineInterface
+     * @throws \Exception
      */
     public function setCreatedAt(string $createdAt): EngineInterface;
 }

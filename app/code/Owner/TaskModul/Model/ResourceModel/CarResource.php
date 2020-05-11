@@ -2,11 +2,6 @@
 
 namespace Owner\TaskModul\Model\ResourceModel;
 
-/**
- * Рекомендації:
- *
- * Всі класи/інтерфейси в use повинні бути відсортованими по алфавіту.
- */
 use Owner\TaskModul\Model\CarModel;
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 
@@ -18,9 +13,6 @@ class CarResource extends AbstractDb
 {
     const MODEL_CAR = 'model_car';
 
-    /**
-     * Що тут?
-     */
     public function _construct()
     {
         $this->_init(

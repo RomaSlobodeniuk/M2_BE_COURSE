@@ -2,18 +2,6 @@
 
 namespace Owner\TaskModul\Block;
 
-/**
- * Форматування коду!
- */
-
-/**
- * Рекомендації:
- *
- * Всі класи/інтерфейси в use повинні бути відсортованими по алфавіту.
- * Ніяких пустих рядків між use
- * Всі повні назви класів винести в use
- */
-
 use Magento\Framework\Api\SortOrder;
 use Magento\Framework\Api\SortOrderBuilder;
 use Magento\Framework\Api\Search\SearchResult;
@@ -23,9 +11,9 @@ use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
 use Owner\TaskModul\Api\Data\EngineInterface;
+use Owner\TaskModul\Api\Data\CarInterface;
 use Owner\TaskModul\Api\RepositoryInterface\EngineRepositoryInterface;
 use Owner\TaskModul\Model\CarModel;
-use Owner\TaskModul\Api\Data\CarInterface;
 use Owner\TaskModul\Model\ResourceModel\Car\Collection;
 use Owner\TaskModul\Model\ResourceModel\Car\CollectionFactory;
 use Owner\TaskModul\Api\RepositoryInterface\CarRepositoryInterface;
@@ -78,7 +66,6 @@ class Cars extends Template
     private $additionInfo;
 
     /**
-     * Cars constructor. - не критично, але лишнє
      * @param Context $context
      * @param CollectionFactory $carCollectionFactory
      * @param CarRepositoryInterface $carRepository
@@ -97,8 +84,7 @@ class Cars extends Template
         SortOrderBuilder $sortOrderBuilder,
         AdditionInfo $additionInfo,
         array $data = []
-    )
-    {
+    ) {
         parent::__construct($context, $data);
         $this->carCollectionFactory = $carCollectionFactory;
         $this->carRepository = $carRepository;
@@ -114,17 +100,10 @@ class Cars extends Template
      */
     protected function _prepareLayout()
     {
-        /**
-         * Форматування коду!
-         */
         if ($this->cars === null) {
             $request = $this->getRequest();
             $engineId = (int)$request->getParam(CarModel::ENGINE_ID);
 
-            /**
-             * Рекомендація - не використовувати назви змінних як ось ця $sort_type,
-             * краще використати camel case: $sortType
-             */
             $sort_type = $this->additionInfo->useSort();
 
             /** @var SortOrder $sortOrder */
@@ -145,6 +124,7 @@ class Cars extends Template
 
             /** @var SearchResult $searchResults */
             $searchResults = $this->cars = $this->carRepository->getList($searchCriteria);
+
             if ($searchResults->getTotalCount() > 0) {
                 $this->cars = $searchResults->getItems();
             }
@@ -168,12 +148,7 @@ class Cars extends Template
      */
     public function getById(int $engine_id)
     {
-        /**
-         * В даному методі може бути викинуте виключення, рекомендації:
-         *
-         * 1. Огорнути в try/catch при цьому дотримуючись повернення правильного
-         * типу даних
-         */
+
         /** @var EngineInterface $element */
         $element = $this->engineRepository->getById($engine_id);
 

@@ -12,34 +12,36 @@ $engines = $block->getEngines();
 /** @var AdditionInfo $viewModel */
 $viewModel = $block->getData('addition_viewModel');
 
-/**
- * Рекомендації:
- *
- * використовувати camel case -> $numberElement
- */
+/** Count of Engine columns */
+$engineColumns = $viewModel->getEngineColumn();
 
-/**
- * Size of display items
- */
+/** size of display items */
 $number_element = 0;
-
-/**
- * Рекомендації:
- *
- * Відформатувати код нижче:
- *
- * 1. Видалити непотрібні пусті рядки
- * 2. Текст (там де це можливо) огорнути в Phrase об'єкт: __('');
- */
 ?>
-
-
 <div class="container">
+    <div class="row">
+        <div class="col-md-5">
+            <form method="get" action="<?= $block->useFilter() ?>">
+                <label for="sortField"><?= __('Choose field for sort:') ?></label>
+                <select id="sortField" name="sortField">
+                    <?php foreach ($engineColumns as $key => $field): ?>
+                        <option  value="<?=$key?>"><?= __($field) ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <label for="sortType"><?= __('Sort type:') ?></label>
+                <select id="sortType" name="sortType">
+                    <option value="ASC"><?=__('ASC')?></option>
+                    <option value="DESC"><?=__('DESC')?></option>
+                </select>
+                <button type="submit"><?= __('Use filter') ?></button>
+            </form>
+        </div>
+    </div>
     <h1>
-        <?= __('Sorting type: %1', $viewModel->useSort()) ?>
+        <?= __('Sorting type: %1. From Admin', $viewModel->useSort()) ?>
     </h1>
     <h1>
-        <?= __('List size: %1', $viewModel->getNumberRecord()) ?>
+        <?= __('List size: %1. From Admin', $viewModel->getNumberRecord()) ?>
     </h1>
     <?php if ($engines): ?>
         <?php foreach ($engines as $item): ?>
@@ -50,44 +52,39 @@ $number_element = 0;
 
                 $number_element++;
             ?>
-
-            <?php /** @var EngineModel  $item */ ?>
-
+            <?php
+                /**
+                 * @var EngineModel  $item
+                 */
+            ?>
             <div class="car-id-<?= $item->getId() ?>">
-
                 <h4 class="name">
                     <?= __('Manufacturer: %1', $item->getManufacturer()) ?>
                 </h4>
-
                 <h4 class="user_id">
                     <?= __('Win: %1', $item->getWin()) ?>
                 </h4>
-
                 <h4 class="description">
                     <?= __('Power: %1', $item->getPower()) ?>
                 </h4>
-
                 <h4 class="price">
                     <?= __('Volume: %1', $item->getVolume())  ?>
                 </h4>
-
                 <h4 class="price">
                     <?= __('Years: %1', $item->getYears())  ?>
                 </h4>
-
                 <h5 class="created_at">
-                    <?= __('Created at: %1', $item->getCreatedAt()) ?>
+                    <?= __('Created at: %1', $item->getCreatedAt())?>
                 </h5>
                     <a class="btn btn-success"
                        href="<?= $block->getUrl('route_last/index/car', ['engine_id' => $item->getId()] ) ?>">
-                        Look at cars
+                        <?= __('Look at cars') ?>
                     </a>
             </div>
             <hr><br>
         <?php endforeach; ?>
-
     <?php else: ?>
-        <div><p>List of engines is empty</p></div>
+        <div><p> <?= __('List of engines is empty') ?></p></div>
     <?php endif; ?>
 </div>
 

@@ -2,11 +2,8 @@
 
 namespace Owner\TaskModul\ViewModel;
 
-/**
- * Рекомендації:
- *
- * Всі класи/інтерфейси в use повинні бути відсортованими по алфавіту.
- */
+use Owner\TaskModul\Api\Data\CarInterface;
+use Owner\TaskModul\Api\Data\EngineInterface;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 
@@ -32,25 +29,49 @@ class AdditionInfo implements ArgumentInterface
      */
     public function __construct(
         ScopeConfigInterface $scopeConf
-    )
-    {
+    ) {
         $this->scopeConf = $scopeConf;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getCarColumn()
+    {
+        $masCar = array(
+            CarInterface::BRAND => 'Brand',
+            CarInterface::MODEL => 'Model',
+            CarInterface::PRICE => 'Price',
+            CarInterface::CREATED_AT => 'Created at'
+        );
+        return $masCar;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getEngineColumn()
+    {
+        $masEngine = array(
+            EngineInterface::MANUFACTURER => 'Manufacturer',
+            EngineInterface::WIN => 'Win',
+            EngineInterface::POWER => 'Power',
+            EngineInterface::VOLUME => 'Volume',
+            EngineInterface::CREATED_AT => 'Created at'
+        );
+        return $masEngine;
     }
 
     /**
      * @return int
      */
-    public function getNumberRecord()
-    {
+    public function getNumberRecord(){
         $result = 0;
         try {
             $result = (int)$this->scopeConf->getValue(self::USE_NUMBER_RECORDS, self::SCOPE_TYPE);
         } catch (\Exception $ex) {
-            /**
-             * Залогувати виключення
-             */
-        }
 
+        }
         return $result;
     }
 
@@ -64,12 +85,7 @@ class AdditionInfo implements ArgumentInterface
         $result = 'ASC';
         try {
             $result = $this->scopeConf->getValue(self::USE_SORT, self::SCOPE_TYPE);
-        } catch (\Exception $ex) {
-            /**
-             * Залогувати виключення
-             */
-        }
-
+        } catch (\Exception $ex) {}
         return $result;
     }
 }

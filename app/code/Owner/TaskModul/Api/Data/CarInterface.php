@@ -125,6 +125,7 @@ interface CarInterface
      *
      * @param string $createdAt
      * @return CarInterface
+     * @throws \Exception
      */
     public function setCreatedAt(string $createdAt): CarInterface;
 }

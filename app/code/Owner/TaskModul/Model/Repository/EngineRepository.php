@@ -2,36 +2,17 @@
 
 namespace Owner\TaskModul\Model\Repository;
 
-/**
- * Рекомендації:
- *
- * Всі класи/інтерфейси в use повинні бути відсортованими по алфавіту.
- */
 use Magento\Framework\Api\SearchResults;
-
-/**
- * Рекомендації:
- *
- * Всі невикористовувані в коді класи повинні бути видаленими з use.
- */
-use Magento\Framework\Api\SearchResultsInterface;
-
 use Magento\Framework\Api\SearchResultsInterfaceFactory;
-
 use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
-
 use Magento\Framework\Exception\CouldNotDeleteException;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
-
-
 use Owner\TaskModul\Api\RepositoryInterface\EngineRepositoryInterface;
-
 use Owner\TaskModul\Api\Data\EngineInterface;
 use Owner\TaskModul\Model\EngineModel;
 use Owner\TaskModul\Model\EngineModelFactory;
-
 use Owner\TaskModul\Model\ResourceModel\Engine\Collection;
 use Owner\TaskModul\Model\ResourceModel\Engine\CollectionFactory;
 use Owner\TaskModul\Model\ResourceModel\EngineResource;
@@ -81,8 +62,7 @@ class EngineRepository implements EngineRepositoryInterface
         CollectionFactory $engineCollectionFactory,
         SearchResultsInterfaceFactory $searchResultsFactory,
         CollectionProcessorInterface $collectionProcessor
-    )
-    {
+    ) {
         $this->engineFactory = $engineFactory;
         $this->engineCollectionFactory = $engineCollectionFactory;
         $this->engineResource = $engineResource;

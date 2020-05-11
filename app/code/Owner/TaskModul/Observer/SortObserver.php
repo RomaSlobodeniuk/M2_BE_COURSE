@@ -4,7 +4,6 @@ namespace Owner\TaskModul\Observer;
 
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
-use Magento\Framework\Message\Manager;
 use Magento\Framework\Message\ManagerInterface;
 
 /**
@@ -19,7 +18,7 @@ class SortObserver implements ObserverInterface
     private $manager;
 
     /**
-     * SortObserver constructor. - ну ти зрозумів
+     * SortObserver constructor.
      * @param ManagerInterface $manager
      */
     public function __construct(
@@ -28,14 +27,8 @@ class SortObserver implements ObserverInterface
         $this->manager = $manager;
     }
 
-    /**
-     * Що тут ?
-     */
     public function execute(Observer $observer)
     {
         // TODO: Implement execute() method.
-        /**
-         * І яка тут логіка?
-         */
     }
 }

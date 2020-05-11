@@ -2,9 +2,6 @@
 
 namespace Owner\TaskModul\Model;
 
-/**
- * Форматування коду!
- */
 use Magento\Framework\Model\AbstractModel;
 use Owner\TaskModul\Api\Data\CarInterface;
 use Owner\TaskModul\Model\ResourceModel\CarResource;
@@ -133,16 +130,9 @@ class CarModel extends AbstractModel implements CarInterface
      */
     public function setCreatedAt(string $created_At): CarInterface
     {
-        /**
-         * В даному методі може бути викинуте виключення, рекомендації:
-         *
-         * 1. Або добавити @throws (а тут тип виключення) в опис до інтерфейсу;
-         * 2. Або огорнути в try/catch при цьому дотримуючись повернення правильного
-         * типу даних
-         *
-         * {@inheritdoc}
-         */
         $created_date = new \DateTime($created_At);
         return $this->setData(self::CREATED_AT, $created_date->format('Y-m-d H:i:s'));
     }
+
+
 }

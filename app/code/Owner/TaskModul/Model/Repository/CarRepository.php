@@ -2,36 +2,17 @@
 
 namespace Owner\TaskModul\Model\Repository;
 
-/**
- * Рекомендації:
- *
- * Всі класи/інтерфейси в use повинні бути відсортованими по алфавіту.
- */
 use Magento\Framework\Api\SearchResults;
-
-/**
- * Рекомендації:
- *
- * Всі невикористовувані в коді класи повинні бути видаленими з use.
- */
-use Magento\Framework\Api\SearchResultsInterface;
-
 use Magento\Framework\Api\SearchResultsInterfaceFactory;
-
 use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
-
 use Magento\Framework\Exception\CouldNotDeleteException;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
-
-
 use Owner\TaskModul\Api\RepositoryInterface\CarRepositoryInterface;
-
 use Owner\TaskModul\Api\Data\CarInterface;
 use Owner\TaskModul\Model\CarModel;
 use Owner\TaskModul\Model\CarModelFactory;
-
 use Owner\TaskModul\Model\ResourceModel\Car\Collection;
 use Owner\TaskModul\Model\ResourceModel\Car\CollectionFactory;
 use Owner\TaskModul\Model\ResourceModel\CarResource;
@@ -68,7 +49,6 @@ class CarRepository implements CarRepositoryInterface
     private $collectionProcessor;
 
     /**
-     * CarRepository constructor. - ну ти зрозумів
      * @param CarModelFactory $carFactory
      * @param CollectionFactory $carCollectionFactory
      * @param CarResource $carResource
@@ -115,7 +95,6 @@ class CarRepository implements CarRepositoryInterface
         if (!$car->getId()) {
             throw new NoSuchEntityException(__('Car (`%1`) does not exist.', $carId));
         }
-
         return $car;
     }
 

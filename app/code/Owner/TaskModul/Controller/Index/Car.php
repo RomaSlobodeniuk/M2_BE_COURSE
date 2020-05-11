@@ -15,13 +15,13 @@ use Magento\Framework\View\Result\Page;
  */
 class Car extends Action
 {
+
     /**
      * @var PageFactory
      */
     private $resultPageFactory;
 
     /**
-     * Car constructor. - ну ти зрозумів
      * @param Context $context
      * @param PageFactory $resultPageFactory
      */
@@ -38,9 +38,6 @@ class Car extends Action
      */
     public function execute()
     {
-        /**
-         * В даному випадку змінна лишня
-         */
         $page = $this->resultPageFactory->create();
         return $page;
     }
