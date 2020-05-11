@@ -2,42 +2,42 @@
 
 namespace Alex\Fin\Model;
 
-use Magento\Framework\Api\SearchResults;
-use Magento\Framework\Api\SearchResultsInterfaceFactory;
-use Magento\Framework\Api\SearchCriteriaInterface;
-use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
-use Magento\Framework\Exception\CouldNotDeleteException;
-use Magento\Framework\Exception\CouldNotSaveException;
-use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Api\SearchCriteriaBuilder;
 use Alex\Fin\Api\TabletsRepositoryInterface;
 use Alex\Fin\Api\Data\TabletsInterface;
 use Alex\Fin\Model\ResourceModel\Tablets\Collection as TabletsCollection;
 use Alex\Fin\Model\ResourceModel\Tablets\CollectionFactory as TabletsCollectionFactory;
 use Alex\Fin\Model\ResourceModel\TabletsResource as TabletsResource;
+use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\Api\SearchResults;
+use Magento\Framework\Api\SearchResultsInterfaceFactory;
+use Magento\Framework\Api\SearchCriteriaInterface;
+use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
+use Magento\Framework\Event\Manager as EventManager;
+use Magento\Framework\Exception\CouldNotDeleteException;
+use Magento\Framework\Exception\CouldNotSaveException;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class TabletsRepository
- *
- * Тут в загальному всі ті ж помилки, що були в TabletsCasesRepository!
- *
- * Відрефакторити, виправити методи і логіку в них!
  */
 class TabletsRepository implements TabletsRepositoryInterface
 {
+    /**
+     * @var LoggerInterface
+     */
     private $logger;
+
     /**
      * @var EventManager
      */
     private $eventManager;
-    /**
-     * @var TabletsCollection|null
-     */
-    private $tabletsCollection;
+
     /**
      * @var SearchCriteriaBuilder
      */
     private $searchCriteriaBuilder;
+
     /**
      * @var TabletsModelFactory
      */
@@ -64,20 +64,21 @@ class TabletsRepository implements TabletsRepositoryInterface
     private $collectionProcessor;
 
     /**
-     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param LoggerInterface $logger
      * @param TabletsModelFactory $tabletsFactory
-     * @param SearchCriteriaBuilder $searchCriteriaBuilder,
      * @param TabletsCollectionFactory $tabletsCollectionFactory
      * @param TabletsResource $resource
+     * @param EventManager $eventManager
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param SearchResultsInterfaceFactory $searchResultsFactory
      * @param CollectionProcessorInterface $collectionProcessor
      */
     public function __construct(
-        \Psr\Log\LoggerInterface $logger,
+        LoggerInterface $logger,
         TabletsModelFactory $tabletsFactory,
         TabletsCollectionFactory $tabletsCollectionFactory,
         TabletsResource $resource,
-        \Magento\Framework\Event\Manager $eventManager,
+        EventManager $eventManager,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         SearchResultsInterfaceFactory $searchResultsFactory,
         CollectionProcessorInterface $collectionProcessor
@@ -105,6 +106,7 @@ class TabletsRepository implements TabletsRepositoryInterface
         } catch (\Exception $exception) {
             throw new CouldNotSaveException(__($exception->getMessage()));
         }
+
         return $tablet;
     }
 
@@ -119,33 +121,22 @@ class TabletsRepository implements TabletsRepositoryInterface
         if (!$tablet->getId()) {
             throw new NoSuchEntityException(__('entity with id `%1` does not exist.', $tabletId));
         }
+
         return $tablet;
     }
 
     /**
-     * @param int $tabletSKU
-     * @return bool
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @inheritDoc
      */
-    public function getPresById(int $tabletSKU): bool    //to check, is tablet exist
+    public function checkBySku(int $tabletSKU): bool
     {
-        $searchCriteria = $this->searchCriteriaBuilder->create();
+        $searchCriteria = $this->searchCriteriaBuilder
+            ->addFilter(TabletsInterface::TABSKU, $tabletSKU)
+            ->create();
+
         /** @var SearchResults $searchResults */
         $searchResults = $this->getList($searchCriteria);
-        if ($searchResults->getTotalCount() > 0) {
-            $tabletsCollection = $searchResults->getItems();
-        }
-        /** @var TabletsModel $tablet */
-        try {
-            foreach ($tabletsCollection as $tablet) {
-                if ($tablet->getTabSku() == $tabletSKU) {
-                    return true;
-                }
-            }
-        } catch (\Exception $e) {
-            $this->logger->critical($e->getMessage());
-        }
-        return false;
+        return $searchResults->getTotalCount() > 0;
     }
 
     /**
@@ -153,7 +144,7 @@ class TabletsRepository implements TabletsRepositoryInterface
      */
     public function getList(SearchCriteriaInterface $criteria): SearchResults
     {
-        /** @var Collection $collection */
+        /** @var TabletsCollection $collection */
         $collection = $this->tabletsCollectionFactory->create();
         $this->collectionProcessor->process($criteria, $collection);
 
@@ -171,13 +162,14 @@ class TabletsRepository implements TabletsRepositoryInterface
     public function delete(TabletsInterface $tablet): bool
     {
         try {
-            $this->_eventManager->dispatch('tablet_before_delete');
+            $this->eventManager->dispatch('tablet_before_delete');
             /** @var TabletsModel $tablet */
             $this->resource->delete($tablet);
-            $this->_eventManager->dispatch('tablet_after_delete');
+            $this->eventManager->dispatch('tablet_after_delete');
         } catch (\Exception $exception) {
             throw new CouldNotDeleteException(__($exception->getMessage()));
         }
+
         return true;
     }
 }

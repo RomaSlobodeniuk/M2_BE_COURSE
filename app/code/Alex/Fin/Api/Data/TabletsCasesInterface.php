@@ -83,9 +83,7 @@ interface TabletsCasesInterface
      */
     public function getPrice();
 
-    ///Setters - це лишнє
-
-    /**
+     /**
      * Set entity id
      *
      * @param int $id
@@ -121,18 +119,18 @@ interface TabletsCasesInterface
      * Set color
      *
      * @param string $color
-     * @return TabletsInterface - тип не співпадає
+     * @return TabletsCasesInterface
      */
-    public function setColor(string $color):TabletsCasesInterface;
+    public function setColor(string $color): TabletsCasesInterface;
 
 
     /**
      * Set description
      *
      * @param string $description
-     * @return TabletsInterface - тип не співпадає
+     * @return TabletsCasesInterface
      */
-    public function setDescription(string $description):TabletsCasesInterface;
+    public function setDescription(string $description): TabletsCasesInterface;
 
     /**
      * Set created at date

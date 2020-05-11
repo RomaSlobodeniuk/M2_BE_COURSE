@@ -5,6 +5,7 @@ namespace Alex\Fin\Api;
 use Alex\Fin\Api\Data\TabletsCasesInterface;
 use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\Api\SearchResults;
+use Magento\Framework\Exception\CouldNotDeleteException;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -45,25 +46,25 @@ interface TabletsCasesRepositoryInterface
      * @param int $caseSKU
      * @return bool
      */
-    public function getPresById(int $caseSKU): bool;
+    public function checkBySku(int $caseSKU): bool;
 
     /**
-     * @param $tablet // який тип змінної?
+     * @param int $tablet
      * @return mixed
+     * @throws LocalizedException
      */
-    public function getCasesQunatity($tablet); // Qunatity (опечатка): Quantity
+    public function getCasesQuantity(int $tablet);
 
     /**
+     * @param TabletsCasesInterface $case
      * @return mixed
+     * @throws CouldNotDeleteException
      */
-    public function getCasesCollection();
+    public function delete(TabletsCasesInterface $case);
 
     /**
-     * camel case ?
-     * $caseSku - виглядає ліпше
-     *
-     * @param $casesku // який тип змінної?
+     * @param int $caseSku
      * @return mixed
      */
-    public function deleteById($casesku);
+    public function deleteBySku(int $caseSku);
 }

@@ -1,45 +1,40 @@
 <?php
+use Magento\Framework\App\Request\Http;
 /** @var \Alex\Fin\Block\TabletsCases $block */
-/** @var \Magento\Framework\App\Request\Http $request */
+/** @var Http $request */
 $request = $this->getRequest();
-$tabsku = (int)$request->getParam('fortabsku');
-$idVerifyed = $block->getTabPresent($tabsku);
-
-/**
- * Форматування коду!
- * Відрефакторити action відповідно до того, що я описав у блоках
- *
- * Винести класи в use
- */
+$tabSku = (int)$request->getParam('fortabsku');
+$idVerifyed = $block->getTabPresent($tabSku);
 ?>
 
-<?php if($idVerifyed): ?>
-    <h2>Create a new case record for tablet SKU <?=$tabsku?>:</h2>
-<form action="<?php echo $block->createCase($tabsku); ?>" method="post">
-    <h5 class="message"><?= __("caseSKU (5-10 symbols required):") ?></h5>
-    <input name="caseSKU" type="number" required = "true" minlength="5" maxlength="10">
-    <h5 class="message"><?= __("Descriptions (min 10 symbols required):") ?></h5>
-    <input name="desc" type="text" required = "true" minlength="10">
-    <h5 class="message"><?= __("Brand (min 5 symbols required):") ?></h5>
-    <input name="brand" type="text" required = "true" minlength="5" maxlength="60">
-    <h5 class="message"><?= __("Color (3-15 symbols required):") ?></h5>
-    <input name="casecolor" type="text" required = "true" minlength="3" maxlength="15">
-    <h5 class="message"><?= __("Price (3-10 symbols required):") ?></h5>
-    <input name="price" type="number" required = "true" minlength="3" maxlength="10">
-    <input type="submit" value="Press to create new case">
-    <h3 class="message"><?= __("I want to return to this page:") ?></h3>
-    <input type="radio" name="stayOrNot">
-</form>
+<?php if ($idVerifyed): ?>
+    <h2>Create a new case record for tablet SKU <?= $tabSku ?>:</h2>
+    <form action="<?php echo $this->getUrl('fin-route/index/newcasecreation') ?>" method="post">
+        <h5 class="message"><?= __("caseSKU (5-10 symbols required):") ?></h5>
+        <input name="case_sku" type="number" required="true" minlength="5" maxlength="10">
+        <input name="tab_sku" type="hidden" value="<?php echo $tabSku ?>">
+        <h5 class="message"><?= __("Descriptions (min 10 symbols required):") ?></h5>
+        <input name="desc" type="text" required="true" minlength="10">
+        <h5 class="message"><?= __("Brand (min 5 symbols required):") ?></h5>
+        <input name="brand" type="text" required="true" minlength="5" maxlength="60">
+        <h5 class="message"><?= __("Color (3-15 symbols required):") ?></h5>
+        <input name="case_color" type="text" required="true" minlength="3" maxlength="15">
+        <h5 class="message"><?= __("Price (3-10 symbols required):") ?></h5>
+        <input name="price" type="number" required="true" minlength="3" maxlength="10">
+        <input type="submit" value="Press to create new case">
+        <h3 class="message"><?= __("I want to return to this page:") ?></h3>
+        <input type="radio" name="stayOrNot">
+    </form>
 <?php endif ?>
-<?php if(!$idVerifyed): ?>
+<?php if (!$idVerifyed): ?>
     <h3> Address link is contain the wrong tablet ID. Go to the first page and try again!!! </h3>
 <?php endif ?>
 <br>
 <a class="show" href=" <?= $block->getUrl('fin_route/index/cases/forTabSKU/0') ?>">
-    <?= __("Show ALL avaible Cases (for ALL tablets!) ->")?></a>
+    <?= __("Show ALL avaible Cases (for ALL tablets!) ->") ?></a>
 <br>
-<a class="show" href=" <?= $block->getUrl('fin_route/index/cases/',['forTabSKU' =>$tabsku]) ?>">
-    <?= __("Show ALL Cases for THIS tablet! ->")?></a>
+<a class="show" href=" <?= $block->getUrl('fin_route/index/cases/', ['forTabSKU' => $tabSku]) ?>">
+    <?= __("Show ALL Cases for THIS tablet! ->") ?></a>
 <br>
 <a class="read-more" href=" <?= $block->getUrl('fin_route/pendex/index/') ?>">
-    <?= __("Show ALL tablets Recodrs! ->")?></a>
+    <?= __("Show ALL tablets Recodrs! ->") ?></a>

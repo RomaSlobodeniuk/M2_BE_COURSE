@@ -2,8 +2,8 @@
 
 namespace Alex\Fin\Model\ResourceModel;
 
-use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 use Alex\Fin\Model\TabletsCasesModel;
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 
 /**
  * Class TabletsCasesResource

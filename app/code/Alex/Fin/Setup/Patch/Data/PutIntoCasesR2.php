@@ -1,50 +1,47 @@
 <?php
 
-
 namespace Alex\Fin\Setup\Patch\Data;
 
-use Magento\Framework\Setup\ModuleDataSetupInterface;
+use Alex\Fin\Api\Data\TabletsCasesInterface;
+use Alex\Fin\Model\TabletsCasesModelFactory;
+use Alex\Fin\Api\TabletsCasesRepositoryInterface;
 use Magento\Framework\Setup\Patch\DataPatchInterface;
 use Psr\Log\LoggerInterface;
 
-
 /**
- * Class PutIntoCases
- *
- * Форматування коду!
+ * Class PutIntoCasesR2
  */
-class PutIntoCases implements DataPatchInterface
+class PutIntoCasesR2 implements DataPatchInterface
 {
-    const CASES = 'tablets_cases';
     /**
-     * @var ModuleDataSetupInterface
+     * @var TabletsCasesFactory
      */
-    private $moduleDataSetup;
+    private $tabletsCasesFactory;
+    /**
+     * @var TabletsCasesRepositoryInterface
+     */
+    private $tabletsCasesRepository;
     /**
      * @var LoggerInterface
      */
     private $logger;
 
     /**
-     * @param ModuleDataSetupInterface $moduleDataSetup
      * @param LoggerInterface $logger
+     * @param TabletsCasesRepositoryInterface $tabletsCasesRepository
+     * @param TabletsCasesModelFactory $tabletsCasesFactory
      */
     public function __construct(
-        ModuleDataSetupInterface $moduleDataSetup,
-        LoggerInterface $logger
-    )
-    {
-        $this->moduleDataSetup = $moduleDataSetup;
+        TabletsCasesRepositoryInterface $tabletsCasesRepository,
+        LoggerInterface $logger,
+        TabletsCasesModelFactory $tabletsCasesFactory
+    ) {
+        $this->tabletsCasesRepository = $tabletsCasesRepository;
         $this->logger = $logger;
+        $this->tabletsCasesFactory = $tabletsCasesFactory;
     }
 
     /**
-     * Run code inside patch
-     * If code fails, patch must be reverted, in case when we are speaking about schema - then under revert
-     * means run PatchInterface::revert()
-     *
-     * If we speak about data, under revert means: $transaction->rollback()
-     *
      * @return $this
      */
     public function apply()
@@ -52,8 +49,8 @@ class PutIntoCases implements DataPatchInterface
         $data = [
             [
                 'entity_id' => null,
-                'forTabSku' => 111,
-                'caseSKU' => 7272811,
+                'forTabSku' => 1119,
+                'caseSKU' => 72728119,
                 'description' => 'Test Description 1',
                 'created_at' => '',
                 'price' => '11',
@@ -62,8 +59,8 @@ class PutIntoCases implements DataPatchInterface
             ],
             [
                 'entity_id' => null,
-                'forTabSku' => 111,
-                'caseSKU' => 7272801,
+                'forTabSku' => 1119,
+                'caseSKU' => 72728019,
                 'description' => 'Test Description 1',
                 'created_at' => '',
                 'price' => '12',
@@ -72,8 +69,8 @@ class PutIntoCases implements DataPatchInterface
             ],
             [
                 'entity_id' => null,
-                'forTabSku' => 112,
-                'caseSKU' => 7272711,
+                'forTabSku' => 1129,
+                'caseSKU' => 72727119,
                 'description' => 'Test Description 1',
                 'created_at' => '',
                 'price' => '13',
@@ -82,8 +79,8 @@ class PutIntoCases implements DataPatchInterface
             ],
             [
                 'entity_id' => null,
-                'forTabSku' => 112,
-                'caseSKU' => 7272710,
+                'forTabSku' => 1129,
+                'caseSKU' => 72727109,
                 'description' => 'Test Description 1',
                 'created_at' => '',
                 'price' => '14',
@@ -92,8 +89,8 @@ class PutIntoCases implements DataPatchInterface
             ],
             [
                 'entity_id' => null,
-                'forTabSku' => 113,
-                'caseSKU' => 7272510,
+                'forTabSku' => 1139,
+                'caseSKU' => 72725109,
                 'description' => 'Test Description 1',
                 'created_at' => '',
                 'price' => '15',
@@ -102,8 +99,8 @@ class PutIntoCases implements DataPatchInterface
             ],
             [
                 'entity_id' => null,
-                'forTabSku' => 113,
-                'caseSKU' => 72725,
+                'forTabSku' => 1139,
+                'caseSKU' => 727259,
                 'description' => 'Test Description 2',
                 'created_at' => '',
                 'price' => '16',
@@ -112,8 +109,8 @@ class PutIntoCases implements DataPatchInterface
             ],
             [
                 'entity_id' => null,
-                'forTabSku' => 114,
-                'caseSKU' => 7252710,
+                'forTabSku' => 1149,
+                'caseSKU' => 72527109,
                 'description' => 'coolest',
                 'created_at' => '',
                 'price' => '16',
@@ -122,37 +119,58 @@ class PutIntoCases implements DataPatchInterface
             ],
             [
                 'entity_id' => null,
-                'forTabSku' => 114,
-                'caseSKU' => 72527,
+                'forTabSku' => 1149,
+                'caseSKU' => 725279,
                 'description' => 'coolest and best',
                 'created_at' => '',
                 'price' => '17',
                 'color' => 'red-white',
                 'brand' => 'chana bao'
+            ],
+            [
+                'entity_id' => null,
+                'forTabSku' => 1149,
+                'caseSKU' => 725289,
+                'description' => 'coolest',
+                'created_at' => '',
+                'price' => '178',
+                'color' => 'red-white',
+                'brand' => 'chana bao bu'
             ]
         ];
-        $this->moduleDataSetup->startSetup();
+
         try {
-            /**
-             * Згідно 7 пункту я казав, щоб ви використали фарбики і репозиторії
-             * в патчах для даного роду операції над БД
-             */
-            $connection = $this->moduleDataSetup->getConnection();
             foreach ($data as $row) {
-                $row['created_at'] = date("Y-m-d H:i:s");   //!
-                $connection->insert(self::CASES, $row);
+                /** @var TabletsCasesInterface $case */
+                $case = $this->tabletsCasesFactory->create();
+                $case->setForTabSku($row['forTabSku']);
+                $case->setCaseSku($row['caseSKU']);
+                $case->setDescription($row['description']);
+                $case->setBrand($row['brand']);
+                $case->setColor($row['color']);
+                $case->setPrice($row['price']);
+                $this->tabletsCasesRepository->save($case);
             }
         } catch (\Exception $exception) {
-            $this->logger->debug('Cannot insert row, message: "'. $exception->getMessage() . '"');
+            $this->logger->debug('Cannot insert row, message: "' . $exception->getMessage() . '"');
         }
-        $this->moduleDataSetup->endSetup();
+
+        return $this;
     }
 
+    /**
+     * @inheritDoc
+     */
     public static function getDependencies()
     {
-        return [];
+        return [
+            PutIntoTabletsR2::class
+        ];
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getAliases()
     {
         return [];

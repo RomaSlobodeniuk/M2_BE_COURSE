@@ -2,13 +2,10 @@
 
 namespace Alex\Fin\Model;
 
-/**
- * use Magento\Framework\Serialize\SerializerInterface;
- */
-use Magento\Framework\Json\Helper\Data;
-
+use Magento\Framework\Serialize\SerializerInterface;
 use Magento\Framework\HTTP\ZendClient;
 use Magento\Framework\HTTP\ZendClientFactory;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class ExternalApi
@@ -19,29 +16,37 @@ class ExternalApi
     const EXTERNAL_CURRENCY_URL = 'https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5';
 
     /**
-     * @var Data // SerializerInterface
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
+     * @var SerializerInterface
      */
     protected $jsonHelper;
 
     /**
-     * Http Client Factory - це лишнє
      * @var ZendClientFactory
      */
     protected $httpClientFactory;
 
     /**
-     * Де Опис Параметрів?
+     * @param LoggerInterface $logger
+     * @param SerializerInterface $jsonHelper
+     * @param ZendClientFactory $httpClientFactory
      */
     public function __construct(
         ZendClientFactory $httpClientFactory,
-        Data $jsonHelper
+        LoggerInterface $logger,
+        SerializerInterface $jsonHelper
     ) {
         $this->httpClientFactory = $httpClientFactory;
+        $this->logger = $logger;
         $this->jsonHelper = $jsonHelper;
     }
 
     /**
-     * Де Doc блок? Що ця штука повертає?
+     * @return float
      */
     public function getExternalCurrency()
     {
@@ -51,25 +56,12 @@ class ExternalApi
             $response = $httpClient->setUri(self::EXTERNAL_CURRENCY_URL)
                 ->request('GET')
                 ->getBody();
-
-            /**
-             * Magento\Framework\Json\Helper\Data - застарілий, використай
-             * Magento\Framework\Serialize\SerializerInterface
-             *
-             * метод - unserialize
-             */
-            $data = $this->jsonHelper->jsonDecode($response);
+            $data = $this->jsonHelper->unserialize($response);
             return floatval($data["0"]["sale"]);
         } catch (\Exception $e) {
-            /**
-             * Цього не повинно тут бути!
-             */
-            echo 'Currencyxceptions : ',  $e->getMessage(), "\n";
+            $error = $e->getMessage();
+            $this->logger->debug($error);
+            return 1;
         }
-
-        /**
-         * Цей метод нічого не повертає у разі виключення!
-         */
     }
-
 }

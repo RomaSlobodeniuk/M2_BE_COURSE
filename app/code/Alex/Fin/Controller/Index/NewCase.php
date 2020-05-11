@@ -10,9 +10,9 @@ use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
 
 /**
- * Class DeleteCase
+ * Class NewCase
  */
-class DeleteCase extends Action
+class NewCase extends Action
 {
     /**
      * @var PageFactory

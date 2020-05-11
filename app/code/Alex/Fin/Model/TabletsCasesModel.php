@@ -88,8 +88,6 @@ class TabletsCasesModel extends AbstractModel implements TabletsCasesInterface
         return $this->getData(self::PRICE);
     }
 
-    //setters - це линшє
-
     /**
      * {@inheritdoc}
      */
@@ -151,13 +149,11 @@ class TabletsCasesModel extends AbstractModel implements TabletsCasesInterface
      */
     public function setCreatedAt(string $createdAt): TabletsCasesInterface
     {
-        /**
-         * $createdAt - строка! а тут іде звертання як до об'єкта!
-         * зробити так, щоб не було ніяких помилок:
-         *
-         * Якщо строка - то зберігати строку, якщо об'єкт \DateTime() - то відповідно
-         * внести зміни сюди
-         */
-        return $this->setData(self::CREATED_AT, $createdAt->format('Y-m-d H:i:s'));
+        try {
+            $createdAtObject = new \DateTime($createdAt);
+            return $this->setData(self::CREATED_AT, $createdAtObject->format('Y-m-d H:i:s'));
+        } catch (\Exception $e) {
+            return $this->setData(self::CREATED_AT, null);
+        }
     }
 }

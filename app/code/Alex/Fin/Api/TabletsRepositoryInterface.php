@@ -2,9 +2,6 @@
 
 namespace Alex\Fin\Api;
 
-/**
- * Тут має бути все за алфавітом
- */
 use Alex\Fin\Api\Data\TabletsInterface;
 use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\Api\SearchResults;
@@ -57,5 +54,5 @@ interface TabletsRepositoryInterface
      * @param int $tabletSKU
      * @return bool
      */
-    public function getPresById(int $tabletSKU): bool;
+    public function checkBySku(int $tabletSKU): bool;
 }

@@ -2,9 +2,9 @@
 
 namespace Alex\Fin\Model\ResourceModel\TabletsCases;
 
-use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 use Alex\Fin\Model\TabletsCasesModel;
 use Alex\Fin\Model\ResourceModel\TabletsCasesResource as TabletsCasesResourceModel;
+use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 
 /**
  * Class Collection

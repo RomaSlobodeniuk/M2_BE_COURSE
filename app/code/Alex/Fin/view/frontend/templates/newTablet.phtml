@@ -1,30 +1,23 @@
 <?php
 /** @var \Alex\Fin\Block\Tablets $block */
-/** @var \Alex\Fin\Model\ResourceModel\Tablets\Collection $tabletsCollection */
-
-/**
- * Форматування коду!
- * Відрефакторити action відповідно до того, що я описав у блоках
- *
- * Винести класи в use
- */
 ?>
 
 <h2>Create a new tablet record:</h2>
-<form action="<?php echo $block->CreateTablet(); ?>" method="post">
+<form action="<?= $block->getTabletActionUrl(); ?>" method="post">
     <h5 class="message"><?= __("SKU (5-10 symbols required):") ?></h5>
-    <input name="SKU" type="number" required = "true" minlength="5" maxlength="10">
+    <input name="SKU" type="number" required="true" minlength="5" maxlength="10">
     <h5 class="message"><?= __("Price (3-10 symbols required):") ?></h5>
-    <input name="price" type="number" required = "true" minlength="3" maxlength="10">
+    <input name="price" type="number" required="true" minlength="3" maxlength="10">
     <h5 class="message"><?= __("Descriptions (min 10 symbols required):") ?></h5>
-    <input name="desc" type="text" required = "true" minlength="10">
+    <input name="desc" type="text" required="true" minlength="10">
     <h5 class="message"><?= __("Brand (min 5 symbols required):") ?></h5>
-    <input name="brand" type="text" required = "true" minlength="5" maxlength="60">
+    <input name="brand" type="text" required="true" minlength="5" maxlength="60">
     <h5 class="message"><?= __("Model (min 5 symbols required):") ?></h5>
-    <input name="model" type="text" required = "true" minlength="5" maxlength="60">
+    <input name="model" type="text" required="true" minlength="5" maxlength="60">
     <input type="submit" value="Press to create new tablet">
     <h3 class="message"><?= __("I want to return to this page:") ?></h3>
     <input type="radio" name="stayOrNot">
 </form>
 <a class="read-more" href=" <?= $block->getUrl('fin_route/pendex/index/') ?>">
-    <?= __("To show ALL tablets Recodrs!")?></a>
+    <?= __("To show ALL tablets recodrs!") ?>
+</a>

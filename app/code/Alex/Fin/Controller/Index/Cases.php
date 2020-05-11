@@ -8,6 +8,7 @@ use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
+use Magento\Framework\App\Request\Http;
 
 /**
  * Class Cases
@@ -20,14 +21,22 @@ class Cases extends Action
     private $resultPageFactory;
 
     /**
+     * @var Http
+     */
+    private $request;
+
+    /**
+     * @param Http $request
      * @param Context $context
      * @param PageFactory $resultPageFactory
      */
     public function __construct(
+        Http $request,
         Context $context,
         PageFactory $resultPageFactory
     )
     {
+        $this->request = $request;
         $this->resultPageFactory = $resultPageFactory;
         parent::__construct($context);
     }
@@ -37,26 +46,15 @@ class Cases extends Action
      */
     public function execute()
     {
-        /**
-         * Винести в use
-         */
-        /** @var \Magento\Framework\App\Request\Http $request */
         $request = $this->getRequest();
         $id = $request->getParam('sortparam');
-
-        /**
-         * Форматування коду!
-         */
-        if ($id){
-            /**
-             *  array() - застаріла конструкція, використовувати []
-             */
-        $isInArray = in_array($id, array('color','price','casesku'));
-            if(!$isInArray) {
-                $this->messageManager->addNoticeMessage('Error in sortparam key! Price sorting is apply!');
+        if ($id) {
+            $isInArray = in_array($id, ['color', 'price', 'casesku']);
+            if (!$isInArray) {
+                $this->messageManager->addNoticeMessage('Error in sortparam key! Price sorting is applied!');
             }
         }
 
-       return $this->resultPageFactory->create();
+        return $this->resultPageFactory->create();
     }
 }

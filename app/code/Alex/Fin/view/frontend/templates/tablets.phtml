@@ -1,22 +1,16 @@
 <?php
+
 use Alex\Fin\Model\TabletsModel;
-use Alex\Fin\Api\Data\TabletsInterface;
-use Alex\Fin\Block\Tablets;
+
 /** @var \Alex\Fin\Block\Tablets $block */
 /** @var \Alex\Fin\Model\ResourceModel\Tablets\Collection $tabletsCollection */
 $tabletsCollection = $block->getTabletsCollection();
 $count = 0;
 $quantity = $block->getQuantity();
-
-/**
- * Форматування коду!
- * Відрефакторити action відповідно до того, що я описав у блоках
- * Видалити з use невикористовувані класи
- */
 ?>
 <a class="sort" href=" <?= $block->getUrl('fin_route/index/index',
     ['sort' => $block->getSortParam()]) ?>">
-    <?= __("ASC/DESC by price sorting switch!")?></a>
+    <?= __("ASC/DESC by price sorting switch!") ?></a>
 <table class="data table" id="test-data-table">
     <caption class="table-caption">Test Data</caption>
     <thead>
@@ -34,25 +28,26 @@ $quantity = $block->getQuantity();
     </thead>
     <tbody>
     <?php foreach ($tabletsCollection as $tablet): ?>
-    <?php /** @var TabletsModel $tablet */ ?>
+        <?php /** @var TabletsModel $tablet */ ?>
         <?php if ($count == $quantity): ?>
             <h1 class="message"><?= __("Only $quantity records is shown according to system settings!") ?></h1>
             <a class="read-more" href=" <?= $block->getUrl('fin_route/pendex/index/') ?>">
-                <?= __("To show ALL tablets Recodrs!")?></a>
+                <?= __("To show ALL tablets Recodrs!") ?></a>
             <?php break 1; ?>
         <?php endif ?>
         <tr>
-            <td data-th="Entity" class="col Entity"><?php echo $tablet->getId(); ?></td>
-            <td data-th="id" class="col brand"><?php echo $tablet->getBrand(); ?></td>
-            <td data-th="descriptions" class="col desc"><?php echo $tablet->getDescriptions(); ?></td>
-            <td data-th="date" class="col created_at"><?php echo $tablet->getCreatedAt(); ?></td>
-            <td data-th="sku" class="col sku"><?php echo $tablet->getTabSku(); ?></td>
-            <td data-th="model" class="col model"><?php echo $tablet->getModel(); ?></td>
-            <td data-th="price" class="col price"><?php echo $tablet->getPrice(); ?></td>
-            <td data-th="quant" class="col quant"><?php echo $block->getCasesQunatity($tablet->getTabSku()); ?></td>
+            <td data-th="Entity" class="col Entity"><?= $tablet->getId(); ?></td>
+            <td data-th="id" class="col brand"><?= $tablet->getBrand(); ?></td>
+            <td data-th="descriptions" class="col desc"><?= $tablet->getDescriptions(); ?></td>
+            <td data-th="date" class="col created_at"><?= $tablet->getCreatedAt(); ?></td>
+            <td data-th="sku" class="col sku"><?= $tablet->getTabSku(); ?></td>
+            <td data-th="model" class="col model"><?= $tablet->getModel(); ?></td>
+            <td data-th="price" class="col price"><?= $tablet->getPrice(); ?></td>
+            <td data-th="quant" class="col quant"><?= $block->getCasesQuantity($tablet->getTabSku()); ?></td>
             <td data-th="extra" class="col cases">
                 <a href=" <?= $block->getUrl('fin_route/index/cases',
-                    ['forTabSKU' => $tablet->getTabSku(), 'sort' => '0', 'sortparam' =>'price']) ?>" class="action view">
+                    ['forTabSKU' => $tablet->getTabSku(), 'sort' => '0', 'sortparam' => 'price']) ?>"
+                   class="action view">
                     <span>View Cases Menu</span>
                 </a>
         </tr>
@@ -61,4 +56,4 @@ $quantity = $block->getQuantity();
     </tbody>
 </table>
 <a class="new" href=" <?= $block->getUrl('fin_route/index/newtablet') ?>">
-    <?= __("Press to create a new tablet!")?></a>
+    <?= __("Press to create a new tablet!") ?></a>

@@ -1,33 +1,29 @@
 <?php
-/** @var \Alex\Fin\Block\TabletsCases $block */
-/** @var \Magento\Framework\App\Request\Http $request */
-$request = $this->getRequest();
-$casesku = (int)$request->getParam('casesku');
-$idVerifyed = $block->getCasePresent($casesku);
 
-/**
- * Форматування коду!
- * Відрефакторити action відповідно до того, що я описав у блоках
- *
- * Винести класи в use
- */
+use Magento\Framework\App\Request\Http;
+
+/** @var \Alex\Fin\Block\TabletsCases $block */
+/** @var Http $request */
+$request = $this->getRequest();
+$caseSku = (int)$request->getParam('casesku');
+$idVerified = $block->getCasePresent($caseSku);
 ?>
 
-<?php if($idVerifyed): ?>
-<h2>Delete the record <?=$casesku?></h2>
-<form action="<?php echo $block->deleteCase($casesku); ?>" method="post">
-    <h5 class="message"><?= __("Are you SURE?") ?></h5>
-    <input type="submit" value="Press to delete the case">
-    <input type="hidden" name ="redir" value="1" >
-</form>
-<?php endif ?>
-
-<?php if(!$idVerifyed): ?>
+<?php if ($idVerified): ?>
+    <h2>Delete the record <?= $caseSku ?></h2>
+    <form action="<?= $block->getDeleteCaseAction(); ?>" method="post">
+        <h5 class="message"><?= __("Are you SURE?") ?></h5>
+        <input name="case_sku" type="hidden" value="<?= $caseSku ?>">
+        <input type="submit" value="Press to delete the case">
+    </form>
+<?php else: ?>
     <h5 class="message"><?= __("Invalid link! Please go to the home page and try again!") ?></h5>
     <a class="show" href=" <?= $block->getUrl('fin_route/index/cases/forTabSKU/0') ?>">
-        <?= __("Show All avaible Cases (for ALL tablets!) ->")?></a>
+        <?= __("Show All avaible Cases (for ALL tablets!) ->") ?>
+    </a>
     <br>
     <br>
     <a class="go_back" href=" <?= $block->getUrl('fin_route/index/index/') ?>">
-        <?= __("Go to Tablets records->")?></a>
+        <?= __("Go to Tablets records->") ?>
+    </a>
 <?php endif ?>

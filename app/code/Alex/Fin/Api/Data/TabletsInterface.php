@@ -11,9 +11,6 @@ interface TabletsInterface
 
     const BRAND = 'brand';
 
-    /**
-     * Можна було іменувати так: TAB_SKU = 'tab_sku'
-     */
     const TABSKU = 'tabSKU';
 
     const DESCRIPTIONS = 'descriptions';
@@ -75,9 +72,7 @@ interface TabletsInterface
      */
     public function getPrice();
 
-    ///Setters - це лишнє
-
-    /**
+     /**
      * Set entity id
      *
      * @param int $id

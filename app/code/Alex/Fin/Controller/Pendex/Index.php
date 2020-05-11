@@ -34,7 +34,6 @@ class Index extends Action
     /**
      * @return ResponseInterface|ResultInterface|Page
      */
-
     public function execute()
     {
         return $this->resultPageFactory->create();

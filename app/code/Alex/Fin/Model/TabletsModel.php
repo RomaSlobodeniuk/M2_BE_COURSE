@@ -2,9 +2,9 @@
 
 namespace Alex\Fin\Model;
 
-use Magento\Framework\Model\AbstractModel;
 use Alex\Fin\Api\Data\TabletsInterface;
 use Alex\Fin\Model\ResourceModel\TabletsResource as TabletsResourceModel;
+use Magento\Framework\Model\AbstractModel;
 
 /**
  * Class TabletsModel
@@ -75,8 +75,6 @@ class TabletsModel extends AbstractModel implements TabletsInterface
         return $this->getData(self::PRICE);
     }
 
-    //setters - лишнє
-
     /**
      * {@inheritdoc}
      */
@@ -122,12 +120,12 @@ class TabletsModel extends AbstractModel implements TabletsInterface
      */
     public function setCreatedAt(string $createdAt): TabletsInterface
     {
-        /**
-         * В описі до інтерфейсу немає виключень, а тут може бути
-         * переробити так, щоб не було ніяких не перехвачених виключень
-         */
-        $createdAtObject = new \DateTime($createdAt);
-        return $this->setData(self::CREATED_AT, $createdAtObject->format('Y-m-d H:i:s'));
+        try {
+            $createdAtObject = new \DateTime($createdAt);
+            return $this->setData(self::CREATED_AT, $createdAtObject->format('Y-m-d H:i:s'));
+        } catch (\Exception $e) {
+            return $this->setData(self::CREATED_AT, null);
+        }
     }
 
     /**

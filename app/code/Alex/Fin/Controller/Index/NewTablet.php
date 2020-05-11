@@ -10,9 +10,9 @@ use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
 
 /**
- * Class NewCase
+ * Class NewTablet
  */
-class NewCase extends Action
+class NewTablet extends Action
 {
     /**
      * @var PageFactory
@@ -22,31 +22,29 @@ class NewCase extends Action
     /**
      * @param Context $context
      * @param PageFactory $resultPageFactory
+     * @param array $data
      */
     public function __construct(
         Context $context,
         PageFactory $resultPageFactory
-    )
-    {
-        $this->resultPageFactory = $resultPageFactory;
+    ) {
         parent::__construct($context);
+        $this->resultPageFactory = $resultPageFactory;
     }
 
     /**
      * @return ResponseInterface|ResultInterface|Page
+     * @throws \Magento\Framework\Exception\CouldNotSaveException
      */
     public function execute()
     {
-        /**
-         * Форматування коду!
-         */
         $post = (array)$this->getRequest()->getPost();
         if (!empty($post)) {
-             if (!isset($post['stayOrNot']))
-             {
-            $this->_redirect('fin-route/index/index');
+            if (!isset($post['stayOrNot'])) {
+                $this->_redirect('fin-route/index/index');
             }
         }
-        return  $this->resultPageFactory->create();
+
+        return $this->resultPageFactory->create();
     }
 }

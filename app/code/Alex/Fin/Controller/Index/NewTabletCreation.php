@@ -1,80 +1,77 @@
 <?php
 
-namespace Alex\Fin\Block;
+namespace Alex\Fin\Controller\Index;
 
-use Magento\Framework\Api\SearchCriteriaBuilder;
-use Alex\Fin\Api\TabletsRepositoryInterface;
 use Alex\Fin\Api\Data\TabletsInterface;
 use Alex\Fin\Model\TabletsModelFactory;
-use Magento\Framework\View\Element\Template;
-use Magento\Framework\View\Element\Template\Context;
+use Alex\Fin\Api\TabletsRepositoryInterface;
+use Magento\Framework\App\Action\Action;
+use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Controller\ResultInterface;
+use Magento\Framework\View\Result\Page;
+use Magento\Framework\View\Result\PageFactory;
+use Psr\Log\LoggerInterface;
 
 /**
- * В даному випадку, якщо щось не використовується - я просив це видалити
- *
- * Class NewTablet
- * @package Alex\Fin\Block
+ * Class NewTabletCreation
  */
-class NewTablet extends Template
+class NewTabletCreation extends Action
 {
-    private $tabletsFactory;
     /**
-    @var TabletsRepositoryInterface
+     * @var TabletsFactory
+     */
+    private $tabletsFactory;
+
+    /**
+     * @var TabletsRepositoryInterface
      */
     private $tabletsRepository;
 
     /**
-     *
-     * @var SearchCriteriaBuilder
+     * @var LoggerInterface
      */
-    private $searchCriteriaBuilder;
+    private $logger;
 
     /**
-     * Initialize service
-     *
-     * @param Context $context
-     * @param TabletsRepositoryInterface $tabletsRepository
-     * @param SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param TabletsModelFactory $tabletsFactory
-     * @param array $data
+     * @var PageFactory
      */
+    private $resultPageFactory;
 
+    /**
+     * @param Context $context
+     * @param PageFactory $resultPageFactory
+     * @param LoggerInterface $logger
+     * @param TabletsRepositoryInterface $tabletsRepository
+     * @param TabletsModelFactory $tabletsFactory
+     */
     public function __construct(
         Context $context,
         TabletsRepositoryInterface $tabletsRepository,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
+        LoggerInterface $logger,
         TabletsModelFactory $tabletsFactory,
-        \Magento\Framework\Message\ManagerInterface $messageManager,
-        array $data = []
+        PageFactory $resultPageFactory
     ) {
-        parent::__construct($context, $data);
+        $this->resultPageFactory = $resultPageFactory;
         $this->tabletsRepository = $tabletsRepository;
-        $this->messageManager = $messageManager;
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
+        $this->logger = $logger;
         $this->tabletsFactory = $tabletsFactory;
+        parent::__construct($context);
     }
 
     /**
-     * @param $sku
-     * @param $descriptions
-     * @param $brand
-     * @param $price
-     * @return bool
-     * @throws \Exception
+     * @return ResponseInterface|ResultInterface|Page
      */
-    public function createTablet()
+    public function execute()
     {
         $post = (array)$this->getRequest()->getPost();
-
         if (!empty($post)) {
-            // Retrieve your form data
             $sku = $post['SKU'];
             $desc = $post['desc'];
             $model = $post['model'];
             $brand = $post['brand'];
             $price = $post['price'];
-            $alreadyPresentFlag = $this->tabletsRepository->getPresById($sku);
-
+            $alreadyPresentFlag = $this->tabletsRepository->checkBySku($sku);
             if ($alreadyPresentFlag == false) {
                 /** @var TabletsInterface $tablet */
                 $tablet = $this->tabletsFactory->create();
@@ -84,11 +81,14 @@ class NewTablet extends Template
                 $tablet->setModel($model);
                 $tablet->setPrice($price);
                 $this->tabletsRepository->save($tablet);
-                $this->messageManager->addSuccessMessage('Succesfull tablet creation with SKU :' . $sku);
+                $this->messageManager->addSuccessMessage('Successful tablet creation with SKU :' . $sku);
             } else {
                 $this->messageManager->addErrorMessage('Tablet with entered SKU is already exists! Creation failed!');
             }
-
+        } else {
+            $this->messageManager->addErrorMessage(' Creation failed! No POST Array!');
         }
+
+        return $this->_redirect('fin-route/index/index');
     }
 }
