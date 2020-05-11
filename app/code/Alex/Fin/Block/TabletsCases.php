@@ -17,7 +17,6 @@ use Magento\Framework\Api\SortOrderBuilder;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Framework\Message\ManagerInterface;
-use Magento\Tests\NamingConvention\true\string;
 use Psr\Log\LoggerInterface;
 
 /**
