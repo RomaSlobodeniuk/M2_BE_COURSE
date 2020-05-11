@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">slayer_mobile_manufacturers_form.manufacturers_form_data_source</item>
+        </item>
+        <item name="label" xsi:type="string" translate="true">Manufacturers Information</item>
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
+    </argument>
+    <settings>
+        <buttons>
+            <button name="save_and_continue" class="Slayer\Mobile\Block\Adminhtml\Buttons\ManufacturerSaveAndContinueButton"/>
+            <button name="save" class="Slayer\Mobile\Block\Adminhtml\Buttons\ManufacturerSaveButton"/>
+            <button name="delete" class="Slayer\Mobile\Block\Adminhtml\Buttons\ManufacturerDeleteButton"/>
+            <button name="back" class="Slayer\Mobile\Block\Adminhtml\Buttons\ManufacturerBackButton"/>
+        </buttons>
+        <namespace>slayer_mobile_manufacturers_form</namespace>
+        <dataScope>data</dataScope>
+        <deps>
+            <dep>slayer_mobile_manufacturers_form.manufacturers_form_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="manufacturers_form_data_source">
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+        <settings>
+            <submitUrl path="mobile_admin/manufacturers/save"/>
+        </settings>
+        <dataProvider class="Slayer\Mobile\Model\Manufacturers\DataProvider" name="manufacturers_form_data_source">
+            <settings>
+                <requestFieldName>entity_id</requestFieldName>
+                <primaryFieldName>entity_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <fieldset name="general">
+        <settings>
+            <label/>
+        </settings>
+        <field name="entity_id" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">manufacturers</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <visible>false</visible>
+                <dataScope>entity_id</dataScope>
+            </settings>
+        </field>
+        <field name="name" sortOrder="20" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">manufacturers</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                    <rule name="no-whitespace" xsi:type="boolean">false</rule>
+                    <rule name="max_text_length" xsi:type="number">128</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Name</label>
+                <dataScope>name</dataScope>
+            </settings>
+        </field>
+        <field name="director" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">manufacturers</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                    <rule name="no-whitespace" xsi:type="boolean">false</rule>
+                    <rule name="max_text_length" xsi:type="number">128</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="false">Director</label>
+                <dataScope>director</dataScope>
+            </settings>
+        </field>
+        <field name="phone" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">manufacturers</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="no-whitespace" xsi:type="boolean">false</rule>
+                    <rule name="max_text_length" xsi:type="number">20</rule>
+                    <rule name="validate-number" xsi:type="boolean">true</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Phone</label>
+                <dataScope>phone</dataScope>
+            </settings>
+        </field>
+        <field name="email" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">manufacturers</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="validate-email" xsi:type="boolean">true</rule>
+                    <rule name="no-whitespace" xsi:type="boolean">true</rule>
+                    <rule name="max_text_length" xsi:type="number">64</rule>
+                    <rule name="required-entry" xsi:type="boolean">false</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="false">Email</label>
+                <dataScope>email</dataScope>
+            </settings>
+        </field>
+        <field name="foundation_date" formElement="input">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">manufacturers</item>
+                </item>
+            </argument>
+            <settings>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">false</rule>
+                    <rule name="max_text_length" xsi:type="number">64</rule>
+                </validation>
+                <dataType>text</dataType>
+                <label translate="true">Foundation Date</label>
+                <dataScope>foundation_date</dataScope>
+            </settings>
+        </field>
+    </fieldset>
+</form>

@@ -3,24 +3,17 @@
 namespace Slayer\Mobile\Model;
 
 use Magento\Framework\Api\SearchResults;
-
-/**
- * Ніде по класу не використовується
- */
-use Magento\Framework\Api\SearchResultsInterface;
-
 use Magento\Framework\Api\SearchResultsInterfaceFactory;
 use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
 use Magento\Framework\Exception\CouldNotDeleteException;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Slayer\Mobile\Api\ManufacturerRepositoryInterface;
 use Slayer\Mobile\Api\Data\ManufacturerInterface;
-use Slayer\Mobile\Model\ManufacturerModelFactory;
+use Slayer\Mobile\Api\ManufacturerRepositoryInterface;
+use Slayer\Mobile\Model\ResourceModel\Manufacturer as ManufacturerResource;
 use Slayer\Mobile\Model\ResourceModel\Manufacturer\Collection;
 use Slayer\Mobile\Model\ResourceModel\Manufacturer\CollectionFactory as ManufacturerCollectionFactory;
-use Slayer\Mobile\Model\ResourceModel\Manufacturer as ManufacturerResource;
 
 /**
  * Class ManufacturerRepository

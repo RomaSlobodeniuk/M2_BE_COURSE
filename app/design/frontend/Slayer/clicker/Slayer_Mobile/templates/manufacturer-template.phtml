@@ -9,12 +9,13 @@ use Slayer\Mobile\ViewModel\MobileViewModel;
 $blockName = $block->getNameInLayout();
 
 /** @var MobileViewModel $viewModel */
-$viewModel = $block->getData('view_model');
+$viewModel = $block->getData('manufacturers_count');
+
 $manufacturersCount = $viewModel->showManufacturersCountPerPage();
 
 /**@var ManufacturerInterface[] $manufacturers */
 $manufacturers = $block->getManufacturers();
-$sort = $block->changeSortOrder();
+$sortOrder = $block->changeSortOrder();
 ?>
 
 <h1 class="manufacturer-block-name"><?= $blockName ?>!</h1>
@@ -33,6 +34,7 @@ $sort = $block->changeSortOrder();
             <option class="last-option" value="0"><?= __('no') ?><?= __(' manufacturers ') ?></option>
         </select>
         <h3 class="manufacturers-list-placeholder"><?= __('Before setting up, pls check this setting in admin panel') ?></h3>
+
         <script type="text/x-magento-init">
         {
             "*": {
@@ -49,18 +51,21 @@ $sort = $block->changeSortOrder();
         </script>
 
         <?php if (!empty($manufacturers)): ?>
-
-            <?php if ($sort == 1) {
-                $manufacturers = array_slice($manufacturers, 0, $manufacturersCount);
-            } else {
-                $manufacturers = array_slice($manufacturers, -$manufacturersCount, $manufacturersCount);
-            }
+            <!-- This logic is needed for sorting in alphabetical order, DEPENDING on the number of entries set from
+                the admin panel "Stores->Configuration->Mobile Configuration->Settings"
+                $manufacturersCount is COUNT of records (raws from mobile_manufacturer_table) -->
+            <?php
+//            if ($sortOrder == 'desc') {
+//                $manufacturers = array_slice($manufacturers, 0, $manufacturersCount);
+//            } else {
+//                $manufacturers = array_slice($manufacturers, -$manufacturersCount, $manufacturersCount);
+//            }
             ?>
 
-            <a class="manufacturer-name-sorter" href="<?= $block->getUrl('mobile',
-            ['sort' => $block->changeSortOrder()]) ?>"><?= __("ASC/DESC sort by NAME") ?></a>
-    </div>
+        <a class="manufacturer-name-sorter" href="<?= $block->getUrl('mobile', ['sort' => $sortOrder ? $block->changeSortOrder() : 'asc']) ?>"><?= $block->changeSortOrder(); ?></a>
 
+
+    </div>
         <?php foreach ($manufacturers as $manufacturer): ?>
             <?php /** @var ManufacturerModel $manufacturer */ ?>
             <div class="manufacturer sorting-item">

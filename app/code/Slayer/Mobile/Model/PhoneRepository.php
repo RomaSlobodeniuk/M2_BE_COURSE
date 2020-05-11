@@ -2,14 +2,9 @@
 
 namespace Slayer\Mobile\Model;
 
-use Magento\Framework\Api\SearchResults;
-
-/**
- * Ніде по класу не використовується
- */
-use Magento\Framework\Api\SearchResultsInterface;
-use Magento\Framework\Api\SearchResultsInterfaceFactory;
 use Magento\Framework\Api\SearchCriteriaInterface;
+use Magento\Framework\Api\SearchResults;
+use Magento\Framework\Api\SearchResultsInterfaceFactory;
 use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
 use Magento\Framework\Exception\CouldNotDeleteException;
 use Magento\Framework\Exception\CouldNotSaveException;
@@ -17,9 +12,9 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Slayer\Mobile\Api\PhoneRepositoryInterface;
 use Slayer\Mobile\Api\Data\PhoneInterface;
 use Slayer\Mobile\Model\PhoneModelFactory;
+use Slayer\Mobile\Model\ResourceModel\Phone as PhoneResource;
 use Slayer\Mobile\Model\ResourceModel\Phone\Collection;
 use Slayer\Mobile\Model\ResourceModel\Phone\CollectionFactory as PhoneCollectionFactory;
-use Slayer\Mobile\Model\ResourceModel\Phone as PhoneResource;
 
 /**
  * Class PhoneRepository

@@ -2,18 +2,13 @@
 
 namespace Slayer\Mobile\Block;
 
-/**
- * Цей клас ніде не використовується тут, видалити треба
- */
-use Magento\Catalog\Model\Product\ProductList\Toolbar as ToolbarModel;
-
-use Magento\Framework\App\Request\Http;
 use Magento\Framework\Api\SearchCriteria;
 use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SearchResultsInterface;
 use Magento\Framework\Api\SortOrder;
 use Magento\Framework\Api\SortOrderBuilder;
+use Magento\Framework\App\Request\Http;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
 use Slayer\Mobile\Api\Data\ManufacturerInterface;
@@ -21,7 +16,6 @@ use Slayer\Mobile\Api\Data\PhoneInterface;
 use Slayer\Mobile\Api\ManufacturerRepositoryInterface;
 use Slayer\Mobile\Model\ResourceModel\Manufacturer\Collection as ManufacturerCollection;
 use Slayer\Mobile\Model\ResourceModel\Manufacturer\CollectionFactory as ManufacturerCollectionFactory;
-use Slayer\Mobile\Model\ManufacturerModel;
 use Slayer\Mobile\ViewModel\MobileViewModel;
 
 /**
@@ -98,37 +92,32 @@ class Manufacturer extends Template
      */
     protected function _prepareLayout()
     {
-        /**
-         * Закоментований код повинен був бути видалений :)
-         */
-//        if ($this->manufacturerCollection === null) {
-//            $this->manufacturerCollection = $this->manufacturerCollectionFactory->create();
-//            $this->manufacturerCollection->setOrder(ManufacturerModel::NAME, 'ASC');
-//        }
-
         /** @var Http $request */
         $request = $this->getRequest();
-        $sort = (int)$request->getParam(ManufacturerModel::SORT);
+        $direction = (string)$request->getParam('sort');
+//        $count = $this->viewModel->showManufacturersCountPerPage();
+
         if ($this->manufacturers === null) {
             $this->manufacturers = [];
             try {
-                if ($sort != 1) {
-                    /** @var SortOrder $sortOrder */
-                    $sortOrder = $this->sortOrderBuilder
-                    ->setField(ManufacturerInterface::NAME)
-                    ->setDirection(SortOrder::SORT_ASC)
-                    ->create();
-                } else {
+                if ($direction === 'desc') {
                     /** @var SortOrder $sortOrder */
                     $sortOrder = $this->sortOrderBuilder
                         ->setField(ManufacturerInterface::NAME)
                         ->setDirection(SortOrder::SORT_DESC)
+                        ->create();
+                } else {
+                    /** @var SortOrder $sortOrder */
+                    $sortOrder = $this->sortOrderBuilder
+                        ->setField(ManufacturerInterface::NAME)
+                        ->setDirection(SortOrder::SORT_ASC)
                         ->create();
                 }
 
                 /** @var SearchCriteria|SearchCriteriaInterface $searchCriteria */
                 $searchCriteria = $this->searchCriteriaBuilder
                     ->addSortOrder($sortOrder)
+//                    ->setPageSize($count)
                     ->create();
 
                 /** @var SearchResultsInterface $searchResults */
@@ -149,17 +138,16 @@ class Manufacturer extends Template
     }
 
     /**
-     * Цей метод ніде не використовується, видалити
-     *
-     * @return int
+     * @return string
      */
     public function changeSortOrder()
     {
-        $param = (int)$this->getRequest()->getParam(ManufacturerModel::SORT);
-        if ($param == 1) {
-            return 0;
+        /** @var Http $request */
+        $direction = (string)$this->getRequest()->getParam('sort');
+        if ($direction === 'desc') {
+            return  'asc';
         } else {
-            return 1;
+            return  'desc';
         }
     }
 
@@ -172,8 +160,6 @@ class Manufacturer extends Template
     }
 
     /**
-     * Цей метод ніде не використовується, видалити
-     *
      * @return ManufacturerInterface[]|null
      */
     public function getManufacturers()
@@ -182,8 +168,6 @@ class Manufacturer extends Template
     }
 
     /**
-     * Цей метод ніде не використовується, видалити
-     *
      * @param string|int $id
      * @return string
      */
@@ -195,5 +179,15 @@ class Manufacturer extends Template
                 PhoneInterface::MANUFACTURER_ID => $id
             ]
         );
+    }
+
+    public function getCacheKeyInfo()
+    {
+        return parent::getCacheKeyInfo();
+    }
+
+    public function getCacheKey()
+    {
+        return parent::getCacheKey();
     }
 }

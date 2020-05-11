@@ -20,10 +20,6 @@ class ManufacturerModel extends AbstractModel implements ManufacturerInterface
     }
 
     /**
-     * GETTERS - це не обов'язково
-     */
-
-    /**
      * {@inheritdoc}
      */
     public function getId()

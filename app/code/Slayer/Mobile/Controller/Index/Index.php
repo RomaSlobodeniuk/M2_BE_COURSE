@@ -9,6 +9,7 @@ use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
+use Magento\Framework\View\Element\Template;
 
 /**
  * Class Index
@@ -16,8 +17,6 @@ use Magento\Framework\View\Result\PageFactory;
 class Index extends Action
 {
     /**
-     * Це для чого тут цей коментар? Загубився :)
-     *
      * @param Context $context
      * @param PageFactory $resultPageFactory
      */
@@ -27,6 +26,15 @@ class Index extends Action
      */
     public function execute()
     {
-        return $this->resultFactory->create(ResultFactory::TYPE_PAGE);
+        $sortDirection = $this->getRequest()->getParam('sort');
+        if ($sortDirection === "" || $sortDirection == null) {
+            $sortDirection = 'asc';
+        }
+
+        $page = $this->resultFactory->create(ResultFactory::TYPE_PAGE);
+        /** @var Template $block */
+        $block = $page->getLayout()->getBlock('manufacturer.block');
+        $block->setData('sort', $sortDirection);
+        return $page;
     }
 }

@@ -16,7 +16,7 @@ abstract class Index extends BackendAction implements HttpGetActionInterface
     /**
      * {@inheritdoc}
      */
-    const ADMIN_RESOURCE = 'Slayer_Mobile::slayer_manage_manufacturers';
+    const ADMIN_RESOURCE = 'Slayer_Mobile::manage_manufacturers';
 
     /**
      * @var PageFactory

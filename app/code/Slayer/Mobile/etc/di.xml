@@ -20,34 +20,32 @@
         </arguments>
     </type>
 
-    <!-- Закоментований код повинен бути видалений! -->
-
-    <!--<type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
         <arguments>
             <argument name="collections" xsi:type="array">
-                <item name="slayer_test_listing_data_source" xsi:type="string">Slayer\Mobile\Model\ResourceModel\Orders\Grid\Collection</item>
+                <item name="slayer_mobile_manufacturers_listing_data_source" xsi:type="string">Slayer\Mobile\Model\ResourceModel\Manufacturers\Grid\Collection</item>
             </argument>
         </arguments>
         <arguments>
             <argument name="collections" xsi:type="array">
-                <item name="slayer_test_customers_listing_data_source" xsi:type="string">Slayer\Mobile\Model\ResourceModel\Customers\Grid\Collection</item>
+                <item name="slayer_mobile_phones_listing_data_source" xsi:type="string">Slayer\Mobile\Model\ResourceModel\Phones\Grid\Collection</item>
             </argument>
         </arguments>
-    </type>-->
-    <!--<virtualType name="Slayer\Test\Model\ResourceModel\Orders\Grid\Collection" type="Slayer\Test\Model\ResourceModel\GridCollectionUniversal">
+    </type>
+    <virtualType name="Slayer\Mobile\Model\ResourceModel\Manufacturers\Grid\Collection" type="Slayer\Mobile\Model\ResourceModel\ManufacturersGridCollection">
         <arguments>
-            <argument name="mainTable" xsi:type="string">my_orders_table</argument>
-            <argument name="eventPrefix" xsi:type="string">slayer_test_grid_collection</argument>
-            <argument name="eventObject" xsi:type="string">slayer_test_collection</argument>
-            <argument name="resourceModel" xsi:type="string">Slayer\Test\Model\ResourceModel\Order</argument>
+            <argument name="mainTable" xsi:type="string">mobile_manufacturer_table</argument>
+            <argument name="eventPrefix" xsi:type="string">slayer_mobile_manufacturers_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">slayer_mobile_manufacturers_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Slayer\Mobile\Model\ResourceModel\Manufacturer</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Slayer\Test\Model\ResourceModel\Customers\Grid\Collection" type="Slayer\Test\Model\ResourceModel\CustomersGridCollection">
+    <virtualType name="Slayer\Mobile\Model\ResourceModel\Phones\Grid\Collection" type="Slayer\Mobile\Model\ResourceModel\PhonesGridCollection">
         <arguments>
-            <argument name="mainTable" xsi:type="string">my_customers_table</argument>
-            <argument name="eventPrefix" xsi:type="string">slayer_test_customers_grid_collection</argument>
-            <argument name="eventObject" xsi:type="string">slayer_test_customers_collection</argument>
-            <argument name="resourceModel" xsi:type="string">Slayer\Test\Model\ResourceModel\Customer</argument>
+            <argument name="mainTable" xsi:type="string">mobile_phone_table</argument>
+            <argument name="eventPrefix" xsi:type="string">slayer_mobile_phones_grid_collection</argument>
+            <argument name="eventObject" xsi:type="string">slayer_mobile_phones_collection</argument>
+            <argument name="resourceModel" xsi:type="string">Slayer\Mobile\Model\ResourceModel\Phone</argument>
         </arguments>
-    </virtualType>-->
+    </virtualType>
 </config>

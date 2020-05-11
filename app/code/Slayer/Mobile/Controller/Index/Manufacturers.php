@@ -16,8 +16,6 @@ use Magento\Framework\View\Result\PageFactory;
 class Manufacturers extends Action
 {
     /**
-     * Те ж саме запитання
-     *
      * @param Context $context
      * @param PageFactory $resultPageFactory
      */

@@ -224,17 +224,7 @@ class PhoneModel extends AbstractModel implements PhoneInterface
      */
     public function setCreatedAt(string $createdAt): PhoneInterface
     {
-        try {
-            $createdAtObject = new \DateTime($createdAt);
-            return $this->setData(self::CREATED_AT, $createdAtObject->format('Y-m-d H:i:s'));
-        } catch (\Exception $exception) {
-            $this->_logger->debug($exception);
-
-            /**
-             * В даному методі ти обіцяєш щось повернути, а саме `PhoneInterface`,
-             * але коли в тебе вистрелює виключення, то тут ти ніц нічого не повертаєш.
-             * А це сумно :(
-             */
-        }
+        $createdAtObject = new \DateTime($createdAt);
+        return $this->setData(self::CREATED_AT, $createdAtObject->format('Y-m-d H:i:s'));
     }
 }

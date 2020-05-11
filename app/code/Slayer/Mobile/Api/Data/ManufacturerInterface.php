@@ -14,7 +14,6 @@ interface ManufacturerInterface
     const EMAIL = 'email';
     const ADDRESS = 'address';
     const FOUNDATION_DATE = 'foundation_date';
-    const SORT = 'sort';
 
     /**
      * Get entity id
