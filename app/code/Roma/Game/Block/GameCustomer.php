@@ -78,17 +78,17 @@ class GameCustomer extends Template
      * @param CreateEvents $event
      * @param array $data
      */
-    public function __construct(Context $context,
-                                GameCustomerCollectionFactory $gameCustomerCollectionFactory,
-                                SearchCriteriaBuilder $searchCriteriaBuilder,
-                                GameCustomerRepositoryInterface $gameCustomerRepository,
-                                SortOrderBuilder $sortOrderBuilder,
-                                LoggerInterface $logger,
-                                GetConfig $config,
-                                CreateEvents $event,
-                                array $data = []
-    )
-    {
+    public function __construct(
+        Context $context,
+        GameCustomerCollectionFactory $gameCustomerCollectionFactory,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        GameCustomerRepositoryInterface $gameCustomerRepository,
+        SortOrderBuilder $sortOrderBuilder,
+        LoggerInterface $logger,
+        GetConfig $config,
+        CreateEvents $event,
+        array $data = []
+    ) {
         parent::__construct($context, $data);
         $this->gameCustomerCollectionFactory = $gameCustomerCollectionFactory;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -122,7 +122,7 @@ class GameCustomer extends Template
         } catch (\Exception $exception) {
             $this->logger->debug('Cannot get sort direction and sort filed, message: "' . $exception->getMessage() . '"');
         }
-        
+
         if ($this->gameCustomerCollection === null) {
             $sortOrder = $this->sortOrderBuilder
                 ->setField($gameCustomerSortFiled)
