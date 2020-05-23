@@ -87,12 +87,13 @@ class Engines extends Template
             $this->engines = [];
 
             try {
-                if ($this->additionInfo->getAdminSetting() === 0) {
-                    // Custom filter
-                    $request = $this->getRequest();
-                    $sortType = (string)$request->getParam('sortType');
-                    $sortField = (string)$request->getParam('sortField');
+                // Custom filter
+                $request = $this->getRequest();
+                $sortType = (string)$request->getParam('sortType');
+                $sortField = (string)$request->getParam('sortField');
+                $useAdmin = (bool)$this->additionInfo->getAdminSetting();
 
+                if (!$useAdmin && !empty($sortField) && !empty($sortType)) {
                     /** @var SortOrder $sortOrder */
                     $sortOrder = $this->sortOrderBuilder
                         ->setField($sortField)

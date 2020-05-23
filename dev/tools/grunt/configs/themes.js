@@ -31,7 +31,7 @@ module.exports = {
         ],
         dsl: 'less'
     },
-    custom: {
+    my: {
         area: 'frontend',
         name: 'Custom/example',
         locale: 'en_US',

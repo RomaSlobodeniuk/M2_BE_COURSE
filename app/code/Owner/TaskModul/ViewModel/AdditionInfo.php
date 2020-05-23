@@ -71,7 +71,7 @@ class AdditionInfo implements ArgumentInterface
     {
         $result = 0;
         try {
-            $result = (int)$this->scopeConf->getValue(self::USE_ADMIN_SORT_SETTING, self::SCOPE_TYPE);
+            $result = (int)$this->scopeConf->isSetFlag(self::USE_ADMIN_SORT_SETTING, self::SCOPE_TYPE);
         } catch (\Exception $exception) {
             // log exception...
         }
