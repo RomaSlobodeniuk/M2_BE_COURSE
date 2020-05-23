@@ -55,9 +55,7 @@ interface CarRepositoryInterface
      * Delete Car by id
      *
      * @param int $carId
-     * @return bool true on success
-     * @throws NoSuchEntityException
-     * @throws LocalizedException
+     * @return mixed
      */
-    public function deleteById(int $carId): bool;
+    public function deleteById(int $carId);
 }

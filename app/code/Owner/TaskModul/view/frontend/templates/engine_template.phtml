@@ -25,66 +25,82 @@ $number_element = 0;
                 <label for="sortField"><?= __('Choose field for sort:') ?></label>
                 <select id="sortField" name="sortField">
                     <?php foreach ($engineColumns as $key => $field): ?>
-                        <option  value="<?=$key?>"><?= __($field) ?></option>
+                        <option  value="<?= $key ?>"><?= __($field) ?></option>
                     <?php endforeach; ?>
                 </select>
                 <label for="sortType"><?= __('Sort type:') ?></label>
                 <select id="sortType" name="sortType">
-                    <option value="ASC"><?=__('ASC')?></option>
-                    <option value="DESC"><?=__('DESC')?></option>
+                    <option value="ASC"><?= __('ASC') ?></option>
+                    <option value="DESC"><?= __('DESC') ?></option>
                 </select>
-                <button type="submit"><?= __('Use filter') ?></button>
+                <?php if($viewModel->getAdminSetting() === 0): ?>
+                    <button  type="submit"><?= __('Use filter') ?></button>
+                <?php else: ?>
+                    <p style="color: red; font-size: small; margin: 15px"><?= __('Using admin setting filter!')?></p>
+                <?php endif; ?>
             </form>
         </div>
     </div>
-    <h1>
-        <?= __('Sorting type: %1. From Admin', $viewModel->useSort()) ?>
-    </h1>
-    <h1>
-        <?= __('List size: %1. From Admin', $viewModel->getNumberRecord()) ?>
-    </h1>
-    <?php if ($engines): ?>
-        <?php foreach ($engines as $item): ?>
-            <?php
-                if ($number_element == $viewModel->getNumberRecord()) {
-                    continue;
-                }
 
-                $number_element++;
-            ?>
-            <?php
-                /**
-                 * @var EngineModel  $item
-                 */
-            ?>
-            <div class="car-id-<?= $item->getId() ?>">
-                <h4 class="name">
-                    <?= __('Manufacturer: %1', $item->getManufacturer()) ?>
-                </h4>
-                <h4 class="user_id">
-                    <?= __('Win: %1', $item->getWin()) ?>
-                </h4>
-                <h4 class="description">
-                    <?= __('Power: %1', $item->getPower()) ?>
-                </h4>
-                <h4 class="price">
-                    <?= __('Volume: %1', $item->getVolume())  ?>
-                </h4>
-                <h4 class="price">
-                    <?= __('Years: %1', $item->getYears())  ?>
-                </h4>
-                <h5 class="created_at">
-                    <?= __('Created at: %1', $item->getCreatedAt())?>
-                </h5>
-                    <a class="btn btn-success"
-                       href="<?= $block->getUrl('route_last/index/car', ['engine_id' => $item->getId()] ) ?>">
-                        <?= __('Look at cars') ?>
-                    </a>
-            </div>
-            <hr><br>
-        <?php endforeach; ?>
+    <?php if($engines): ?>
+        <table>
+            <thead>
+                <tr class="border-style thead-style">
+                    <th scope="col"><?= __('Entity id') ?></th>
+                    <th scope="col"><?= __('Manufacturer') ?></th>
+                    <th scope="col"><?= __('Win') ?></th>
+                    <th scope="col"><?= __('Power') ?></th>
+                    <th scope="col"><?= __('Volume') ?></th>
+                    <th scope="col"><?= __('Years') ?></th>
+                    <th scope="col"><?= __('Created at' )?></th>
+                    <th scope="col"><?= __('Actions') ?></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($engines as $item): ?>
+                    <?php
+                    if ($viewModel->getAdminSetting() === 1 &&
+                        $number_element == $viewModel->getNumberRecord()
+                    ) {
+                        continue;
+                    }
+
+                    $number_element++;
+
+                    /**
+                     * @var EngineModel  $item
+                     */
+                    ?>
+                <tr class="engine-row border-style" id="carId-<?= $item->getId() ?>"
+                    onclick="document.location.href  = '<?= $block->getUrl('route_last/index/car',
+                        ['engine_id' => $item->getId()])?>' ">
+                    <th><?= $item->getId() ?></th>
+                    <th><?= $item->getManufacturer() ?></th>
+                    <th><?= $item->getWin() ?></th>
+                    <th><?= $item->getPower() ?></th>
+                    <th><?= $item->getVolume() ?></th>
+                    <th><?= $item->getYears() ?></th>
+                    <th><?= $item->getCreatedAt() ?></th>
+                    <th>
+                        <a class="engine-delete" style="margin-right: 15px; font-size: large; color: red"
+                            href="<?= $block->getUrl('route_last/index/deleteengine',
+                                ['_current' => true,
+                                '_query' =>
+                                    [
+                                        'engine_id' => $item->getId()
+                                    ]
+                                ])?>">X</a>
+                    </th>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
     <?php else: ?>
-        <div><p> <?= __('List of engines is empty') ?></p></div>
+        <div>
+            <h1 style="color: red;">
+                <?= __('List of engines is empty') ?>
+            </h1>
+        </div>
     <?php endif; ?>
 </div>
 

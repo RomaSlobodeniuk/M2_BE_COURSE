@@ -95,6 +95,7 @@ class CarRepository implements CarRepositoryInterface
         if (!$car->getId()) {
             throw new NoSuchEntityException(__('Car (`%1`) does not exist.', $carId));
         }
+
         return $car;
     }
 
@@ -133,8 +134,13 @@ class CarRepository implements CarRepositoryInterface
     /**
      * {@inheritDoc}
      */
-    public function deleteById(int $carId): bool
+    public function deleteById(int $carId)
     {
-        return $this->delete($this->getById($carId));
+        try {
+            $this->delete($this->getById($carId));
+            return 'Car was deleted successfully!';
+        } catch (\Exception $exception) {
+            return $exception->getMessage();
+        }
     }
 }

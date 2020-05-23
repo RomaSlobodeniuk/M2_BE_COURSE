@@ -6,6 +6,10 @@ use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 use Owner\TaskModul\Model\CarModel;
 use Owner\TaskModul\Model\ResourceModel\CarResource;
 
+/**
+ * Class Collection
+ * @package Owner\TaskModul\Model\ResourceModel\Car
+ */
 class Collection extends AbstractCollection
 {
     /**

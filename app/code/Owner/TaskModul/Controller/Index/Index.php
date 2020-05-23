@@ -15,7 +15,6 @@ use Magento\Framework\View\Result\Page;
  */
 class Index extends Action
 {
-
     /**
      * @var PageFactory
      */
@@ -38,7 +37,6 @@ class Index extends Action
      */
     public function execute()
     {
-        $page = $this->resultPageFactory->create();
-        return $page;
+        return $this->resultPageFactory->create();
     }
 }

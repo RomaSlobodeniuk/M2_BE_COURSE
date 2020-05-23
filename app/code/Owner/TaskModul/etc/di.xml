@@ -8,4 +8,10 @@
                 type="Owner\TaskModul\Model\Repository\CarRepository"/>
     <preference for="Owner\TaskModul\Api\RepositoryInterface\EngineRepositoryInterface"
                 type="Owner\TaskModul\Model\Repository\EngineRepository"/>
+
+    <preference for="Owner\TaskModul\Api\ServiceInterface\EngineServiceInterface"
+                type="Owner\TaskModul\Model\Service\EngineService"/>
+
+    <preference for="Owner\TaskModul\Api\ServiceInterface\CarServiceInterface"
+                type="Owner\TaskModul\Model\Service\CarService"/>
 </config>

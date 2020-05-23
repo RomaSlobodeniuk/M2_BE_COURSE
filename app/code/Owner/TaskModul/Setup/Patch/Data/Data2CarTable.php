@@ -4,6 +4,9 @@ namespace Owner\TaskModul\Setup\Patch\Data;
 
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\Patch\DataPatchInterface;
+use Owner\TaskModul\Api\Data\CarInterface;
+use Owner\TaskModul\Api\Data\CarInterfaceFactory;
+use Owner\TaskModul\Api\RepositoryInterface\CarRepositoryInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -12,12 +15,20 @@ use Psr\Log\LoggerInterface;
  */
 class Data2CarTable implements DataPatchInterface
 {
-    const MODEL_CAR = 'model_car';
-
     /**
      * @var ModuleDataSetupInterface
      */
     private $moduleDataSetup;
+
+    /**
+     * @var CarRepositoryInterface
+     */
+    private $carRepository;
+
+    /**
+     * @var CarInterfaceFactory
+     */
+    private $carFactory;
 
     /**
      * @var LoggerInterface
@@ -26,13 +37,19 @@ class Data2CarTable implements DataPatchInterface
 
     /**
      * @param ModuleDataSetupInterface $moduleDataSetup
+     * @param CarRepositoryInterface $carRepository
+     * @param CarInterfaceFactory $carFactory
      * @param LoggerInterface $logger
      */
     public function __construct(
         ModuleDataSetupInterface $moduleDataSetup,
+        CarRepositoryInterface $carRepository,
+        CarInterfaceFactory $carFactory,
         LoggerInterface $logger
     ) {
         $this->moduleDataSetup = $moduleDataSetup;
+        $this->carRepository = $carRepository;
+        $this->carFactory = $carFactory;
         $this->logger = $logger;
     }
 
@@ -87,13 +104,18 @@ class Data2CarTable implements DataPatchInterface
         ];
 
         try {
-            $connection = $this->moduleDataSetup->getConnection();
             foreach ($data as $row) {
-                $connection->insert(self::MODEL_CAR, $row);
+                /** @var CarInterface $car */
+                $car = $this->carFactory->create();
+                $car->setBrand($row['brand'])
+                    ->setModel($row['model'])
+                    ->setEngineId($row['engine_id'])
+                    ->setPrice($row['price'])
+                    ->setYears($row['years']);
+                $this->carRepository->save($car);
             }
-        }
-        catch (\Exception $exception){
-            $this->logger->debug('Problem with insert date.' . $exception->getMessage() );
+        } catch (\Exception $exception){
+            $this->logger->debug('Problem with saving data: ' . $exception->getMessage() );
         }
 
         $this->moduleDataSetup->endSetup();

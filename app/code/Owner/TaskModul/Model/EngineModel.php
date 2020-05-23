@@ -133,6 +133,4 @@ class EngineModel extends AbstractModel implements EngineInterface
         $created_date = new \DateTime($created_At);
         return $this->setData(self::CREATED_AT, $created_date->format('Y-m-d H:i:s'));
     }
-
-
 }

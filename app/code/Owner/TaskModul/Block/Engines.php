@@ -2,7 +2,6 @@
 
 namespace Owner\TaskModul\Block;
 
-use Psr\Log\LoggerInterface;
 use Magento\Framework\Api\SortOrder;
 use Magento\Framework\Api\SortOrderBuilder;
 use Magento\Framework\Api\Search\SearchResult;
@@ -11,8 +10,7 @@ use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
-use Owner\TaskModul\Model\ResourceModel\Engine\Collection;
-use Owner\TaskModul\Model\ResourceModel\Engine\CollectionFactory;
+use Owner\TaskModul\Api\Data\EngineInterface;
 use Owner\TaskModul\Api\RepositoryInterface\EngineRepositoryInterface;
 use Owner\TaskModul\ViewModel\AdditionInfo;
 
@@ -22,16 +20,10 @@ use Owner\TaskModul\ViewModel\AdditionInfo;
  */
 class Engines extends Template
 {
-    const SORT_TYPE_DEFAULT = 'ASC';
     const SORT_FIELD_DEFAULT = 'created_at';
 
     /**
-     * @var CollectionFactory
-     */
-    private $engineCollectionFactory;
-
-    /**
-     * @var Collection|null
+     * @var EngineInterface[]|[]|null
      */
     private $engines;
 
@@ -56,14 +48,7 @@ class Engines extends Template
     private $additionInfo;
 
     /**
-     * @var LoggerInterface
-     */
-    protected $_logger;
-
-    /**
      * @param Context $context
-     * @param LoggerInterface $logger
-     * @param CollectionFactory $engineCollectionFactory
      * @param EngineRepositoryInterface $engineRepository
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param SortOrderBuilder $sortOrderBuilder
@@ -72,8 +57,6 @@ class Engines extends Template
      */
     public function __construct(
         Context $context,
-        LoggerInterface $logger,
-        CollectionFactory $engineCollectionFactory,
         EngineRepositoryInterface $engineRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         SortOrderBuilder $sortOrderBuilder,
@@ -81,8 +64,6 @@ class Engines extends Template
         array $data = []
     ) {
         parent::__construct($context, $data);
-        $this->_logger = $logger;
-        $this->engineCollectionFactory = $engineCollectionFactory;
         $this->engineRepository = $engineRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->sortOrderBuilder = $sortOrderBuilder;
@@ -98,46 +79,59 @@ class Engines extends Template
     }
 
     /**
-     * @return Template
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @inheritDoc
      */
     protected function _prepareLayout()
     {
         if ($this->engines === null) {
+            $this->engines = [];
 
             try {
-                $request = $this->getRequest();
-                $sortType = (string)$request->getParam('sortType');
-                $sortField = (string)$request->getParam('sortField');
+                if ($this->additionInfo->getAdminSetting() === 0) {
+                    // Custom filter
+                    $request = $this->getRequest();
+                    $sortType = (string)$request->getParam('sortType');
+                    $sortField = (string)$request->getParam('sortField');
 
-                /** @var SortOrder $sortOrder */
-                $sortOrder = $this->sortOrderBuilder
-                    ->setField($sortField)
-                    ->setDirection($sortType)
+                    /** @var SortOrder $sortOrder */
+                    $sortOrder = $this->sortOrderBuilder
+                        ->setField($sortField)
+                        ->setDirection($sortType)
+                        ->create();
+                } else {
+                    // Admin setting filter
+                    /** @var SortOrder $sortOrder */
+                    $sortOrder = $this->sortOrderBuilder
+                        ->setField(self::SORT_FIELD_DEFAULT)
+                        ->setDirection($this->additionInfo->useSort())
+                        ->create();
+                }
+
+                /** @var SearchCriteria|SearchCriteriaInterface $searchCriteria */
+                $searchCriteria = $this->searchCriteriaBuilder
+                    ->addSortOrder($sortOrder)
                     ->create();
+
+                /** @var SearchResult $searchResults */
+                $searchResults = $this->engineRepository->getList($searchCriteria);
+                if ($searchResults->getTotalCount() > 0) {
+                    $this->engines = $searchResults->getItems();
+                }
             } catch (\Exception $exception) {
-                /** @var SortOrder $sortOrder */
-                $sortOrder = $this->sortOrderBuilder
-                    ->setField(self::SORT_FIELD_DEFAULT)
-                    ->setDirection(self::SORT_TYPE_DEFAULT)
-                    ->create();
-            }
-
-            /** @var SearchCriteria|SearchCriteriaInterface $searchCriteria */
-            $searchCriteria = $this->searchCriteriaBuilder
-                ->addSortOrder($sortOrder)
-                ->create();
-
-            /** @var SearchResult $searchResults */
-            $searchResults = $this->engines = $this->engineRepository->getList($searchCriteria);
-            if ($searchResults->getTotalCount() > 0) {
-                $this->engines = $searchResults->getItems();
+                $error = $exception->getMessage();
+                $text = sprintf('Could not load engines collection in block: %s', $error);
+                $this->_logger->debug($text);
             }
         }
 
         return parent::_prepareLayout();
     }
 
+    /**
+     * Use custom filter on page
+     *
+     * @return string
+     */
     public function useFilter()
     {
         $request = $this->getRequest();
@@ -157,10 +151,19 @@ class Engines extends Template
     }
 
     /**
-     * @return Collection|null
+     * @return EngineInterface[]|[]|null
      */
     public function getEngines()
     {
         return $this->engines;
+    }
+
+    /**
+     * @param int $engineId
+     * @return string
+     */
+    public function deleteById(int $engineId)
+    {
+        return $this->engineRepository->deleteById($engineId);
     }
 }

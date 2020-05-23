@@ -31,6 +31,4 @@ class SizeObserver implements ObserverInterface
     {
         // TODO: Implement execute() method.
     }
-
-
 }

@@ -2,7 +2,7 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="main">
-            <block class="Owner\TaskModul\Block\Cars" name="car.block" template="Owner_TaskModul::car_template.phtml">
+            <block class="Owner\TaskModul\Block\Cars" name="car.block" cacheable="false" template="Owner_TaskModul::car_template.phtml">
                 <arguments>
                     <argument name="addition_viewModel" xsi:type="object">Owner\TaskModul\ViewModel\AdditionInfo</argument>
                 </arguments>

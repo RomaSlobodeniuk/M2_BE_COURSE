@@ -5,6 +5,7 @@
             <settings>
                 <use_sort>ASC</use_sort>
                 <number_records>4</number_records>
+                <use_admin_setting>0</use_admin_setting>
             </settings>
         </owner_task>
     </default>

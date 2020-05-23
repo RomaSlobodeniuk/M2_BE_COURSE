@@ -4,6 +4,9 @@ namespace Owner\TaskModul\Setup\Patch\Data;
 
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\Patch\DataPatchInterface;
+use Owner\TaskModul\Api\Data\EngineInterface;
+use Owner\TaskModul\Api\Data\EngineInterfaceFactory;
+use Owner\TaskModul\Api\RepositoryInterface\EngineRepositoryInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -12,12 +15,20 @@ use Psr\Log\LoggerInterface;
  */
 class Data1EngineTable implements DataPatchInterface
 {
-    const MODEL_ENGINE = 'model_engine';
-
     /**
      * @var ModuleDataSetupInterface
      */
     private $moduleDataSetup;
+
+    /**
+     * @var EngineRepositoryInterface
+     */
+    private $engineRepository;
+
+    /**
+     * @var EngineInterfaceFactory
+     */
+    private $engineFactory;
 
     /**
      * @var LoggerInterface
@@ -26,13 +37,19 @@ class Data1EngineTable implements DataPatchInterface
 
     /**
      * @param ModuleDataSetupInterface $moduleDataSetup
+     * @param EngineRepositoryInterface $engineRepository
+     * @param EngineInterfaceFactory $engineFactory
      * @param LoggerInterface $logger
      */
     public function __construct(
         ModuleDataSetupInterface $moduleDataSetup,
+        EngineRepositoryInterface $engineRepository,
+        EngineInterfaceFactory $engineFactory,
         LoggerInterface $logger
     ) {
         $this->moduleDataSetup = $moduleDataSetup;
+        $this->engineRepository = $engineRepository;
+        $this->engineFactory = $engineFactory;
         $this->logger = $logger;
     }
 
@@ -103,13 +120,18 @@ class Data1EngineTable implements DataPatchInterface
         ];
 
         try {
-            $connection = $this->moduleDataSetup->getConnection();
             foreach ($data as $row) {
-                $connection->insert(self::MODEL_ENGINE, $row);
+                /** @var EngineInterface $engine */
+                $engine = $this->engineFactory->create();
+                $engine->setManufacturer($row['manufacturer'])
+                    ->setWin($row['win'])
+                    ->setPower($row['power'])
+                    ->setVolume($row['volume'])
+                    ->setYears($row['years']);
+                $this->engineRepository->save($engine);
             }
-        }
-        catch (\Exception $exception){
-            $this->logger->debug('Problem with insert date.' . $exception->getMessage() );
+        } catch (\Exception $exception){
+            $this->logger->debug('Problem with save data: ' . $exception->getMessage() );
         }
 
         $this->moduleDataSetup->endSetup();

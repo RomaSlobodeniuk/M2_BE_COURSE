@@ -11,8 +11,14 @@ use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
  */
 class CarResource extends AbstractDb
 {
+    /**
+     * {@inheritDoc}
+     */
     const MODEL_CAR = 'model_car';
 
+    /**
+     * {@inheritDoc}
+     */
     public function _construct()
     {
         $this->_init(

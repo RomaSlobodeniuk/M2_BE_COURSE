@@ -16,6 +16,7 @@ use Owner\TaskModul\Model\EngineModelFactory;
 use Owner\TaskModul\Model\ResourceModel\Engine\Collection;
 use Owner\TaskModul\Model\ResourceModel\Engine\CollectionFactory;
 use Owner\TaskModul\Model\ResourceModel\EngineResource;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class EngineRepository
@@ -49,7 +50,11 @@ class EngineRepository implements EngineRepositoryInterface
     private $collectionProcessor;
 
     /**
-     * EngineRepository constructor.
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
      * @param EngineResource $engineResource
      * @param EngineModelFactory $engineFactory
      * @param CollectionFactory $engineCollectionFactory
@@ -61,13 +66,15 @@ class EngineRepository implements EngineRepositoryInterface
         EngineModelFactory $engineFactory,
         CollectionFactory $engineCollectionFactory,
         SearchResultsInterfaceFactory $searchResultsFactory,
-        CollectionProcessorInterface $collectionProcessor
+        CollectionProcessorInterface $collectionProcessor,
+        LoggerInterface $logger
     ) {
         $this->engineFactory = $engineFactory;
         $this->engineCollectionFactory = $engineCollectionFactory;
         $this->engineResource = $engineResource;
         $this->searchResultsFactory = $searchResultsFactory;
         $this->collectionProcessor = $collectionProcessor;
+        $this->logger = $logger;
     }
 
     /**
@@ -94,7 +101,7 @@ class EngineRepository implements EngineRepositoryInterface
         $engine = $this->engineFactory->create();
         $engine->load($engineId);
         if (!$engine->getId()) {
-            throw new NoSuchEntityException(__('Car (`%1`) does not exist.', $engineId));
+            throw new NoSuchEntityException(__('Engine (`%1`) does not exist.', $engineId));
         }
 
         return $engine;
@@ -129,14 +136,20 @@ class EngineRepository implements EngineRepositoryInterface
         } catch (\Exception $exception) {
             throw new CouldNotDeleteException(__('Could not delete row. `%1` ',$exception->getMessage()));
         }
+
         return true;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function deleteById(int $engineId): bool
+    public function deleteById(int $engineId)
     {
-        return $this->delete($this->getById($engineId));
+        try {
+            $this->delete($this->getById($engineId));
+            return 'Engine was deleted successfully!';
+        } catch (\Exception $exception) {
+            return $exception->getMessage();
+        }
     }
 }

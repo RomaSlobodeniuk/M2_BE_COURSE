@@ -14,8 +14,6 @@ use Owner\TaskModul\Api\Data\EngineInterface;
 use Owner\TaskModul\Api\Data\CarInterface;
 use Owner\TaskModul\Api\RepositoryInterface\EngineRepositoryInterface;
 use Owner\TaskModul\Model\CarModel;
-use Owner\TaskModul\Model\ResourceModel\Car\Collection;
-use Owner\TaskModul\Model\ResourceModel\Car\CollectionFactory;
 use Owner\TaskModul\Api\RepositoryInterface\CarRepositoryInterface;
 use Owner\TaskModul\ViewModel\AdditionInfo;
 
@@ -26,19 +24,9 @@ use Owner\TaskModul\ViewModel\AdditionInfo;
 class Cars extends Template
 {
     /**
-     * @var CollectionFactory
-     */
-    private $carCollectionFactory;
-
-    /**
-     * @var Collection|null
+     * @var CarInterface[]|null
      */
     private $cars;
-
-    /**
-     * @var EngineInterface|null
-     */
-    private $engine;
 
     /**
      * @var EngineRepositoryInterface
@@ -67,7 +55,6 @@ class Cars extends Template
 
     /**
      * @param Context $context
-     * @param CollectionFactory $carCollectionFactory
      * @param CarRepositoryInterface $carRepository
      * @param EngineRepositoryInterface $engineRepository
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
@@ -77,7 +64,6 @@ class Cars extends Template
      */
     public function __construct(
         Context $context,
-        CollectionFactory $carCollectionFactory,
         CarRepositoryInterface $carRepository,
         EngineRepositoryInterface $engineRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
@@ -86,7 +72,6 @@ class Cars extends Template
         array $data = []
     ) {
         parent::__construct($context, $data);
-        $this->carCollectionFactory = $carCollectionFactory;
         $this->carRepository = $carRepository;
         $this->engineRepository = $engineRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -95,38 +80,39 @@ class Cars extends Template
     }
 
     /**
-     * @return Template
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @inheritDoc
      */
     protected function _prepareLayout()
     {
         if ($this->cars === null) {
-            $request = $this->getRequest();
-            $engineId = (int)$request->getParam(CarModel::ENGINE_ID);
+            $this->cars = [];
 
-            $sort_type = $this->additionInfo->useSort();
+            try {
+                $request = $this->getRequest();
+                $engineId = (int)$request->getParam(CarModel::ENGINE_ID);
+                $sortType = $this->additionInfo->useSort();
 
-            /** @var SortOrder $sortOrder */
-            $sortOrder = $this->sortOrderBuilder
-                ->setField(CarInterface::CREATED_AT)
-                ->setDirection($sort_type)
-                ->create();
+                /** @var SortOrder $sortOrder */
+                $sortOrder = $this->sortOrderBuilder
+                    ->setField(CarInterface::CREATED_AT)
+                    ->setDirection($sortType)
+                    ->create();
 
-            /** @var SearchCriteria|SearchCriteriaInterface $searchCriteria */
-            $searchCriteria = $this->searchCriteriaBuilder
-                ->addFilter(
-                    CarModel::ENGINE_ID,
-                    $engineId,
-                    'eq'
-                )
-                ->addSortOrder($sortOrder)
-                ->create();
+                /** @var SearchCriteria|SearchCriteriaInterface $searchCriteria */
+                $searchCriteria = $this->searchCriteriaBuilder
+                    ->addFilter(CarModel::ENGINE_ID, $engineId)
+                    ->addSortOrder($sortOrder)
+                    ->create();
 
-            /** @var SearchResult $searchResults */
-            $searchResults = $this->cars = $this->carRepository->getList($searchCriteria);
-
-            if ($searchResults->getTotalCount() > 0) {
-                $this->cars = $searchResults->getItems();
+                /** @var SearchResult $searchResults */
+                $searchResults = $this->carRepository->getList($searchCriteria);
+                if ($searchResults->getTotalCount() > 0) {
+                    $this->cars = $searchResults->getItems();
+                }
+            } catch (\Exception $exception) {
+                $error = $exception->getMessage();
+                $text = sprintf('Could not load cars collection in block: %s', $error);
+                $this->_logger->debug($text);
             }
         }
 
@@ -134,7 +120,7 @@ class Cars extends Template
     }
 
     /**
-     * @return Collection|null
+     * @return CarInterface[]|null
      */
     public function getCars()
     {
@@ -142,16 +128,31 @@ class Cars extends Template
     }
 
     /**
-     * @param int $engine_id
-     * @return EngineInterface
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @param int $engineId
+     * @return EngineInterface|bool
      */
-    public function getById(int $engine_id)
+    public function getById(int $engineId)
     {
+        $engine = false;
 
-        /** @var EngineInterface $element */
-        $element = $this->engineRepository->getById($engine_id);
+        try {
+            /** @var EngineInterface $element */
+            $engine = $this->engineRepository->getById($engineId);
+        } catch (\Exception $exception) {
+            $error = $exception->getMessage();
+            $text = sprintf('There are some error with engines: %s', $error);
+            $this->_logger->debug($text);
+        }
 
-        return $element;
+        return $engine;
+    }
+
+    /**
+     * @param int $carId
+     * @return mixed
+     */
+    public function deleteById(int $carId)
+    {
+        return $this->carRepository->deleteById($carId);
     }
 }

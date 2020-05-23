@@ -2,6 +2,8 @@
 
 namespace Owner\TaskModul\Api\ServiceInterface;
 
+use Owner\TaskModul\Api\Data\CarInterface;
+
 /**
  * Interface CarServiceInterface
  * @package Owner\TaskModul\Api\ServiceInterface
@@ -14,14 +16,20 @@ interface CarServiceInterface
     public function getCarList();
 
     /**
-     * @param int $engineId
+     * @param int $carId
      * @return mixed
      */
-    public function getCarListByEngineId($engineId);
+    public function getCarById($carId);
 
     /**
      * @param int $carId
      * @return mixed
      */
     public function deleteCarById(int $carId);
+
+    /**
+     * @param CarInterface $car
+     * @return mixed
+     */
+    public function saveOrUpdate(CarInterface $car);
 }

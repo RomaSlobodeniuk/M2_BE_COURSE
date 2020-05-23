@@ -10,6 +10,10 @@
             <resource>Owner_TaskModul::owner</resource>
             <group id="settings" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Task Integration Settings</label>
+                <field id="use_admin_setting" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Use admin setting</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
                 <field id="use_sort" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Use sorting</label>
                     <source_model>Owner\TaskModul\Model\Config\Source\SortConfig</source_model>

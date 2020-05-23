@@ -12,12 +12,7 @@
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="entity_id"/>
         </constraint>
-        <constraint xsi:type="foreign"
-                    referenceId="MODEL_CAR_ENGINE_ID"
-                    table="MODEL_CAR"
-                    column="engine_id"
-                    referenceTable="model_engine"
-                    referenceColumn="entity_id"/>
+        <constraint xsi:type="foreign" referenceId="MODEL_CAR_ENGINE_ID" table="MODEL_CAR" column="engine_id" referenceTable="model_engine" referenceColumn="entity_id" onDelete="CASCADE"/>
     </table>
     <table name="model_engine" resource="default" engine="innodb" comment="Model of engine with detail info">
         <column xsi:type="smallint" name="entity_id" padding="6" unsigned="false" nullable="false" identity="true" comment="Entity ID"/>

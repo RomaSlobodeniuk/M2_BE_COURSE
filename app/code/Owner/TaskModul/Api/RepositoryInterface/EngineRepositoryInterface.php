@@ -55,9 +55,7 @@ interface EngineRepositoryInterface
      * Delete Engine by id
      *
      * @param int $engineId
-     * @return bool true on success
-     * @throws NoSuchEntityException
-     * @throws LocalizedException
+     * @return mixed
      */
-    public function deleteById(int $engineId): bool;
+    public function deleteById(int $engineId);
 }
